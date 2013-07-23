@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dimmer</string>
+    <string name="action_settings">Settings</string>
+	<string name="guide">Touch up and down to adjust light.</string>
+	<string name="notification_sub">Touch to adjust light.</string>
+    
+</resources>
