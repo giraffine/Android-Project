@@ -222,6 +222,7 @@ public class DimmerService extends Service{
 	{
 		Log.e(Dimmer.TAG, "resetLevel() lastLevel: " + lastLevel);
 		removeNotification();
+		stopSelf();
 		Process.killProcess(Process.myPid());
 /*
 		int currentBrightness = BrightnessUtil.getBrightness(); 
