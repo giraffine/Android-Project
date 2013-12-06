@@ -39,6 +39,7 @@ public class DimmerService extends Service{
 	
 	WindowManager mWindowManager;
 	WindowManager.LayoutParams mWindowParams;
+	int maskLength = 0;
 	View mMaskView;
 	boolean mActing = false;
 	Notification mNotification;
@@ -168,9 +169,9 @@ public class DimmerService extends Service{
 		mWindowManager.getDefaultDisplay().getSize(p);
 		mWindowParams.x = 0;
 		mWindowParams.y = 0;
-		int length = ( p.x > p.y ? p.x : p.y) +300;
-		mWindowParams.width = length;
-		mWindowParams.height = length;
+		maskLength = ( p.x > p.y ? p.x : p.y) +300;
+		mWindowParams.width = maskLength;
+		mWindowParams.height = maskLength;
 		mWindowParams.format = 1;
 		mWindowParams.alpha = (float)0;	// default is transparent
 
@@ -206,6 +207,8 @@ public class DimmerService extends Service{
 	{
 		Log.e(Dimmer.TAG, "maskBrightness: " + value);
 		if(value <= 0.01)	return;	// for padfone: value ~0.0 would fully dark screen 
+		mWindowParams.width = 1;	// reduce memory usage
+		mWindowParams.height = 1;	// reduce memory usage
 		mWindowParams.screenBrightness = value;
 		mWindowManager.updateViewLayout(mMaskView, mWindowParams);
 	}
@@ -215,6 +218,8 @@ public class DimmerService extends Service{
 		if(alpha > 0.98) alpha = (float)0.9;
 		else if(alpha < 0) alpha = (float)0;
 //		mMaskView.setAlpha(alpha);	// control parent window is much safe
+		mWindowParams.width = maskLength;
+		mWindowParams.height = maskLength;
 		mWindowParams.alpha = alpha; 
 		mWindowManager.updateViewLayout(mMaskView, mWindowParams);
 	}
