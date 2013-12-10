@@ -10,7 +10,7 @@ import android.view.WindowManager;
 
 public class Mask {
 	
-	private static Context mContext;
+	private Context mContext;
 	private WindowManager mWindowManager;
 	private WindowManager.LayoutParams mWindowParams;
 	private int maskLength = 0;
@@ -70,16 +70,17 @@ public class Mask {
 			adjustMask(((float)i/500));
 		}
 	}
-	public void maskBrightness(float value)
+	private void maskBrightness(float value)
 	{
 		Log.e(Dimmer.TAG, "maskBrightness: " + value);
 		if(value <= 0.01)	return;	// for padfone: value ~0.0 would fully dark screen
 		mWindowParams.width = 1;	// reduce memory usage
 		mWindowParams.height = 1;	// reduce memory usage
 		mWindowParams.screenBrightness = value;
+		if(mWindowParams.alpha != 0)	mWindowParams.alpha = 0;
 		mWindowManager.updateViewLayout(mMaskView, mWindowParams);
 	}
-	public void adjustMask(float alpha)
+	private void adjustMask(float alpha)
 	{
 		Log.e(Dimmer.TAG, "adjustMask: " + alpha);
 		if(alpha > 0.98) alpha = (float)0.9;

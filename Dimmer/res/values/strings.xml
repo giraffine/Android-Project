@@ -6,4 +6,6 @@
 	<string name="guide">Touch up and down to adjust light.</string>
 	<string name="notification_sub">Touch to adjust light.</string>
     
+<string name="auto_text">Auto Mode</string>
+    
 </resources>

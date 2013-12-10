@@ -2,7 +2,6 @@ package giraffine.dimmer;
 
 import android.content.Context;
 import android.provider.Settings;
-import android.util.Log;
 
 public class BrightnessUtil {
 
