@@ -1,13 +1,10 @@
 package giraffine.dimmer;
 
-import giraffine.dimmer.tester.LightSensor.EventCallback;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 public class ProximitySensor {
