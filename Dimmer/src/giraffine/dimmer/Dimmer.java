@@ -20,9 +20,6 @@ public class Dimmer extends Activity {
 	public static String TAG = "Dimmer";
 	public static final String REFRESH_INDEX = "refreshIndex"; 
 	private TextView mIndex;
-	private ImageButton mAutoMode;
-	private View mAutoSetting;
-	private TextView mAutoText;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
 		@Override
@@ -35,46 +32,10 @@ public class Dimmer extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dimmer);
-		mIndex = (TextView)findViewById(R.id.index);
-		mAutoMode = (ImageButton)findViewById(R.id.automode);
-		mAutoSetting = findViewById(R.id.autosetting);
-		mAutoText = (TextView)findViewById(R.id.autotext);
-
-		updateAutoMode();
-		
-		if(DimmerService.DebugMode)	mAutoMode.setBackgroundColor(Color.CYAN);
-		mAutoSetting.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				DimmerService.mIsAutoMode = !DimmerService.mIsAutoMode;
-				updateAutoMode();
-			}
-		});
-
-		mAutoSetting.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				switch(event.getAction())
-				{
-				case MotionEvent.ACTION_DOWN:
-					mAutoText.setTextColor(Color.YELLOW);
-					mAutoMode.setImageResource(R.drawable.auto_pressed);
-					break;
-				case MotionEvent.ACTION_UP:
-					mAutoText.setTextColor(Color.BLACK);
-					updateAutoMode();
-					break;
-				}
-				return false;
-			}
-		});
-		
-
 		getActionBar().hide();
+		mIndex = (TextView)findViewById(R.id.index);
 		
-		Intent startServiceIntent = new Intent();
-		startServiceIntent.setComponent(DimmerService.COMPONENT);
-        startService(startServiceIntent);
+		startDimmerService();
 		
 		RelativeLayout background = (RelativeLayout)findViewById(R.id.relativelayout);
 		background.setOnTouchListener(new View.OnTouchListener() {
@@ -127,7 +88,6 @@ public class Dimmer extends Activity {
 	{
 		super.onResume();
 		showIndex(DimmerService.lastLevel);
-		monitorLight();
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,19 +100,6 @@ public class Dimmer extends Activity {
 	{
 		mIndex.setText(String.valueOf(i/10));
 	}
-	public void updateAutoMode()
-	{
-		if(DimmerService.mIsAutoMode)
-		{
-			mAutoMode.setImageResource(R.drawable.auto_on);
-			mAutoText.setTextColor(Color.BLACK);
-		}
-		else
-		{
-			mAutoMode.setImageResource(R.drawable.auto_off);
-			mAutoText.setTextColor(Color.LTGRAY);
-		}
-	}
 	public void changeLevel(String action, int i)
 	{
 		Intent startServiceIntent = new Intent();
@@ -161,11 +108,10 @@ public class Dimmer extends Activity {
 		startServiceIntent.putExtra(action, i);
         startService(startServiceIntent);
 	}
-	public void monitorLight()
+	public void startDimmerService()
 	{
 		Intent startServiceIntent = new Intent();
 		startServiceIntent.setComponent(DimmerService.COMPONENT);
-		startServiceIntent.setAction(DimmerService.MONITORLIGHT);
         startService(startServiceIntent);
 	}
 }

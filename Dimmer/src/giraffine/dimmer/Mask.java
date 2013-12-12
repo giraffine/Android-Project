@@ -51,20 +51,20 @@ public class Mask {
 		
 		mWindowManager.addView(mMaskView, mWindowParams);
 	}
-	public void adjustLevel(int i, boolean finished)
+	public void adjustLevel(int i, boolean setBrightness)
 	{
 		Log.e(Dimmer.TAG, "adjustLevel: " + i);
 		if(i > 500)
 		{
 			float index = ((float)(i - 500))/500;
-			if(finished)
+			if(setBrightness)
 				BrightnessUtil.setBrightness((int)(index*255));
 			else
 				maskBrightness(index);
 		}
 		else
 		{
-			if(finished)
+			if(setBrightness)
 				BrightnessUtil.setBrightness(0);
 			i = 500 - i;
 			adjustMask(((float)i/500));

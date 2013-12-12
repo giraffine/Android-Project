@@ -22,6 +22,7 @@ public class LightSensor {
 	private int mCurrentLux;
 	private int mFreezeLux = 9999999;
 	private EventCallback mEventCallback = null;
+	private ProximitySensor mProximitySensor = null;
 	
 	interface EventCallback
 	{
@@ -33,6 +34,7 @@ public class LightSensor {
 	public LightSensor(Context context, EventCallback eventcallback)
 	{
 		LuxUtil.init(context);
+		mProximitySensor = new ProximitySensor(context);
 		mContext = context;
 		mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
 		if(mSensorManager != null)
@@ -51,6 +53,8 @@ public class LightSensor {
 	    if(mSensorManager == null || mSensorLight == null)
 	    	return false;
 
+	    mProximitySensor.monitor(isOn);
+	    
 		if(mSensorEventListener == null)
 			mSensorEventListener = new SensorEventListener(){
 				@Override
@@ -64,9 +68,10 @@ public class LightSensor {
 					mEventCallback.onLightChanged();
 					LuxUtil.setLuxLevel(mCurrentLux);
 					
-					if(LuxUtil.isLowestLevel(mCurrentLux))
+					// need include proximity sensor to avoid cover situation
+					if(LuxUtil.isLowestLevel(mCurrentLux) && !mProximitySensor.isCovered())
 					{
-						mHandler.sendEmptyMessageDelayed(MSG_DARKLIGHT, 3000);
+						mHandler.sendEmptyMessageDelayed(MSG_DARKLIGHT, 5000);
 					}
 					else
 						mHandler.removeMessages(MSG_DARKLIGHT);

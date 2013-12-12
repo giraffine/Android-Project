@@ -43,6 +43,7 @@ public class LuxUtil {
 			while(it.hasNext())
 				data.add(Integer.valueOf(it.next()));
 			Collections.sort(data);
+			// TODO: may need check statistics to ensure the level is true lowest and not false alarm.
 			if(level <= data.get(0))
 				return true;
 		}

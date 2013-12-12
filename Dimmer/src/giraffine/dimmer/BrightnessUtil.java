@@ -6,6 +6,8 @@ import android.provider.Settings;
 public class BrightnessUtil {
 
 	private static Context mContext;
+	private static int mAutoState;
+	private static int mLevelState;
 	public static void init(Context context)
 	{
 		mContext = context;
@@ -27,12 +29,18 @@ public class BrightnessUtil {
 		else
 			Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
 	}
-	public static int getPreferLevel()
+	private static int getAutoBrightness()
 	{
-		return mContext.getSharedPreferences(DimmerService.PREFER, mContext.MODE_WORLD_WRITEABLE).getInt(DimmerService.PREFERLEVEL, DimmerService.DEFAULTLEVEL);
+		return Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 	}
-	public static void setPreferLevel(int level)
+	public static void collectState()
 	{
-		mContext.getSharedPreferences(DimmerService.PREFER, mContext.MODE_WORLD_WRITEABLE).edit().putInt(DimmerService.PREFERLEVEL, level).commit();
+		mAutoState = getAutoBrightness();
+		mLevelState = getBrightness();
+	}
+	public static void restoreState()
+	{
+		setBrightness(mLevelState);
+		setAutoBrightness(mAutoState == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 	}
 }
