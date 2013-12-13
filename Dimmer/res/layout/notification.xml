@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/noti_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/noti_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#FFFFFFFF"
+        android:textSize="40sp"
+        android:text="@string/app_name" />
+
+    <ImageButton
+        android:id="@+id/noti_up"
+        android:src="@drawable/ic_up"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <ImageButton
+        android:id="@+id/noti_down"
+        android:src="@drawable/ic_down"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <ImageButton
+        android:id="@+id/noti_cross"
+        android:src="@drawable/ic_cross"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

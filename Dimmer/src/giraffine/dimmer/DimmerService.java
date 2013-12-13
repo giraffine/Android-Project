@@ -19,6 +19,7 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 public class DimmerService extends Service implements LightSensor.EventCallback{
 
@@ -39,6 +40,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 
 	private boolean mActing = false;
 	private Notification mNotification;
+	private RemoteViews mNotiRemoteView = null;
 	private Mask mMask = null;
 	private boolean mInDimmMode = false;
 	private LightSensor mLightSensor = null;
@@ -48,15 +50,12 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		return null;
 	}
 
+	
 	public void postNotification(int levelHint)
 	{
-//		if(mNotification == null)
+		
+		if(mNotiRemoteView == null)
 		{
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			intent.setClassName(PACKAGENAME, PACKAGENAME+".Dimmer");
-			PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
-
 			Intent stepUpIntent = new Intent(this, DimmerService.class);
 			stepUpIntent.setAction(STEPLEVELUP);
 			PendingIntent piStepUp = PendingIntent.getService(this, 0, stepUpIntent, 0);
@@ -68,22 +67,30 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			Intent resetIntent = new Intent(this, DimmerService.class);
 			resetIntent.setAction(RESETLEVEL);
 			PendingIntent piReset = PendingIntent.getService(this, 0, resetIntent, 0);
+
+			mNotiRemoteView = new RemoteViews(PACKAGENAME, R.layout.notification);
+			mNotiRemoteView.setOnClickPendingIntent(R.id.noti_up, piStepUp);
+			mNotiRemoteView.setOnClickPendingIntent(R.id.noti_down, piStepDown);
+			mNotiRemoteView.setOnClickPendingIntent(R.id.noti_cross, piReset);
+		}
+		mNotiRemoteView.setTextViewText(R.id.noti_text, levelHint + "");
+
+		if(mNotification == null)
+		{
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			intent.setClassName(PACKAGENAME, PACKAGENAME+".Dimmer");
+			PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
 			
 			mNotification = new NotificationCompat.Builder(this)
-				.setContentTitle(getText(R.string.app_name) + "   [  " + levelHint + "%  ]" + (DebugMode ? " Lux=" + mLightSensor.getCurrentLux() : ""))
-			.setContentText(getText(R.string.notification_sub))
-			.setSmallIcon(R.drawable.ic_launcher)
-			.setOngoing(true)
-			.setContentIntent(pi)
-				.setPriority(Notification.FLAG_HIGH_PRIORITY)
-				.addAction(R.drawable.ic_up, "", piStepUp)
-				.addAction(R.drawable.ic_down, "", piStepDown)
-				.addAction(R.drawable.ic_cross, "", piReset)
+				.setContent(mNotiRemoteView)
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentIntent(pi)
 				.build();
-			
-			if(DebugMode)
-				mNotification.tickerText = mLightSensor.getCurrentLux() + "";
 		}
+		if(DebugMode)
+			mNotification.tickerText = mLightSensor.getCurrentLux() + "";
+
 		startForeground(999, mNotification);
 	}
 	public void removeNotification()
