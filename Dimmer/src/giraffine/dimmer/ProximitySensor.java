@@ -9,17 +9,27 @@ import android.util.Log;
 
 public class ProximitySensor {
 
+	public static float DEFAULT_DISTANCE = 5;
+
 	private Context mContext;
 	private SensorManager mSensorManager;
 	private Sensor mSensorProximity;
 	private SensorEventListener mSensorEventListener;
-	private float mMax = 5;
-	private float mMin = 5;
-	private float mCurrent;
+	private EventCallback mEventCallback = null;
+	private float mMax = Prefs.getProximity(true);
+	private float mMin = Prefs.getProximity(false);
+	private float mCurrent = DEFAULT_DISTANCE;
 	
-	public ProximitySensor(Context context)
+	interface EventCallback
+	{
+		public void onNear();
+		public void onFar();
+	}
+	
+	public ProximitySensor(Context context, EventCallback callback)
 	{
 		mContext = context;
+		mEventCallback = callback;
 		mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
 		if(mSensorManager != null)
 			mSensorProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
@@ -37,6 +47,8 @@ public class ProximitySensor {
 	    if(mSensorManager == null || mSensorProximity == null)
 	    	return false;
 
+	    mCurrent = DEFAULT_DISTANCE;
+	    
 		if(mSensorEventListener == null)
 			mSensorEventListener = new SensorEventListener(){
 				@Override
@@ -47,8 +59,21 @@ public class ProximitySensor {
 				public void onSensorChanged(SensorEvent arg0) {
 					Log.e(Dimmer.TAG, "Proximity:: onSensorChanged: " + arg0.values[0]);
 					mCurrent = arg0.values[0];
-					if(mMax < mCurrent)	mMax = mCurrent;
-					if(mMin > mCurrent)	mMin = mCurrent;
+					if(mMax < mCurrent)
+					{
+						mMax = mCurrent;
+						Prefs.setProximity(true, mMax);
+					}
+					if(mMin > mCurrent)
+					{
+						mMin = mCurrent;
+						Prefs.setProximity(false, mMin);
+					}
+					
+					if(mCurrent == mMin)
+						mEventCallback.onNear();
+					else
+						mEventCallback.onFar();
 				}
 	        };
         if(isOn)
@@ -56,13 +81,5 @@ public class ProximitySensor {
         else
         	mSensorManager.unregisterListener(mSensorEventListener);
         return true;
-	}
-	public boolean isCovered()
-	{
-		if(!hasProximitySensor())
-			return false;
-		if(mCurrent == mMin)
-			return true;
-		return false;
 	}
 }

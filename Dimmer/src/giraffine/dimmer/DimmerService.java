@@ -151,7 +151,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		if(DebugMode)	postNotification(lastLevel/10);
 	}
 	@Override
-	public void onDarkLight() {
+	public void onEnterDarkLight() {
 //		Log.e(Dimmer.TAG, "onDarkLight() mIsAutoMode=" + Prefs.isAutoMode() + ", mInDimmMode=" + mInDimmMode);
 		if(!Prefs.isAutoMode() || mInDimmMode)	return;
 		mLightSensor.setFreezeLux();
@@ -159,7 +159,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	}
 	
 	@Override
-	public void onOverDarkLight() {
+	public void onLeaveDarkLight() {
 //		Log.e(Dimmer.TAG, "onOverDarkLight() mIsAutoMode=" + Prefs.isAutoMode() + ", mInDimmMode=" + mInDimmMode);
 		if(!Prefs.isAutoMode() || !mInDimmMode)	return;
 		mHandler.sendEmptyMessage(MSG_RESET_LEVEL_RESTORE);

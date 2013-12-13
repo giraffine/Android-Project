@@ -9,11 +9,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-public class LightSensor {
+public class LightSensor implements ProximitySensor.EventCallback{
 
 	public static final int MSG_BASE = 100;
-	public static final int MSG_DARKLIGHT = 0 + MSG_BASE;
-	public static final int MSG_OVER_DARKLIGHT = 1 + MSG_BASE;
+	public static final int MSG_ENTER_DARKLIGHT = 1 + MSG_BASE;
+	public static final int MSG_LEAVE_DARKLIGHT = 2 + MSG_BASE;
+	public static final int MSG_ENSURE_COVERED = 3 + MSG_BASE;
 	
 	private Context mContext;
 	private SensorManager mSensorManager;
@@ -27,14 +28,14 @@ public class LightSensor {
 	interface EventCallback
 	{
 		public void onLightChanged();
-		public void onDarkLight();
-		public void onOverDarkLight();
+		public void onEnterDarkLight();
+		public void onLeaveDarkLight();
 	}
 
 	public LightSensor(Context context, EventCallback eventcallback)
 	{
 		LuxUtil.init(context);
-		mProximitySensor = new ProximitySensor(context);
+		mProximitySensor = new ProximitySensor(context, this);
 		mContext = context;
 		mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
 		if(mSensorManager != null)
@@ -53,8 +54,6 @@ public class LightSensor {
 	    if(mSensorManager == null || mSensorLight == null)
 	    	return false;
 
-	    mProximitySensor.monitor(isOn);
-	    
 		if(mSensorEventListener == null)
 			mSensorEventListener = new SensorEventListener(){
 				@Override
@@ -69,20 +68,24 @@ public class LightSensor {
 					LuxUtil.setLuxLevel(mCurrentLux);
 					
 					// need include proximity sensor to avoid cover situation
-					if(LuxUtil.isLowestLevel(mCurrentLux) && !mProximitySensor.isCovered())
+					if(LuxUtil.isLowestLevel(mCurrentLux))
 					{
-						mHandler.sendEmptyMessageDelayed(MSG_DARKLIGHT, 5000);
+						mProximitySensor.monitor(true);
+						mHandler.sendEmptyMessageDelayed(MSG_ENTER_DARKLIGHT, 5000);
 					}
 					else
-						mHandler.removeMessages(MSG_DARKLIGHT);
+					{
+						mProximitySensor.monitor(false);
+						mHandler.removeMessages(MSG_ENTER_DARKLIGHT);
+					}
 					
 					if(mCurrentLux > mFreezeLux*2)
 					{
-						if(!mHandler.hasMessages(MSG_OVER_DARKLIGHT))
-							mHandler.sendEmptyMessageDelayed(MSG_OVER_DARKLIGHT, 2000);
+						if(!mHandler.hasMessages(MSG_LEAVE_DARKLIGHT))
+							mHandler.sendEmptyMessageDelayed(MSG_LEAVE_DARKLIGHT, 2000);
 					}
 					else
-						mHandler.removeMessages(MSG_OVER_DARKLIGHT);
+						mHandler.removeMessages(MSG_LEAVE_DARKLIGHT);
 				}
 	        };
         if(isOn)
@@ -103,13 +106,26 @@ public class LightSensor {
 	private Handler mHandler = new Handler(){
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case MSG_DARKLIGHT:
-				mEventCallback.onDarkLight();
+			case MSG_ENTER_DARKLIGHT:
+				mProximitySensor.monitor(false);
+				mEventCallback.onEnterDarkLight();
 				break;
-			case MSG_OVER_DARKLIGHT:
-				mEventCallback.onOverDarkLight();
+			case MSG_LEAVE_DARKLIGHT:
+				mEventCallback.onLeaveDarkLight();
+				break;
+			case MSG_ENSURE_COVERED:
+				mProximitySensor.monitor(false);
+				mHandler.removeMessages(MSG_ENTER_DARKLIGHT);
 				break;
 			}
 		}
 	};
+	@Override
+	public void onNear() {
+		mHandler.sendEmptyMessageDelayed(MSG_ENSURE_COVERED, 3000);
+	}
+	@Override
+	public void onFar() {
+		mHandler.removeMessages(MSG_ENSURE_COVERED);
+	}
 }
