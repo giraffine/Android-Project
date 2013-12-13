@@ -6,4 +6,7 @@
 	<string name="guide">上下觸控調整亮度</string>
 	<string name="notification_sub">觸控調整亮度</string>
     
+<string name="pref_auto_title">自動模式</string>
+	<string name="pref_auto_summary">根據環境光源自動變暗或變亮</string>
+
 </resources>

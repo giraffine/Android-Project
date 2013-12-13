@@ -20,6 +20,7 @@ public class Dimmer extends Activity {
 	public static String TAG = "Dimmer";
 	public static final String REFRESH_INDEX = "refreshIndex"; 
 	private TextView mIndex;
+	private ImageButton mSettings;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
 		@Override
@@ -34,6 +35,13 @@ public class Dimmer extends Activity {
 		setContentView(R.layout.activity_dimmer);
 		getActionBar().hide();
 		mIndex = (TextView)findViewById(R.id.index);
+		mSettings = (ImageButton)findViewById(R.id.settings);
+		mSettings.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startSettings();
+			}
+		});
 		
 		startDimmerService();
 		
@@ -107,6 +115,10 @@ public class Dimmer extends Activity {
 		startServiceIntent.setAction(action);
 		startServiceIntent.putExtra(action, i);
         startService(startServiceIntent);
+	}
+	public void startSettings()
+	{
+		startActivity(new Intent(this, SettingsActivity.class));
 	}
 	public void startDimmerService()
 	{

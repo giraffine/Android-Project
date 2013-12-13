@@ -32,8 +32,9 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String STEPLEVELUP = "stepLevelUp";
 	public static String STEPLEVELDOWN = "stepLevelDown";
 	public static final int MSG_RESET_LEVEL = 0;
-	public static final int MSG_RESET_LEVEL_RESTORE = 1;
-	public static final int MSG_RESET_ACTING = 2;
+	public static final int MSG_RESET_LEVEL_AUTO = 1;
+	public static final int MSG_RESET_LEVEL_RESTORE = 2;
+	public static final int MSG_RESET_ACTING = 3;
 	public static final int MSG_ENTER_DIMM = 4;
 	public static final int DEFAULTLEVEL = 1000;
 	public static int lastLevel = DEFAULTLEVEL;
@@ -123,7 +124,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
         	public void onChange(boolean selfChange)
         	{
         		if(mActing == false)
-    				mHandler.sendEmptyMessage(MSG_RESET_LEVEL);
+    				mHandler.sendEmptyMessage(MSG_RESET_LEVEL_AUTO);
         		return;
         	}
         });
@@ -193,7 +194,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				{
 					mLightSensor.setFreezeLux();
 					Prefs.setFavorMaskValue(lastLevel);
-			}
+				}
 
 //				Log.e(Dimmer.TAG, "" + LuxUtil.dumpLuxLevel());
 			}
@@ -228,7 +229,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		}
 		mMask.adjustLevel(i, setBrightness);
 	}
-	public void resetLevel(boolean restoreBrighnessState)
+	public void resetLevel(boolean restoreBrighnessState, boolean forceAuto)
 	{
 		Log.e(Dimmer.TAG, "resetLevel() lastLevel: " + lastLevel);
 		mActing = true;
@@ -236,12 +237,13 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
 
 		if(restoreBrighnessState)
-			BrightnessUtil.restoreState();
+			BrightnessUtil.restoreState(forceAuto);
 
-		adjustLevel(500, false);	// to remove mask
+//		adjustLevel(500, false);	// to remove mask
 		int currentBrightness = BrightnessUtil.getBrightness();
 		lastLevel = (int)(((float)currentBrightness)/255*500 + 500);
-
+		adjustLevel(lastLevel, false);	// to remove mask: adjust to value from System Brightness
+		
 		removeNotification();
 		mInDimmMode = false;
 		sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
@@ -276,10 +278,13 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		public void handleMessage(Message msg) {
 			 switch (msg.what) {
 			 case MSG_RESET_LEVEL:
-				resetLevel(false);
+				resetLevel(false, false);
 				break;
-			case MSG_RESET_LEVEL_RESTORE:
-				resetLevel(true);
+			 case MSG_RESET_LEVEL_AUTO:
+				resetLevel(false, true);
+				break;
+			 case MSG_RESET_LEVEL_RESTORE:
+				resetLevel(true, false);
 				 break;
 			 case MSG_RESET_ACTING:
 				 mActing = false;
