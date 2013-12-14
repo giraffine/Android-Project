@@ -89,7 +89,8 @@ public class Mask {
 		mWindowParams.width = maskLength;
 		mWindowParams.height = maskLength;
 		mWindowParams.alpha = alpha; 
-		if(mWindowParams.screenBrightness != 0)	mWindowParams.screenBrightness = (float)0;
+		// this will cause fully dark screen
+//		if(mWindowParams.screenBrightness != 0)	mWindowParams.screenBrightness = (float)0;
 		mWindowManager.updateViewLayout(mMaskView, mWindowParams);
 	}
 }
