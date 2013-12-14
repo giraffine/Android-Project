@@ -1,5 +1,6 @@
 package giraffine.dimmer;
 
+import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -37,10 +38,18 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	public boolean onPreferenceClick(Preference pref) {
 		if(pref.getKey().equalsIgnoreCase(PREF_AUTOMODE))
 		{
-			Prefs.setAutoMode(mPrefAutoMode.isChecked() ? true : false);
+			changeAutoMode(mPrefAutoMode.isChecked());
 			return true;
 		}
 		return false;
+	}
+	public void changeAutoMode(boolean on)
+	{
+		Intent startServiceIntent = new Intent();
+		startServiceIntent.setComponent(DimmerService.COMPONENT);
+		startServiceIntent.setAction(DimmerService.SWITCHAUTOMODE);
+		startServiceIntent.putExtra(DimmerService.SWITCHAUTOMODE, on);
+        startService(startServiceIntent);
 	}
 }
 

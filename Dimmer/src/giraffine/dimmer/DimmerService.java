@@ -31,6 +31,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String RESETLEVEL = "resetLevel";
 	public static String STEPLEVELUP = "stepLevelUp";
 	public static String STEPLEVELDOWN = "stepLevelDown";
+	public static String SWITCHAUTOMODE = "switchAutoMode";
 	public static final int MSG_RESET_LEVEL = 0;
 	public static final int MSG_RESET_LEVEL_AUTO = 1;
 	public static final int MSG_RESET_LEVEL_RESTORE = 2;
@@ -131,6 +132,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
         registerReceiver(new BroadcastReceiver(){
 			@Override
 			public void onReceive(Context arg0, Intent arg1) {
+				if(Prefs.isAutoMode())
 				mLightSensor.monitor(true);
 			}
         }, new IntentFilter(Intent.ACTION_SCREEN_ON));
@@ -141,6 +143,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			}
         }, new IntentFilter(Intent.ACTION_SCREEN_OFF));
         
+        if(Prefs.isAutoMode())
         mLightSensor.monitor(true);
     }
 	@Override
@@ -209,6 +212,15 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			else if(intent.getAction().equals(STEPLEVELDOWN))
 			{
 				stepLevel(true);
+			}
+			else if(intent.getAction().equals(SWITCHAUTOMODE))
+			{
+				boolean on = intent.getBooleanExtra(SWITCHAUTOMODE, false);
+				Prefs.setAutoMode(on);
+				if(on)
+					mLightSensor.monitor(true);
+				else
+					mLightSensor.monitor(false);
 			}
 		}
 //		Log.e(Dimmer.TAG, "onStartCommand(): " + lastLevel);

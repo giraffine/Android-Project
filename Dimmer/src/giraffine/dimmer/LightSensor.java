@@ -51,6 +51,9 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	}
 	public boolean monitor(boolean isOn)
 	{
+		if(!isOn)
+			mProximitySensor.monitor(false);
+		
 	    if(mSensorManager == null || mSensorLight == null)
 	    	return false;
 
