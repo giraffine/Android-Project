@@ -5,4 +5,5 @@
         android:title="@string/pref_auto_title"
         android:summary="@string/pref_auto_summary"
         android:defaultValue="false" />
+    <Preference android:key="pref_about" android:title="Version Info"/>
 </PreferenceScreen>
