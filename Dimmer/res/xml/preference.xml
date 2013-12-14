@@ -4,5 +4,5 @@
         android:key="pref_automode"
         android:title="@string/pref_auto_title"
         android:summary="@string/pref_auto_summary"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
 </PreferenceScreen>

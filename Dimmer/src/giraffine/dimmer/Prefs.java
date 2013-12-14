@@ -17,7 +17,7 @@ public class Prefs {
 	
 	public static boolean isAutoMode()
 	{
-		return mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getBoolean(AUTOMODE, true);
+		return mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getBoolean(AUTOMODE, false);
 	}
 	public static void setAutoMode(boolean isON)
 	{
