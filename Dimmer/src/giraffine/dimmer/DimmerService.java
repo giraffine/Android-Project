@@ -180,12 +180,12 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			{
 				mHandler.removeMessages(MSG_RESET_ACTING);
 				mActing = true;
-				adjustLevel(intent.getIntExtra(ADJUSTLEVEL, DEFAULTLEVEL), false);
+				adjustLevel(intent.getIntExtra(ADJUSTLEVEL, DEFAULTLEVEL), false, false);
 			}
 			else if(intent.getAction().equals(FINISHLEVEL))
 			{
 				int i = intent.getIntExtra(FINISHLEVEL, DEFAULTLEVEL);
-				adjustLevel(intent.getIntExtra(FINISHLEVEL, DEFAULTLEVEL), true);
+				adjustLevel(intent.getIntExtra(FINISHLEVEL, DEFAULTLEVEL), true, true);
 				lastLevel = i;
 				mHandler.removeMessages(MSG_RESET_ACTING);
 				mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
@@ -215,7 +215,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 //		return Prefs.isAutoMode() ? START_STICKY : (lastLevel>500 ? START_NOT_STICKY : START_STICKY);
 		return START_STICKY;	//sticky for continuous alive
 	}
-	private void adjustLevel(int i, boolean setBrightness)
+	private void adjustLevel(int i, boolean setBrightness, boolean postNotify)
 	{
 		if(i > 500)
 		{
@@ -224,6 +224,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		}
 		else
 		{
+			if(postNotify)
 			postNotification(i/10);
 			mInDimmMode = true;
 		}
@@ -242,7 +243,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 //		adjustLevel(500, false);	// to remove mask
 		int currentBrightness = BrightnessUtil.getBrightness();
 		lastLevel = (int)(((float)currentBrightness)/255*500 + 500);
-		adjustLevel(lastLevel, false);	// to remove mask: adjust to value from System Brightness
+		adjustLevel(lastLevel, false, false);	// to remove mask: adjust to value from System Brightness
 		
 		removeNotification();
 		mInDimmMode = false;
@@ -265,7 +266,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		if(lastLevel > 500)	lastLevel = 500;
 		if(lastLevel < 100)	lastLevel = 100;
 		
-		adjustLevel(lastLevel, true);
+		adjustLevel(lastLevel, true, true);
 		
 		if(lastLevel < 500)
 		{
@@ -295,7 +296,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
 				BrightnessUtil.collectState();
 				int favorvalue = Prefs.getFavorMaskValue();
-				adjustLevel(favorvalue, true);
+				adjustLevel(favorvalue, true, true);
 				lastLevel = favorvalue;
 				sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
 				break;
