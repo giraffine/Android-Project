@@ -1,56 +1,25 @@
 package giraffine.dimmer;
 
-import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
+import android.app.Activity;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
 
-public class SettingsActivity extends PreferenceActivity implements OnPreferenceClickListener{
-	
-	private String PREF_AUTOMODE = "pref_automode";
-	private String PREF_ABOUT = "pref_about";
-	
-	private CheckBoxPreference mPrefAutoMode = null;
+public class SettingsActivity extends Activity{
+
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().hide();
-        addPreferencesFromResource(R.xml.preference);
-        
-        mPrefAutoMode = (CheckBoxPreference)findPreference(PREF_AUTOMODE);
-        mPrefAutoMode.setOnPreferenceClickListener(this);
-        mPrefAutoMode.setChecked(Prefs.isAutoMode());
-        
-        Preference about = findPreference(PREF_ABOUT);
-        try {
-			about.setTitle("Version: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
+
+        if(getActionBar() != null)
+        	getActionBar().hide();
+
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new SettingsFragment())
+                .commit();
     }
-
-
-	@Override
-	public boolean onPreferenceClick(Preference pref) {
-		if(pref.getKey().equalsIgnoreCase(PREF_AUTOMODE))
-		{
-			changeAutoMode(mPrefAutoMode.isChecked());
-			return true;
-		}
-		return false;
-	}
-	public void changeAutoMode(boolean on)
+	
+	public void onPause ()
 	{
-		Intent startServiceIntent = new Intent();
-		startServiceIntent.setComponent(DimmerService.COMPONENT);
-		startServiceIntent.setAction(DimmerService.SWITCHAUTOMODE);
-		startServiceIntent.putExtra(DimmerService.SWITCHAUTOMODE, on);
-        startService(startServiceIntent);
+		super.onPause();
+		finish();
 	}
 }
-
-

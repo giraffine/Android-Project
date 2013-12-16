@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -25,6 +24,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 
 	public static boolean DebugMode = false;
 	public static String PACKAGENAME = "giraffine.dimmer";
+	public static String ACTIONNOTIFICATION = "giraffine.dimmer.Dimmer.action.notification";
 	public static ComponentName COMPONENT = new ComponentName(PACKAGENAME, PACKAGENAME+".DimmerService");
 	public static String ADJUSTLEVEL = "adjustLevel";
 	public static String FINISHLEVEL = "finishLevel";
@@ -32,6 +32,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String STEPLEVELUP = "stepLevelUp";
 	public static String STEPLEVELDOWN = "stepLevelDown";
 	public static String SWITCHAUTOMODE = "switchAutoMode";
+	public static String SWITCHDIM = "switchDim";
 	public static final int MSG_RESET_LEVEL = 0;
 	public static final int MSG_RESET_LEVEL_AUTO = 1;
 	public static final int MSG_RESET_LEVEL_RESTORE = 2;
@@ -79,8 +80,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 
 		if(mNotification == null)
 		{
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			Intent intent = new Intent(ACTIONNOTIFICATION);
 			intent.setClassName(PACKAGENAME, PACKAGENAME+".Dimmer");
 			PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
 			
@@ -216,11 +216,20 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			else if(intent.getAction().equals(SWITCHAUTOMODE))
 			{
 				boolean on = intent.getBooleanExtra(SWITCHAUTOMODE, false);
-				Prefs.setAutoMode(on);
 				if(on)
 					mLightSensor.monitor(true);
 				else
 					mLightSensor.monitor(false);
+			}
+			else if(intent.getAction().equals(SWITCHDIM))
+			{
+				if(mInDimmMode)
+					mHandler.sendEmptyMessage(MSG_RESET_LEVEL_RESTORE);
+				else
+				{
+					mLightSensor.setFreezeLux();
+					mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
+				}
 			}
 		}
 //		Log.e(Dimmer.TAG, "onStartCommand(): " + lastLevel);

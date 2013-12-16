@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -32,8 +31,21 @@ public class Dimmer extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Prefs.init(this);
+		boolean showActivity = !Prefs.getWidgetMode()
+				|| getIntent().getAction().equalsIgnoreCase(DimmerService.ACTIONNOTIFICATION);
+		
+		if(showActivity)
+			setTheme(R.style.AppTheme);
+		else
+			setTheme(android.R.style.Theme_Dialog);
+		
 		setContentView(R.layout.activity_dimmer);
-		getActionBar().hide();
+
+		if(showActivity)
+			getActionBar().hide();
+		
 		mIndex = (TextView)findViewById(R.id.index);
 		mSettings = (ImageButton)findViewById(R.id.settings);
 		mSettings.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +55,7 @@ public class Dimmer extends Activity {
 			}
 		});
 		
-		startDimmerService();
+		startDimmerService(!showActivity);
 		
 		RelativeLayout background = (RelativeLayout)findViewById(R.id.relativelayout);
 		background.setOnTouchListener(new View.OnTouchListener() {
@@ -86,6 +98,9 @@ public class Dimmer extends Activity {
 			}
 		});
 		registerReceiver(mBroadcastReceiver, new IntentFilter(REFRESH_INDEX));
+
+		if(!showActivity)
+			finish();
 	}
 	protected void onDestroy ()
 	{
@@ -96,6 +111,11 @@ public class Dimmer extends Activity {
 	{
 		super.onResume();
 		showIndex(DimmerService.lastLevel);
+	}
+	public void onPause ()
+	{
+		super.onPause();
+		finish();
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,10 +140,12 @@ public class Dimmer extends Activity {
 	{
 		startActivity(new Intent(this, SettingsActivity.class));
 	}
-	public void startDimmerService()
+	public void startDimmerService(boolean switchDim)
 	{
 		Intent startServiceIntent = new Intent();
 		startServiceIntent.setComponent(DimmerService.COMPONENT);
+		if(switchDim)
+			startServiceIntent.setAction(DimmerService.SWITCHDIM);
         startService(startServiceIntent);
 	}
 }
