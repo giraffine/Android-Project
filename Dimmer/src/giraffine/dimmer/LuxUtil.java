@@ -19,7 +19,7 @@ public class LuxUtil {
 	public static String dumpLuxLevel()
 	{
 		String result = "";
-		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).getStringSet("levelSet", null);
+		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet("levelSet", null);
 		if(levelSet != null)
 		{
 			ArrayList<Integer> data = new ArrayList<Integer>();
@@ -33,7 +33,7 @@ public class LuxUtil {
 	}
 	public static boolean isLowestLevel(int level)
 	{
-		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).getStringSet("levelSet", null);
+		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet("levelSet", null);
 		if(levelSet != null)
 		{
 			if(levelSet.size() < 5)	// data is too few to judge lowest
@@ -54,13 +54,15 @@ public class LuxUtil {
 		levelExist(level);
 		
 		// maybe no need the total lux statistics
+/*		// this will cause app ANR on Galaxy S3
 		int count = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).getInt(String.valueOf(level), 0);
 		count++;
 		mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).edit().putInt(String.valueOf(level), count).commit();
+*/		
 	}
 	private static boolean levelExist(int level)
 	{
-		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).getStringSet("levelSet", null);
+		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet("levelSet", null);
 		if(levelSet == null)
 		{
 			levelSet = new TreeSet<String>();

@@ -15,6 +15,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	public static final int MSG_ENTER_DARKLIGHT = 1 + MSG_BASE;
 	public static final int MSG_LEAVE_DARKLIGHT = 2 + MSG_BASE;
 	public static final int MSG_ENSURE_COVERED = 3 + MSG_BASE;
+	public static final int MSG_SENSOR_INPUT = 4 + MSG_BASE;
 	
 	private Context mContext;
 	private SensorManager mSensorManager;
@@ -66,29 +67,8 @@ public class LightSensor implements ProximitySensor.EventCallback{
 				@Override
 				public void onSensorChanged(SensorEvent arg0) {
 					Log.e(Dimmer.TAG, "onSensorChanged: " + arg0.values[0]);
-					mCurrentLux = (int)arg0.values[0];
-					mEventCallback.onLightChanged();
-					LuxUtil.setLuxLevel(mCurrentLux);
-					
-					// need include proximity sensor to avoid cover situation
-					if(LuxUtil.isLowestLevel(mCurrentLux))
-					{
-						mProximitySensor.monitor(true);
-						mHandler.sendEmptyMessageDelayed(MSG_ENTER_DARKLIGHT, 5000);
-					}
-					else
-					{
-						mProximitySensor.monitor(false);
-						mHandler.removeMessages(MSG_ENTER_DARKLIGHT);
-					}
-					
-					if(mCurrentLux > mFreezeLux*2)
-					{
-						if(!mHandler.hasMessages(MSG_LEAVE_DARKLIGHT))
-							mHandler.sendEmptyMessageDelayed(MSG_LEAVE_DARKLIGHT, 2000);
-					}
-					else
-						mHandler.removeMessages(MSG_LEAVE_DARKLIGHT);
+					mHandler.removeMessages(MSG_SENSOR_INPUT);
+					mHandler.sendMessage(mHandler.obtainMessage(MSG_SENSOR_INPUT, (int)arg0.values[0], 0));
 				}
 	        };
         if(isOn)
@@ -105,10 +85,38 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	{
 		mFreezeLux = mCurrentLux;
 	}
-	
+	private void sensorInput(int lux)
+	{
+		mCurrentLux = lux;
+		mEventCallback.onLightChanged();
+		LuxUtil.setLuxLevel(mCurrentLux);
+		
+		// need include proximity sensor to avoid cover situation
+		if(LuxUtil.isLowestLevel(mCurrentLux))
+		{
+			mProximitySensor.monitor(true);
+			mHandler.sendEmptyMessageDelayed(MSG_ENTER_DARKLIGHT, 5000);
+		}
+		else
+		{
+			mProximitySensor.monitor(false);
+			mHandler.removeMessages(MSG_ENTER_DARKLIGHT);
+		}
+		
+		if(mCurrentLux > mFreezeLux*2)
+		{
+			if(!mHandler.hasMessages(MSG_LEAVE_DARKLIGHT))
+				mHandler.sendEmptyMessageDelayed(MSG_LEAVE_DARKLIGHT, 2000);
+		}
+		else
+			mHandler.removeMessages(MSG_LEAVE_DARKLIGHT);
+	}
 	private Handler mHandler = new Handler(){
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
+			case MSG_SENSOR_INPUT:
+				sensorInput(msg.arg1);
+				break;
 			case MSG_ENTER_DARKLIGHT:
 				mProximitySensor.monitor(false);
 				mEventCallback.onEnterDarkLight();
