@@ -189,8 +189,6 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				int i = intent.getIntExtra(FINISHLEVEL, DEFAULTLEVEL);
 				adjustLevel(intent.getIntExtra(FINISHLEVEL, DEFAULTLEVEL), true, true);
 				lastLevel = i;
-				mHandler.removeMessages(MSG_RESET_ACTING);
-				mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
 
 				if(lastLevel < 500)
 				{
@@ -248,17 +246,19 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			postNotification(i/10);
 			mInDimmMode = true;
 		}
+		if(setBrightness)
+			triggerActingSession();
 		mMask.adjustLevel(i, setBrightness);
 	}
 	public void resetLevel(boolean restoreBrighnessState)
 	{
 		Log.e(Dimmer.TAG, "resetLevel() lastLevel: " + lastLevel);
-		mActing = true;
-		mHandler.removeMessages(MSG_RESET_ACTING);
-		mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
 
 		if(restoreBrighnessState)
+		{
+			triggerActingSession();
 			BrightnessUtil.restoreState();
+		}
 
 		int currentBrightness = BrightnessUtil.getBrightness();
 		lastLevel = (int)(((float)currentBrightness)/255*500 + 500);
@@ -273,9 +273,6 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public void stepLevel(boolean darker)
 	{
 		Log.e(Dimmer.TAG, "stepLevel() lastLevel: " + lastLevel + ", darker=" + darker);
-		mActing = true;
-		mHandler.removeMessages(MSG_RESET_ACTING);
-		mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
 
 		int step = 50;
 		if(darker)
@@ -307,9 +304,6 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				 mActing = false;
 				 break;
 			case MSG_ENTER_DIMM:
-				mActing = true;
-				mHandler.removeMessages(MSG_RESET_ACTING);
-				mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
 				BrightnessUtil.collectState();
 				int favorvalue = Prefs.getFavorMaskValue();
 				adjustLevel(favorvalue, true, true);
@@ -319,5 +313,10 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			 }
 		}
 	};
-
+	public void triggerActingSession()
+	{
+		mActing = true;
+		mHandler.removeMessages(MSG_RESET_ACTING);
+		mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
+	}
 }
