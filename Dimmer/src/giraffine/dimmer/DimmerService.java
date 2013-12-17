@@ -34,8 +34,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String SWITCHAUTOMODE = "switchAutoMode";
 	public static String SWITCHDIM = "switchDim";
 	public static final int MSG_RESET_LEVEL = 0;
-	public static final int MSG_RESET_LEVEL_AUTO = 1;
-	public static final int MSG_RESET_LEVEL_RESTORE = 2;
+	public static final int MSG_RESET_LEVEL_RESTORE = 1;
 	public static final int MSG_RESET_ACTING = 3;
 	public static final int MSG_ENTER_DIMM = 4;
 	public static final int DEFAULTLEVEL = 1000;
@@ -125,7 +124,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
         	public void onChange(boolean selfChange)
         	{
         		if(mActing == false)
-    				mHandler.sendEmptyMessage(MSG_RESET_LEVEL_AUTO);
+    				mHandler.sendEmptyMessage(MSG_RESET_LEVEL);
         		return;
         	}
         });
@@ -251,7 +250,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		}
 		mMask.adjustLevel(i, setBrightness);
 	}
-	public void resetLevel(boolean restoreBrighnessState, boolean forceAuto)
+	public void resetLevel(boolean restoreBrighnessState)
 	{
 		Log.e(Dimmer.TAG, "resetLevel() lastLevel: " + lastLevel);
 		mActing = true;
@@ -259,12 +258,11 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
 
 		if(restoreBrighnessState)
-			BrightnessUtil.restoreState(forceAuto);
+			BrightnessUtil.restoreState();
 
-//		adjustLevel(500, false);	// to remove mask
 		int currentBrightness = BrightnessUtil.getBrightness();
 		lastLevel = (int)(((float)currentBrightness)/255*500 + 500);
-		adjustLevel(lastLevel, false, false);	// to remove mask: adjust to value from System Brightness
+		mMask.removeMask();
 		
 		removeNotification();
 		mInDimmMode = false;
@@ -300,13 +298,10 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		public void handleMessage(Message msg) {
 			 switch (msg.what) {
 			 case MSG_RESET_LEVEL:
-				resetLevel(false, false);
-				break;
-			 case MSG_RESET_LEVEL_AUTO:
-				resetLevel(false, true);
+				resetLevel(false);
 				break;
 			 case MSG_RESET_LEVEL_RESTORE:
-				resetLevel(true, false);
+				resetLevel(true);
 				 break;
 			 case MSG_RESET_ACTING:
 				 mActing = false;

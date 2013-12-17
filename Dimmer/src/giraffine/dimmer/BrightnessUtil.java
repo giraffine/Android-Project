@@ -38,9 +38,9 @@ public class BrightnessUtil {
 		mAutoState = getAutoBrightness();
 		mLevelState = getBrightness();
 	}
-	public static void restoreState(boolean forceAuto)
+	public static void restoreState()
 	{
 		setBrightness(mLevelState);
-		setAutoBrightness(forceAuto || mAutoState == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+		setAutoBrightness(mAutoState == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 	}
 }

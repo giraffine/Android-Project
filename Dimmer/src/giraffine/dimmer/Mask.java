@@ -29,7 +29,7 @@ public class Mask {
 		mWindowParams.flags |= 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE 
 			| WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS 
-			| WindowManager.LayoutParams.FLAG_FULLSCREEN
+			| WindowManager.LayoutParams.FLAG_FULLSCREEN	// remove to keep status bar out of mask
 			| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
 			| WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
 			| WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
@@ -69,6 +69,15 @@ public class Mask {
 			i = 500 - i;
 			adjustMask(((float)i/500));
 		}
+	}
+	public void removeMask()
+	{
+		Log.e(Dimmer.TAG, "removeMask");
+		mWindowParams.width = 1;	// reduce memory usage
+		mWindowParams.height = 1;	// reduce memory usage
+		mWindowParams.screenBrightness = -1;	// use the system preferred screen brightness
+		mWindowParams.alpha = 0;
+		mWindowManager.updateViewLayout(mMaskView, mWindowParams);
 	}
 	private void maskBrightness(float value)
 	{
