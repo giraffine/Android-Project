@@ -12,6 +12,7 @@ public class Prefs {
 	private static String FAVORMASKVALUE = "favormaskvalue";
 	private static String PROXIMITYMAX = "proximitymax";
 	private static String PROXIMITYMIN = "proximitymin";
+	private static String PREF_COMPATIBLE = "pref_compatible";
 	
 	public static String PREF_AUTOMODE = "pref_automode";
 	public static String PREF_WIDGETMODE = "pref_widgetmode";
@@ -27,15 +28,19 @@ public class Prefs {
 		mPrefer = PreferenceManager.getDefaultSharedPreferences(mContext);
 
 		// backward compatible
-		SharedPreferences prefer = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE);
-		if(prefer.contains(AUTOMODE))
-			mPrefer.edit().putBoolean(AUTOMODE, prefer.getBoolean(AUTOMODE, false)).commit();
-		if(prefer.contains(FAVORMASKVALUE))
-			mPrefer.edit().putInt(FAVORMASKVALUE, prefer.getInt(FAVORMASKVALUE, 250)).commit();
-		if(prefer.contains(PROXIMITYMAX))
-			mPrefer.edit().putFloat(PROXIMITYMAX, prefer.getFloat(PROXIMITYMAX, ProximitySensor.DEFAULT_DISTANCE)).commit();
-		if(prefer.contains(PROXIMITYMIN))
-			mPrefer.edit().putFloat(PROXIMITYMIN, prefer.getFloat(PROXIMITYMIN, ProximitySensor.DEFAULT_DISTANCE)).commit();
+		if(!mPrefer.getBoolean(PREF_COMPATIBLE, false))
+		{
+			SharedPreferences prefer = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE);
+			if(prefer.contains(AUTOMODE))
+				mPrefer.edit().putBoolean(AUTOMODE, prefer.getBoolean(AUTOMODE, false)).commit();
+			if(prefer.contains(FAVORMASKVALUE))
+				mPrefer.edit().putInt(FAVORMASKVALUE, prefer.getInt(FAVORMASKVALUE, 250)).commit();
+			if(prefer.contains(PROXIMITYMAX))
+				mPrefer.edit().putFloat(PROXIMITYMAX, prefer.getFloat(PROXIMITYMAX, ProximitySensor.DEFAULT_DISTANCE)).commit();
+			if(prefer.contains(PROXIMITYMIN))
+				mPrefer.edit().putFloat(PROXIMITYMIN, prefer.getFloat(PROXIMITYMIN, ProximitySensor.DEFAULT_DISTANCE)).commit();
+			mPrefer.edit().putBoolean(PREF_COMPATIBLE, true).commit();
+		}
 	}
 	
 	public static boolean isAutoMode()
