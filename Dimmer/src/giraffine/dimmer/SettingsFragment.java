@@ -7,10 +7,12 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
+import android.widget.Toast;
 
 public class SettingsFragment extends PreferenceFragment implements OnPreferenceClickListener{
 	
 	private CheckBoxPreference mPrefAutoMode = null;
+	private CheckBoxPreference mPrefWidgetMode = null;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,9 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         
         mPrefAutoMode = (CheckBoxPreference)findPreference(Prefs.PREF_AUTOMODE);
         mPrefAutoMode.setOnPreferenceClickListener(this);
+        
+        mPrefWidgetMode = (CheckBoxPreference)findPreference(Prefs.PREF_WIDGETMODE);
+        mPrefWidgetMode.setOnPreferenceClickListener(this);
 
         Preference about = findPreference(Prefs.PREF_ABOUT);
         try {
@@ -34,6 +39,11 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		{
 			changeAutoMode(mPrefAutoMode.isChecked());
 			return true;
+		}
+		else if(pref.getKey().equalsIgnoreCase(Prefs.PREF_WIDGETMODE))
+		{
+			if(mPrefWidgetMode.isChecked())
+				Toast.makeText(getActivity(), R.string.pref_widget_hint, Toast.LENGTH_LONG).show();
 		}
 		return false;
 	}

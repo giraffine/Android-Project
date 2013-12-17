@@ -9,6 +9,7 @@
 	<string name="pref_auto_title">Auto Mode</string>
 	<string name="pref_auto_summary">Automatically dim and brighten as environment.</string>
 	<string name="pref_widget_title">Widget Mode</string>
-	<string name="pref_widget_summary">One click to switch dim and bright.</string>
+	<string name="pref_widget_summary">One click icon to switch dim and bright.</string>
+	<string name="pref_widget_hint">You can click notification to enter app.</string>
     
 </resources>
