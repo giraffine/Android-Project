@@ -1,6 +1,7 @@
 package giraffine.dimmer;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,24 +26,24 @@ public class Mask {
 		mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 		mWindowParams = new WindowManager.LayoutParams();
 
-		mWindowParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
+		mWindowParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;	// use _OVELAY not _ERROR can cover KK navigationbar
 		mWindowParams.flags |= 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE 
-			| WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS 
-			| WindowManager.LayoutParams.FLAG_FULLSCREEN	// remove to keep status bar out of mask
-			| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-			| WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
-			| WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-			| WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE 
+				| WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS 
+				| WindowManager.LayoutParams.FLAG_FULLSCREEN	// remove to keep status bar out of mask
+				| WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+				| WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+				| WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+				| WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
 		mWindowParams.gravity = Gravity.LEFT | Gravity.TOP;
 		Point p = new Point();
 		mWindowManager.getDefaultDisplay().getSize(p);
 		mWindowParams.x = 0;
 		mWindowParams.y = 0;
 		maskLength = ( p.x > p.y ? p.x : p.y) +300;
-		mWindowParams.width = maskLength;
-		mWindowParams.height = maskLength;
-		mWindowParams.format = 1;
+		mWindowParams.width = 1;
+		mWindowParams.height = 1;
+		mWindowParams.format = PixelFormat.TRANSLUCENT;
 		mWindowParams.alpha = (float)0;	// default is transparent
 
 		LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -86,7 +87,7 @@ public class Mask {
 		mWindowParams.width = 1;	// reduce memory usage
 		mWindowParams.height = 1;	// reduce memory usage
 		mWindowParams.screenBrightness = value;
-		if(mWindowParams.alpha != 0)	mWindowParams.alpha = 0;
+		mWindowParams.alpha = 0;
 		mWindowManager.updateViewLayout(mMaskView, mWindowParams);
 	}
 	private void adjustMask(float alpha)
