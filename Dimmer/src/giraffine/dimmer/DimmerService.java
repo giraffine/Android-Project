@@ -44,15 +44,13 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	private Notification mNotification;
 	private RemoteViews mNotiRemoteView = null;
 	private Mask mMask = null;
-	private boolean mInDimmMode = false;
+	private boolean mInDimMode = false;
 	private LightSensor mLightSensor = null;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return null;
 	}
-
-	
 	public void postNotification(int levelHint)
 	{
 		
@@ -163,7 +161,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	@Override
 	public void onEnterDarkLight() {
 //		Log.e(Dimmer.TAG, "onDarkLight() mIsAutoMode=" + Prefs.isAutoMode() + ", mInDimmMode=" + mInDimmMode);
-		if(!Prefs.isAutoMode() || mInDimmMode)	return;
+		if(!Prefs.isAutoMode() || getDimMode())	return;
 		mLightSensor.setFreezeLux();
 		mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
 	}
@@ -171,7 +169,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	@Override
 	public void onLeaveDarkLight() {
 //		Log.e(Dimmer.TAG, "onOverDarkLight() mIsAutoMode=" + Prefs.isAutoMode() + ", mInDimmMode=" + mInDimmMode);
-		if(!Prefs.isAutoMode() || !mInDimmMode)	return;
+		if(!Prefs.isAutoMode() || !getDimMode())	return;
 		mHandler.sendEmptyMessage(MSG_RESET_LEVEL_RESTORE);
 	}
 	@Override
@@ -220,7 +218,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			}
 			else if(intent.getAction().equals(SWITCHDIM))
 			{
-				if(mInDimmMode)
+				if(getDimMode())
 					mHandler.sendEmptyMessage(MSG_RESET_LEVEL_RESTORE);
 				else
 				{
@@ -238,13 +236,13 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		if(i > 500)
 		{
 			removeNotification();
-			mInDimmMode = false;
+			setDimMode(false);
 		}
 		else
 		{
 			if(postNotify)
 			postNotification(i/10);
-			mInDimmMode = true;
+			setDimMode(true);
 		}
 		if(setBrightness)
 			triggerActingSession();
@@ -265,7 +263,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		mMask.removeMask();
 		
 		removeNotification();
-		mInDimmMode = false;
+		setDimMode(false);
 		sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
 //		stopSelf();
 //		Process.killProcess(Process.myPid());
@@ -318,5 +316,14 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		mActing = true;
 		mHandler.removeMessages(MSG_RESET_ACTING);
 		mHandler.sendEmptyMessageDelayed(MSG_RESET_ACTING, 1000);
+	}
+	private void setDimMode(boolean dim)
+	{
+		mInDimMode = dim;
+		mLightSensor.setDimState(dim);
+	}
+	private boolean getDimMode()
+	{
+		return mInDimMode;
 	}
 }

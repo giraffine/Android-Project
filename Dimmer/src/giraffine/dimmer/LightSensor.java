@@ -25,6 +25,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	private int mFreezeLux = 9999999;
 	private EventCallback mEventCallback = null;
 	private ProximitySensor mProximitySensor = null;
+	private boolean mDimState = false;
 	
 	interface EventCallback
 	{
@@ -53,7 +54,13 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	public boolean monitor(boolean isOn)
 	{
 		if(!isOn)
+		{
 			mProximitySensor.monitor(false);
+			mHandler.removeMessages(MSG_ENTER_DARKLIGHT);
+			mHandler.removeMessages(MSG_LEAVE_DARKLIGHT);
+			mHandler.removeMessages(MSG_ENSURE_COVERED);
+			mHandler.removeMessages(MSG_SENSOR_INPUT);
+		}
 		
 	    if(mSensorManager == null || mSensorLight == null)
 	    	return false;
@@ -85,31 +92,43 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	{
 		mFreezeLux = mCurrentLux;
 	}
+	public void setDimState(boolean dim)
+	{
+		mDimState = dim;
+	}
 	private void sensorInput(int lux)
 	{
 		mCurrentLux = lux;
 		mEventCallback.onLightChanged();
 		LuxUtil.setLuxLevel(mCurrentLux);
 		
-		// need include proximity sensor to avoid cover situation
-		if(LuxUtil.isLowestLevel(mCurrentLux))
+//		Log.e(Dimmer.TAG, "sensorInput: " + LuxUtil.dumpLuxLevel());
+		
+		if(!mDimState)
 		{
-			mProximitySensor.monitor(true);
-			mHandler.sendEmptyMessageDelayed(MSG_ENTER_DARKLIGHT, 5000);
+			// need include proximity sensor to avoid cover situation
+			if(LuxUtil.isLowestLevel(mCurrentLux))
+			{
+				mProximitySensor.monitor(true);
+				mHandler.sendEmptyMessageDelayed(MSG_ENTER_DARKLIGHT, 5000);
+			}
+			else
+			{
+				mProximitySensor.monitor(false);
+				mHandler.removeMessages(MSG_ENTER_DARKLIGHT);
+			}
 		}
 		else
 		{
 			mProximitySensor.monitor(false);
-			mHandler.removeMessages(MSG_ENTER_DARKLIGHT);
+			if(mCurrentLux > mFreezeLux*2)
+			{
+				if(!mHandler.hasMessages(MSG_LEAVE_DARKLIGHT))
+					mHandler.sendEmptyMessageDelayed(MSG_LEAVE_DARKLIGHT, 2000);
+			}
+			else
+				mHandler.removeMessages(MSG_LEAVE_DARKLIGHT);
 		}
-		
-		if(mCurrentLux > mFreezeLux*2)
-		{
-			if(!mHandler.hasMessages(MSG_LEAVE_DARKLIGHT))
-				mHandler.sendEmptyMessageDelayed(MSG_LEAVE_DARKLIGHT, 2000);
-		}
-		else
-			mHandler.removeMessages(MSG_LEAVE_DARKLIGHT);
 	}
 	private Handler mHandler = new Handler(){
 		public void handleMessage(Message msg) {
@@ -122,6 +141,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 				mEventCallback.onEnterDarkLight();
 				break;
 			case MSG_LEAVE_DARKLIGHT:
+				mProximitySensor.monitor(false);
 				mEventCallback.onLeaveDarkLight();
 				break;
 			case MSG_ENSURE_COVERED:
