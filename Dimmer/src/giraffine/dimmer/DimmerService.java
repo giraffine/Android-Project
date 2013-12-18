@@ -33,6 +33,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String STEPLEVELDOWN = "stepLevelDown";
 	public static String SWITCHAUTOMODE = "switchAutoMode";
 	public static String SWITCHDIM = "switchDim";
+	public static String SENSITIVECHANGE = "sensitiveChange";
 	public static final int MSG_RESET_LEVEL = 0;
 	public static final int MSG_RESET_LEVEL_RESTORE = 1;
 	public static final int MSG_RESET_ACTING = 3;
@@ -226,6 +227,10 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 					mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
 				}
 			}
+			else if(intent.getAction().equals(SENSITIVECHANGE))
+			{
+				mLightSensor.updateSensitive();
+			}
 		}
 //		Log.e(Dimmer.TAG, "onStartCommand(): " + lastLevel);
 //		return Prefs.isAutoMode() ? START_STICKY : (lastLevel>500 ? START_NOT_STICKY : START_STICKY);
@@ -251,7 +256,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public void resetLevel(boolean restoreBrighnessState)
 	{
 		Log.e(Dimmer.TAG, "resetLevel() lastLevel: " + lastLevel);
-
+		
 		if(restoreBrighnessState)
 		{
 			triggerActingSession();

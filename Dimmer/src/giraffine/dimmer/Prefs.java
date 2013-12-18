@@ -15,6 +15,8 @@ public class Prefs {
 	private static String PREF_COMPATIBLE = "pref_compatible";
 	
 	public static String PREF_AUTOMODE = "pref_automode";
+	public static String PREF_SENSITIVE_ON = "pref_sensitive_on";
+	public static String PREF_SENSITIVE_OFF = "pref_sensitive_off";
 	public static String PREF_WIDGETMODE = "pref_widgetmode";
 	public static String PREF_ABOUT = "pref_about";
 
@@ -51,6 +53,10 @@ public class Prefs {
 	{
 		mPrefer.edit().putBoolean(PREF_AUTOMODE, isON).commit();
 	}
+	public static int getSensitive(String key)
+	{
+		return Integer.valueOf(mPrefer.getString(key, "3"));
+	}
 	public static boolean getWidgetMode()
 	{
 		return mPrefer.getBoolean(PREF_WIDGETMODE, false);
@@ -71,4 +77,5 @@ public class Prefs {
 	{
 		mPrefer.edit().putFloat(isMax ? PROXIMITYMAX : PROXIMITYMIN, value).commit();
 	}
+	
 }

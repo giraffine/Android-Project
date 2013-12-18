@@ -11,11 +11,11 @@ import android.util.Log;
 
 public class LightSensor implements ProximitySensor.EventCallback{
 
-	public static final int MSG_BASE = 100;
-	public static final int MSG_ENTER_DARKLIGHT = 1 + MSG_BASE;
-	public static final int MSG_LEAVE_DARKLIGHT = 2 + MSG_BASE;
-	public static final int MSG_ENSURE_COVERED = 3 + MSG_BASE;
-	public static final int MSG_SENSOR_INPUT = 4 + MSG_BASE;
+	private static final int MSG_BASE = 100;
+	private static final int MSG_ENTER_DARKLIGHT = 1 + MSG_BASE;
+	private static final int MSG_LEAVE_DARKLIGHT = 2 + MSG_BASE;
+	private static final int MSG_ENSURE_COVERED = 3 + MSG_BASE;
+	private static final int MSG_SENSOR_INPUT = 4 + MSG_BASE;
 	
 	private Context mContext;
 	private SensorManager mSensorManager;
@@ -26,6 +26,9 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	private EventCallback mEventCallback = null;
 	private ProximitySensor mProximitySensor = null;
 	private boolean mDimState = false;
+	private int mDelayEnterDark = 5000;
+	private int mDelayLeaveDark = 2000;
+	private int mDelayCheckCover = 3000;
 	
 	interface EventCallback
 	{
@@ -43,6 +46,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 		if(mSensorManager != null)
 			mSensorLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 		mEventCallback = eventcallback;
+		updateSensitive();
 	}
 	public boolean hasLightSensor()
 	{
@@ -96,6 +100,26 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	{
 		mDimState = dim;
 	}
+	public void updateSensitive()
+	{
+		switch(Prefs.getSensitive(Prefs.PREF_SENSITIVE_ON))
+		{
+		case 1:	mDelayEnterDark = 1000;	break;
+		case 2:	mDelayEnterDark = 3000;	break;
+		case 3:	mDelayEnterDark = 5000;	break;
+		case 4:	mDelayEnterDark = 7000;	break;
+		case 5:	mDelayEnterDark = 10000;break;
+		}
+		switch(Prefs.getSensitive(Prefs.PREF_SENSITIVE_OFF))
+		{
+		case 1:	mDelayLeaveDark = 500;	break;
+		case 2:	mDelayLeaveDark = 1000;	break;
+		case 3:	mDelayLeaveDark = 2000;	break;
+		case 4:	mDelayLeaveDark = 5000;	break;
+		case 5:	mDelayLeaveDark = 10000;break;
+		}
+		mDelayCheckCover = (int)(mDelayEnterDark * 0.6);
+	}
 	private void sensorInput(int lux)
 	{
 		mCurrentLux = lux;
@@ -110,7 +134,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 			if(LuxUtil.isLowestLevel(mCurrentLux))
 			{
 				mProximitySensor.monitor(true);
-				mHandler.sendEmptyMessageDelayed(MSG_ENTER_DARKLIGHT, 5000);
+				mHandler.sendEmptyMessageDelayed(MSG_ENTER_DARKLIGHT, mDelayEnterDark);
 			}
 			else
 			{
@@ -124,7 +148,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 			if(mCurrentLux > mFreezeLux*2)
 			{
 				if(!mHandler.hasMessages(MSG_LEAVE_DARKLIGHT))
-					mHandler.sendEmptyMessageDelayed(MSG_LEAVE_DARKLIGHT, 2000);
+					mHandler.sendEmptyMessageDelayed(MSG_LEAVE_DARKLIGHT, mDelayLeaveDark);
 			}
 			else
 				mHandler.removeMessages(MSG_LEAVE_DARKLIGHT);
@@ -153,7 +177,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	};
 	@Override
 	public void onNear() {
-		mHandler.sendEmptyMessageDelayed(MSG_ENSURE_COVERED, 3000);
+		mHandler.sendEmptyMessageDelayed(MSG_ENSURE_COVERED, mDelayCheckCover);
 	}
 	@Override
 	public void onFar() {
