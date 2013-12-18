@@ -2,6 +2,7 @@ package giraffine.dimmer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -12,6 +13,16 @@ public class LuxUtil {
 
 	private static Context mContext;
 	private static String PREFER = "LuxLevel";
+	private static String LEVELSET = "levelSet";
+	private static Set<String> mLevelSet = null;
+	private static Comparator<String> mComparator = new Comparator<String>()
+			{
+				@Override
+				public int compare(String a, String b) {
+					return Integer.valueOf(a) - Integer.valueOf(b); 
+				}
+			};
+
 	public static void init(Context context)
 	{
 		mContext = context;
@@ -19,32 +30,28 @@ public class LuxUtil {
 	public static String dumpLuxLevel()
 	{
 		String result = "";
-		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet("levelSet", null);
-		if(levelSet != null)
+		if(mLevelSet == null)
+			mLevelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
+		if(mLevelSet != null)
 		{
-			ArrayList<Integer> data = new ArrayList<Integer>();
-			Iterator<String> it = levelSet.iterator();
-			while(it.hasNext())
-				data.add(Integer.valueOf(it.next()));
-			Collections.sort(data);
-			result = data.toString();
+			ArrayList<String> array = Collections.list(Collections.enumeration(mLevelSet));
+			Collections.sort(array, mComparator);
+			result = array.toString();
 		}
 		return result;
 	}
 	public static boolean isLowestLevel(int level)
 	{
-		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet("levelSet", null);
-		if(levelSet != null)
+		if(mLevelSet == null)
+			mLevelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
+		if(mLevelSet != null)
 		{
-			if(levelSet.size() < 5)	// data is too few to judge lowest
+			if(mLevelSet.size() < 5)	// data is too few to judge lowest
 				return false;
-			ArrayList<Integer> data = new ArrayList<Integer>();
-			Iterator<String> it = levelSet.iterator();
-			while(it.hasNext())
-				data.add(Integer.valueOf(it.next()));
-			Collections.sort(data);
+			ArrayList<String> array = Collections.list(Collections.enumeration(mLevelSet));
+			Collections.sort(array, mComparator);
 			// TODO: may need check statistics to ensure the level is true lowest and not false alarm.
-			if(level <= data.get(0))
+			if(level <= Integer.valueOf(array.get(0)))
 				return true;
 		}
 		return false;
@@ -62,20 +69,21 @@ public class LuxUtil {
 	}
 	private static boolean levelExist(int level)
 	{
-		Set<String> levelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet("levelSet", null);
-		if(levelSet == null)
+		if(mLevelSet == null)
+			mLevelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
+		if(mLevelSet == null)
 		{
-			levelSet = new TreeSet<String>();
-			levelSet.add(String.valueOf(level));
-			mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).edit().putStringSet("levelSet", levelSet).commit();
+			mLevelSet = new TreeSet<String>();
+			mLevelSet.add(String.valueOf(level));
+			mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).edit().putStringSet(LEVELSET, mLevelSet).commit();
 			return false;
 		}
-		if(levelSet.contains(String.valueOf(level)))
+		if(mLevelSet.contains(String.valueOf(level)))
 				return true;
 		else
 		{
-			levelSet.add(String.valueOf(level));
-			mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).edit().putStringSet("levelSet", levelSet).commit();
+			mLevelSet.add(String.valueOf(level));
+			mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).edit().putStringSet(LEVELSET, mLevelSet).commit();
 		}
 		return false;
 	}
