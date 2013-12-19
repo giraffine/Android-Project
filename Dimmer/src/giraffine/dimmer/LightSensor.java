@@ -32,7 +32,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	
 	interface EventCallback
 	{
-		public void onLightChanged();
+		public void onLightChanged(int lux);
 		public void onEnterDarkLight();
 		public void onLeaveDarkLight();
 	}
@@ -120,10 +120,17 @@ public class LightSensor implements ProximitySensor.EventCallback{
 		}
 		mDelayCheckCover = (int)(mDelayEnterDark * 0.6);
 	}
+	private boolean meetDarkThreshold(int lux)
+	{
+		if(Prefs.getTriggerLowest())
+			return LuxUtil.isLowestLevel(lux);
+		else
+			return lux <= Prefs.getTriggerValue();
+	}
 	private void sensorInput(int lux)
 	{
 		mCurrentLux = lux;
-		mEventCallback.onLightChanged();
+		mEventCallback.onLightChanged(lux);
 		LuxUtil.setLuxLevel(mCurrentLux);
 		
 //		Log.e(Dimmer.TAG, "sensorInput: " + LuxUtil.dumpLuxLevel());
@@ -131,7 +138,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 		if(!mDimState)
 		{
 			// need include proximity sensor to avoid cover situation
-			if(LuxUtil.isLowestLevel(mCurrentLux))
+			if(meetDarkThreshold(mCurrentLux))
 			{
 				mProximitySensor.monitor(true);
 				mHandler.sendEmptyMessageDelayed(MSG_ENTER_DARKLIGHT, mDelayEnterDark);

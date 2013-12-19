@@ -15,6 +15,8 @@ public class Prefs {
 	private static String PREF_COMPATIBLE = "pref_compatible";
 	
 	public static String PREF_AUTOMODE = "pref_automode";
+	public static String PREF_TRIGGER = "pref_trigger";
+	public static String PREF_TRIGGER_LOWEST = "pref_trigger_lowest";
 	public static String PREF_SENSITIVE_ON = "pref_sensitive_on";
 	public static String PREF_SENSITIVE_OFF = "pref_sensitive_off";
 	public static String PREF_WIDGETMODE = "pref_widgetmode";
@@ -77,5 +79,20 @@ public class Prefs {
 	{
 		mPrefer.edit().putFloat(isMax ? PROXIMITYMAX : PROXIMITYMIN, value).commit();
 	}
-	
+	public static int getTriggerValue()
+	{
+		return mPrefer.getInt(PREF_TRIGGER, 0);
+	}
+	public static void setTriggerValue(int value)
+	{
+		mPrefer.edit().putInt(PREF_TRIGGER, value).commit();
+	}
+	public static boolean getTriggerLowest()
+	{
+		return mPrefer.getBoolean(PREF_TRIGGER_LOWEST, true);
+	}
+	public static void setTriggerLowest(boolean yes)
+	{
+		mPrefer.edit().putBoolean(PREF_TRIGGER_LOWEST, yes).commit();
+	}
 }

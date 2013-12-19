@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.graphics.Point;
 
 public class LuxUtil {
 
@@ -53,6 +54,20 @@ public class LuxUtil {
 			// TODO: may need check statistics to ensure the level is true lowest and not false alarm.
 			if(level <= Integer.valueOf(array.get(0)))
 				return true;
+		}
+		return false;
+	}
+	public static boolean getBoundaryLevel(Point bound)
+	{
+		if(mLevelSet == null)
+			mLevelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
+		if(mLevelSet != null)
+		{
+			ArrayList<String> array = Collections.list(Collections.enumeration(mLevelSet));
+			Collections.sort(array, mComparator);
+			bound.x = Integer.valueOf(array.get(0));
+			bound.y = Integer.valueOf(array.get(array.size()-1));
+			return true;
 		}
 		return false;
 	}

@@ -7,6 +7,13 @@
         android:title="@string/pref_auto_title"
         android:summary="@string/pref_auto_summary"
         android:defaultValue="false" />
+	<giraffine.dimmer.DialogTrigger
+        android:key="pref_trigger"
+        android:title="Threshold to enter dim"
+        android:summary=""
+        android:positiveButtonText="ok" 
+        android:negativeButtonText="cancel" 
+        />
     <ListPreference 
         android:key="pref_sensitive_on"
         android:title="@string/pref_sensitive_on_title"

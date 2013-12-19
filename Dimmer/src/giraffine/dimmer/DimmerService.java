@@ -156,8 +156,9 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 60000, pi);
 	}
 	@Override
-	public void onLightChanged() {
+	public void onLightChanged(int lux) {
 		if(DebugMode)	postNotification(lastLevel/10);
+		sendBroadcast(new Intent(DialogTrigger.REFRESH_LUX).putExtra("lux", lux));
 	}
 	@Override
 	public void onEnterDarkLight() {

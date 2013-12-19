@@ -17,6 +17,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	private CheckBoxPreference mPrefWidgetMode = null;
 	private ListPreference mPrefSensitiveOn = null;
 	private ListPreference mPrefSensitiveOff = null;
+	private Preference mPrefTrigger = null;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         mPrefSensitiveOff = (ListPreference)findPreference(Prefs.PREF_SENSITIVE_OFF);
         mPrefSensitiveOff.setOnPreferenceChangeListener(this);
         
+        mPrefTrigger = findPreference(Prefs.PREF_TRIGGER);
+        
         updateSettings();
         
         Preference about = findPreference(Prefs.PREF_ABOUT);
@@ -49,6 +52,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		if(pref.getKey().equalsIgnoreCase(Prefs.PREF_AUTOMODE))
 		{
 			changeAutoMode(mPrefAutoMode.isChecked());
+			mPrefTrigger.setEnabled(mPrefAutoMode.isChecked());
 			mPrefSensitiveOn.setEnabled(mPrefAutoMode.isChecked());
 			mPrefSensitiveOff.setEnabled(mPrefAutoMode.isChecked());
 			return true;
@@ -96,6 +100,9 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	}
 	public void updateSettings()
 	{
+		mPrefTrigger.setEnabled(mPrefAutoMode.isChecked());
+		mPrefTrigger.setSummary(Prefs.getTriggerLowest() ? "Detect lowest ambient light" :
+			"Ambient light < "+ Prefs.getTriggerValue() + " lux" );
 		mPrefSensitiveOn.setEnabled(mPrefAutoMode.isChecked());
 		mPrefSensitiveOff.setEnabled(mPrefAutoMode.isChecked());
 		mPrefSensitiveOn.setSummary(mPrefSensitiveOn.getEntry());
