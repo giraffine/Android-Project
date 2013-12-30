@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="sensitive">  
+	<string-array name="speed">  
         <item>Highest</item>  
         <item>Hight</item>  
         <item>Normal</item>
         <item>Low</item>
         <item>Lowest</item>  
     </string-array>
-    <string-array name="sensitive_values">  
+    <string-array name="speed_values">  
         <item>1</item>  
         <item>2</item>  
         <item>3</item>

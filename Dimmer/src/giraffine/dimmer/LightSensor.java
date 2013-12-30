@@ -102,7 +102,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	}
 	public void updateSensitive()
 	{
-		switch(Prefs.getSensitive(Prefs.PREF_SENSITIVE_ON))
+		switch(Prefs.getSpeed(Prefs.PREF_SPEED_DIM))
 		{
 		case 1:	mDelayEnterDark = 1000;	break;
 		case 2:	mDelayEnterDark = 3000;	break;
@@ -110,7 +110,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 		case 4:	mDelayEnterDark = 7000;	break;
 		case 5:	mDelayEnterDark = 10000;break;
 		}
-		switch(Prefs.getSensitive(Prefs.PREF_SENSITIVE_OFF))
+		switch(Prefs.getSpeed(Prefs.PREF_SPEED_BRIGHT))
 		{
 		case 1:	mDelayLeaveDark = 500;	break;
 		case 2:	mDelayLeaveDark = 1000;	break;
@@ -122,10 +122,10 @@ public class LightSensor implements ProximitySensor.EventCallback{
 	}
 	private boolean meetDarkThreshold(int lux)
 	{
-		if(Prefs.getTriggerLowest())
+		if(Prefs.getThresholdDimLowest())
 			return LuxUtil.isLowestLevel(lux);
 		else
-			return lux <= Prefs.getTriggerValue();
+			return lux <= Prefs.getThresholdDim();
 	}
 	private void sensorInput(int lux)
 	{
@@ -152,7 +152,7 @@ public class LightSensor implements ProximitySensor.EventCallback{
 		else
 		{
 			mProximitySensor.monitor(false);
-			if(mCurrentLux > mFreezeLux*2)
+			if(mCurrentLux > mFreezeLux + Prefs.getThresholdBright())
 			{
 				if(!mHandler.hasMessages(MSG_LEAVE_DARKLIGHT))
 					mHandler.sendEmptyMessageDelayed(MSG_LEAVE_DARKLIGHT, mDelayLeaveDark);

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="sensitive">  
+	<string-array name="speed">  
         <item>最快</item>  
         <item>快</item>  
         <item>正常</item>
         <item>慢</item>
         <item>最慢</item>  
     </string-array>
-    <string-array name="sensitive_values">  
+    <string-array name="speed_values">  
         <item>1</item>  
         <item>2</item>  
         <item>3</item>

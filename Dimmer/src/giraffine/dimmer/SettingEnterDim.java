@@ -18,44 +18,24 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class DialogTrigger extends DialogPreference{
+public class SettingEnterDim extends DialogPreference{
 
-	public static final String REFRESH_LUX = "refreshLux";
-	public static ComponentName COMPONENT = new ComponentName(DimmerService.PACKAGENAME, DimmerService.PACKAGENAME+".DialogTrigger");
-	
-	private TextView mCurrentLux;
 	private TextView mPivotLux;
 	private SeekBar mSeekBar;
-	private ImageButton mButtonIncre;
-	private ImageButton mButtonDecre;
 	private Switch mSwitchSetLowest;
-	private Context mContext;
-	private Dialog mDialog;
-	private Thread mThread;
-	private boolean mStopThread = true;
-	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
-		@Override
-		public void onReceive(Context arg0, Intent arg1) {
-			mCurrentLux.setText("Current ambient light: " + String.valueOf(arg1.getIntExtra("lux", 0)) + " lux");
-		}
-	};
 	private int mShift;
 	private int mAdjustRegion = 100;
 	
-	public DialogTrigger(Context context, AttributeSet attrs) {
+	public SettingEnterDim(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-		setDialogLayoutResource(R.layout.setting_trigger);
+		setDialogLayoutResource(R.layout.setting_enter_dim);
 	}
 	@Override
 	public void onBindDialogView (View view)
 	{
-		mContext = getContext();
-		mDialog = getDialog();
-		
-		mCurrentLux = (TextView)view.findViewById(R.id.currentLux);
-		mPivotLux = (TextView)view.findViewById(R.id.pivotLux);
-		mSeekBar = (SeekBar)view.findViewById(R.id.luxSeekBar);
+		mPivotLux = (TextView)view.findViewById(R.id.pivotLux_dim);
+		mSeekBar = (SeekBar)view.findViewById(R.id.luxSeekBar_dim);
 		mSwitchSetLowest = (Switch)view.findViewById(R.id.switchSetLowest);
 		mSwitchSetLowest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
 		{
@@ -72,21 +52,21 @@ public class DialogTrigger extends DialogPreference{
 		LuxUtil.getBoundaryLevel(bound);
 		mShift = bound.x;
 		mSeekBar.setMax(mAdjustRegion);
-		TextView min = (TextView)view.findViewById(R.id.seekMin);
-		TextView max = (TextView)view.findViewById(R.id.seekMax);
+		TextView min = (TextView)view.findViewById(R.id.seekMin_dim);
+		TextView max = (TextView)view.findViewById(R.id.seekMax_dim);
 		min.setText(String.valueOf(bound.x));
 		max.setText(String.valueOf(bound.x + mAdjustRegion));
 
-		mSwitchSetLowest.setChecked(Prefs.getTriggerLowest());
-		if(Prefs.getTriggerLowest())
+		mSwitchSetLowest.setChecked(Prefs.getThresholdDimLowest());
+		if(Prefs.getThresholdDimLowest())
 		{
 			mSeekBar.setProgress(0);
-			mPivotLux.setText(String.valueOf(bound.x));
+			showPivotLux(bound.x);
 		}
 		else
 		{
-			mSeekBar.setProgress(Prefs.getTriggerValue() - mShift);
-			mPivotLux.setText(String.valueOf(Prefs.getTriggerValue()));
+			mSeekBar.setProgress(Prefs.getThresholdDim() - mShift);
+			showPivotLux(Prefs.getThresholdDim());
 		}
 		mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
@@ -100,33 +80,28 @@ public class DialogTrigger extends DialogPreference{
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				Log.e(Dimmer.TAG, "onProgressChanged: " + progress);
-				mPivotLux.setText(String.valueOf(progress + mShift));
+				showPivotLux(progress + mShift);
 				if(progress != 0)
 					mSwitchSetLowest.setChecked(false);
 			}
 		});
-		this.getContext().registerReceiver(mBroadcastReceiver, new IntentFilter(REFRESH_LUX));
 	}
-/*	
-	@Override
-	public View onCreateDialogView()
+	private void showPivotLux(int lux)
 	{
-		return super.onCreateDialogView();
+		mPivotLux.setText(String.valueOf(lux) + " lux");
 	}
-*/
 	@Override
 	public void onDialogClosed(boolean positiveResult)
 	{
-		this.getContext().unregisterReceiver(mBroadcastReceiver);
-		
 		if(positiveResult)
 		{
-			Prefs.setTriggerValue(mSeekBar.getProgress() + mShift);
-			Prefs.setTriggerLowest(mSwitchSetLowest.isChecked());
+			Prefs.setThresholdDim(mSeekBar.getProgress() + mShift);
+			Prefs.setThresholdDimLowest(mSwitchSetLowest.isChecked());
 			if(mSwitchSetLowest.isChecked())
-				setSummary("Detect lowest ambient light");
+				setSummary(getContext().getResources().getString(R.string.pref_threshold_dim_lowest));
 			else
-				setSummary("Ambient light < "+ String.valueOf(mSeekBar.getProgress() + mShift) + " lux");
+				setSummary(getContext().getResources().getString(R.string.pref_threshold_dim_lux)
+						+ " < "+ String.valueOf(mSeekBar.getProgress() + mShift) + " lux");
 		}
 	}
 }

@@ -1,6 +1,9 @@
 package giraffine.dimmer;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -8,16 +11,26 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.widget.Toast;
 
 public class SettingsFragment extends PreferenceFragment implements OnPreferenceClickListener, OnPreferenceChangeListener{
 	
+	public static final String REFRESH_LUX = "refreshLux";
 	private CheckBoxPreference mPrefAutoMode = null;
 	private CheckBoxPreference mPrefWidgetMode = null;
-	private ListPreference mPrefSensitiveOn = null;
-	private ListPreference mPrefSensitiveOff = null;
-	private Preference mPrefTrigger = null;
+	private ListPreference mPrefSpeedDim = null;
+	private ListPreference mPrefSpeedBright = null;
+	private Preference mPrefThresholdDim = null;
+	private Preference mPrefThresholdBright = null;
+	
+	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			showLuxInfo(arg1.getIntExtra("lux", 0));
+		}
+	};
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,12 +44,13 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         mPrefWidgetMode = (CheckBoxPreference)findPreference(Prefs.PREF_WIDGETMODE);
         mPrefWidgetMode.setOnPreferenceClickListener(this);
 
-        mPrefSensitiveOn = (ListPreference)findPreference(Prefs.PREF_SENSITIVE_ON);
-        mPrefSensitiveOn.setOnPreferenceChangeListener(this);
-        mPrefSensitiveOff = (ListPreference)findPreference(Prefs.PREF_SENSITIVE_OFF);
-        mPrefSensitiveOff.setOnPreferenceChangeListener(this);
+        mPrefSpeedDim = (ListPreference)findPreference(Prefs.PREF_SPEED_DIM);
+        mPrefSpeedDim.setOnPreferenceChangeListener(this);
+        mPrefSpeedBright = (ListPreference)findPreference(Prefs.PREF_SPEED_BRIGHT);
+        mPrefSpeedBright.setOnPreferenceChangeListener(this);
         
-        mPrefTrigger = findPreference(Prefs.PREF_TRIGGER);
+        mPrefThresholdDim = findPreference(Prefs.PREF_THRESHOLD_DIM);
+        mPrefThresholdBright = findPreference(Prefs.PREF_THRESHOLD_BRIGHT);
         
         updateSettings();
         
@@ -46,15 +60,29 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
+        
+        getActivity().registerReceiver(mBroadcastReceiver, new IntentFilter(REFRESH_LUX));
+//        showAutoModeDetail(false);
     }
+	public void onDestroy ()
+	{
+		super.onDestroy();
+		getActivity().unregisterReceiver(mBroadcastReceiver);
+	}
+	public void showLuxInfo(int lux)
+	{
+		mPrefAutoMode.setSummaryOn(getActivity().getResources().getString(R.string.pref_auto_lux_state)
+				+ " " + String.valueOf(lux) + " lux");
+	}
 	@Override
 	public boolean onPreferenceClick(Preference pref) {
 		if(pref.getKey().equalsIgnoreCase(Prefs.PREF_AUTOMODE))
 		{
 			changeAutoMode(mPrefAutoMode.isChecked());
-			mPrefTrigger.setEnabled(mPrefAutoMode.isChecked());
-			mPrefSensitiveOn.setEnabled(mPrefAutoMode.isChecked());
-			mPrefSensitiveOff.setEnabled(mPrefAutoMode.isChecked());
+			mPrefThresholdDim.setEnabled(mPrefAutoMode.isChecked());
+			mPrefThresholdBright.setEnabled(mPrefAutoMode.isChecked());
+			mPrefSpeedDim.setEnabled(mPrefAutoMode.isChecked());
+			mPrefSpeedBright.setEnabled(mPrefAutoMode.isChecked());
 			return true;
 		}
 		else if(pref.getKey().equalsIgnoreCase(Prefs.PREF_WIDGETMODE))
@@ -66,17 +94,17 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	}
 	@Override
 	public boolean onPreferenceChange(Preference pref, Object newValue) {
-		if(pref.getKey().equalsIgnoreCase(Prefs.PREF_SENSITIVE_ON))
+		if(pref.getKey().equalsIgnoreCase(Prefs.PREF_SPEED_DIM))
 		{
-			CharSequence[] entries = mPrefSensitiveOn.getEntries();
-			mPrefSensitiveOn.setSummary(entries[Integer.valueOf((String)newValue)-1]);
+			CharSequence[] entries = mPrefSpeedDim.getEntries();
+			mPrefSpeedDim.setSummary(entries[Integer.valueOf((String)newValue)-1]);
 			changeSensitive();
 			return true;
 		}
-		else if(pref.getKey().equalsIgnoreCase(Prefs.PREF_SENSITIVE_OFF))
+		else if(pref.getKey().equalsIgnoreCase(Prefs.PREF_SPEED_BRIGHT))
 		{
-			CharSequence[] entries = mPrefSensitiveOff.getEntries();
-			mPrefSensitiveOff.setSummary(entries[Integer.valueOf((String)newValue)-1]);
+			CharSequence[] entries = mPrefSpeedBright.getEntries();
+			mPrefSpeedBright.setSummary(entries[Integer.valueOf((String)newValue)-1]);
 			changeSensitive();
 			return true;
 		}
@@ -100,12 +128,33 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	}
 	public void updateSettings()
 	{
-		mPrefTrigger.setEnabled(mPrefAutoMode.isChecked());
-		mPrefTrigger.setSummary(Prefs.getTriggerLowest() ? "Detect lowest ambient light" :
-			"Ambient light < "+ Prefs.getTriggerValue() + " lux" );
-		mPrefSensitiveOn.setEnabled(mPrefAutoMode.isChecked());
-		mPrefSensitiveOff.setEnabled(mPrefAutoMode.isChecked());
-		mPrefSensitiveOn.setSummary(mPrefSensitiveOn.getEntry());
-		mPrefSensitiveOff.setSummary(mPrefSensitiveOff.getEntry());
+		mPrefThresholdDim.setEnabled(mPrefAutoMode.isChecked());
+		mPrefThresholdDim.setSummary(Prefs.getThresholdDimLowest() ? 
+				getActivity().getResources().getString(R.string.pref_threshold_dim_lowest) :
+				getActivity().getResources().getString(R.string.pref_threshold_dim_lux) + " < "+ Prefs.getThresholdDim() + " lux" );
+		mPrefThresholdBright.setEnabled(mPrefAutoMode.isChecked());
+		mPrefThresholdBright.setSummary(getActivity().getResources().getString(R.string.pref_threshold_bright_diff) 
+				+ " > "+ Prefs.getThresholdBright() + " lux" );
+		mPrefSpeedDim.setEnabled(mPrefAutoMode.isChecked());
+		mPrefSpeedBright.setEnabled(mPrefAutoMode.isChecked());
+		mPrefSpeedDim.setSummary(mPrefSpeedDim.getEntry());
+		mPrefSpeedBright.setSummary(mPrefSpeedBright.getEntry());
+	}
+	public void showAutoModeDetail(boolean show)
+	{
+		if(show)
+		{
+	        ((PreferenceCategory)findPreference("pref_automode_category")).addPreference(mPrefThresholdDim);
+	        ((PreferenceCategory)findPreference("pref_automode_category")).addPreference(mPrefThresholdBright);
+	        ((PreferenceCategory)findPreference("pref_automode_category")).addPreference(mPrefSpeedDim);
+	        ((PreferenceCategory)findPreference("pref_automode_category")).addPreference(mPrefSpeedBright);
+		}
+		else
+		{
+	        ((PreferenceCategory)findPreference("pref_automode_category")).removePreference(mPrefThresholdDim);
+	        ((PreferenceCategory)findPreference("pref_automode_category")).removePreference(mPrefThresholdBright);
+	        ((PreferenceCategory)findPreference("pref_automode_category")).removePreference(mPrefSpeedDim);
+	        ((PreferenceCategory)findPreference("pref_automode_category")).removePreference(mPrefSpeedBright);
+		}
 	}
 }

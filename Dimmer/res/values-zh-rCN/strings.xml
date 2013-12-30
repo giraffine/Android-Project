@@ -8,10 +8,17 @@
     
 	<string name="pref_auto_title">自动模式</string>
 	<string name="pref_auto_summary">根据环境光源自动变暗或变亮</string>
-    <string name="pref_sensitive_on_title">变暗的反应速度</string>
-    <string name="pref_sensitive_off_title">变亮的反应速度</string>
+	<string name="pref_auto_lux_state">目前的环境光源:</string>
 	<string name="pref_widget_title">小工具模式</string>
 	<string name="pref_widget_summary">点击图示切换变暗或变亮</string>
 	<string name="pref_widget_hint">您可以点击通知进入应用程序</string>
+	<string name="pref_threshold_dim">变暗的条件</string>
+	<string name="pref_threshold_dim_lowest">侦测最低环境光源</string>
+	<string name="pref_threshold_dim_set_lowest">侦测最低值</string>
+	<string name="pref_threshold_dim_lux">环境光源</string>
+	<string name="pref_threshold_bright">变亮的条件</string>
+	<string name="pref_threshold_bright_diff">环境光源差异</string>
+	<string name="pref_speed_dim">变暗的反应速度</string>
+	<string name="pref_speed_bright">变亮的反应速度</string>
 	
 </resources>

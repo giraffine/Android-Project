@@ -158,7 +158,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	@Override
 	public void onLightChanged(int lux) {
 		if(DebugMode)	postNotification(lastLevel/10);
-		sendBroadcast(new Intent(DialogTrigger.REFRESH_LUX).putExtra("lux", lux));
+		if(SettingsActivity.showSettings)
+			sendBroadcast(new Intent(SettingsFragment.REFRESH_LUX).putExtra("lux", lux));
 	}
 	@Override
 	public void onEnterDarkLight() {

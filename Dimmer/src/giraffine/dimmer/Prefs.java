@@ -15,10 +15,11 @@ public class Prefs {
 	private static String PREF_COMPATIBLE = "pref_compatible";
 	
 	public static String PREF_AUTOMODE = "pref_automode";
-	public static String PREF_TRIGGER = "pref_trigger";
-	public static String PREF_TRIGGER_LOWEST = "pref_trigger_lowest";
-	public static String PREF_SENSITIVE_ON = "pref_sensitive_on";
-	public static String PREF_SENSITIVE_OFF = "pref_sensitive_off";
+	public static String PREF_THRESHOLD_DIM = "pref_threshold_dim";
+	public static String PREF_THRESHOLD_DIM_LOWEST = "pref_threshold_dim_lowest";
+	public static String PREF_THRESHOLD_BRIGHT = "pref_threshold_bright";
+	public static String PREF_SPEED_DIM = "pref_speed_dim";
+	public static String PREF_SPEED_BRIGHT = "pref_speed_bright";
 	public static String PREF_WIDGETMODE = "pref_widgetmode";
 	public static String PREF_ABOUT = "pref_about";
 
@@ -55,7 +56,7 @@ public class Prefs {
 	{
 		mPrefer.edit().putBoolean(PREF_AUTOMODE, isON).commit();
 	}
-	public static int getSensitive(String key)
+	public static int getSpeed(String key)
 	{
 		return Integer.valueOf(mPrefer.getString(key, "3"));
 	}
@@ -79,20 +80,28 @@ public class Prefs {
 	{
 		mPrefer.edit().putFloat(isMax ? PROXIMITYMAX : PROXIMITYMIN, value).commit();
 	}
-	public static int getTriggerValue()
+	public static int getThresholdDim()
 	{
-		return mPrefer.getInt(PREF_TRIGGER, 0);
+		return mPrefer.getInt(PREF_THRESHOLD_DIM, 0);
 	}
-	public static void setTriggerValue(int value)
+	public static void setThresholdDim(int value)
 	{
-		mPrefer.edit().putInt(PREF_TRIGGER, value).commit();
+		mPrefer.edit().putInt(PREF_THRESHOLD_DIM, value).commit();
 	}
-	public static boolean getTriggerLowest()
+	public static boolean getThresholdDimLowest()
 	{
-		return mPrefer.getBoolean(PREF_TRIGGER_LOWEST, true);
+		return mPrefer.getBoolean(PREF_THRESHOLD_DIM_LOWEST, true);
 	}
-	public static void setTriggerLowest(boolean yes)
+	public static void setThresholdDimLowest(boolean yes)
 	{
-		mPrefer.edit().putBoolean(PREF_TRIGGER_LOWEST, yes).commit();
+		mPrefer.edit().putBoolean(PREF_THRESHOLD_DIM_LOWEST, yes).commit();
+	}
+	public static int getThresholdBright()
+	{
+		return mPrefer.getInt(PREF_THRESHOLD_BRIGHT, 40);
+	}
+	public static void setThresholdBright(int value)
+	{
+		mPrefer.edit().putInt(PREF_THRESHOLD_BRIGHT, value).commit();
 	}
 }

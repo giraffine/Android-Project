@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="@string/pref_auto_title">
-    <CheckBoxPreference
-        android:key="pref_automode"
-        android:title="@string/pref_auto_title"
-        android:summary="@string/pref_auto_summary"
-        android:defaultValue="false" />
-	<giraffine.dimmer.DialogTrigger
-        android:key="pref_trigger"
-        android:title="Threshold to enter dim"
-        android:summary=""
-        android:positiveButtonText="ok" 
-        android:negativeButtonText="cancel" 
-        />
-    <ListPreference 
-        android:key="pref_sensitive_on"
-        android:title="@string/pref_sensitive_on_title"
-        android:entries="@array/sensitive" 
-        android:entryValues="@array/sensitive_values"
-        android:defaultValue="3"
-        />
-    <ListPreference 
-        android:key="pref_sensitive_off"
-        android:title="@string/pref_sensitive_off_title"
-        android:entries="@array/sensitive" 
-        android:entryValues="@array/sensitive_values"
-        android:defaultValue="3"
-        />
-	</PreferenceCategory>
     <CheckBoxPreference
         android:key="pref_widgetmode"
         android:title="@string/pref_widget_title"
         android:summary="@string/pref_widget_summary"
         android:defaultValue="false" />
+    
+    <PreferenceCategory
+        android:key="pref_automode_category"
+        android:title="@string/pref_auto_title">
+    <CheckBoxPreference
+        android:key="pref_automode"
+        android:title="@string/pref_auto_title"
+        android:summaryOn="@string/pref_auto_summary"
+        android:summaryOff="@string/pref_auto_summary"
+        android:defaultValue="false" />
+	<giraffine.dimmer.SettingEnterDim
+        android:key="pref_threshold_dim"
+        android:title="@string/pref_threshold_dim"
+        android:summary=""
+        android:positiveButtonText="@android:string/ok" 
+        android:negativeButtonText="@android:string/cancel" 
+        />
+	<giraffine.dimmer.SettingEnterBright
+        android:key="pref_threshold_bright"
+        android:title="@string/pref_threshold_bright"
+        android:summary=""
+        android:positiveButtonText="@android:string/ok" 
+        android:negativeButtonText="@android:string/cancel" 
+        />
+	<ListPreference 
+        android:key="pref_speed_dim"
+        android:title="@string/pref_speed_dim"
+        android:entries="@array/speed" 
+        android:entryValues="@array/speed_values"
+        android:defaultValue="3"
+        />
+    <ListPreference 
+        android:key="pref_speed_bright"
+        android:title="@string/pref_speed_bright"
+        android:entries="@array/speed" 
+        android:entryValues="@array/speed_values"
+        android:defaultValue="3"
+        />
+	</PreferenceCategory>
     <Preference android:key="pref_about" android:title="Version Info"/>
 
 </PreferenceScreen>
