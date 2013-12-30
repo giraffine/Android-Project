@@ -105,6 +105,7 @@ public class Dimmer extends Activity {
 	public void onPause ()
 	{
 		super.onPause();
+		finish();
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
