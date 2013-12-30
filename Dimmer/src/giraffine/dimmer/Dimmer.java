@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,7 +20,6 @@ public class Dimmer extends Activity {
 	public static String TAG = "Dimmer";
 	public static final String REFRESH_INDEX = "refreshIndex"; 
 	private TextView mIndex;
-	private ImageButton mSettings;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
 		@Override
@@ -43,17 +43,7 @@ public class Dimmer extends Activity {
 		
 		setContentView(R.layout.activity_dimmer);
 
-		if(showActivity)
-			getActionBar().hide();
-		
 		mIndex = (TextView)findViewById(R.id.index);
-		mSettings = (ImageButton)findViewById(R.id.settings);
-		mSettings.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startSettings();
-			}
-		});
 		
 		startDimmerService(!showActivity);
 		
@@ -120,10 +110,18 @@ public class Dimmer extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.dimmer, menu);
+		getMenuInflater().inflate(R.menu.dimmer_menu, menu);
 		return true;
 	}
-
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	      switch (item.getItemId()) {
+	      case R.id.action_settings:
+	    	  startSettings();
+	          return true;
+	      }
+	      return false;
+	}
 	public void showIndex(int i)
 	{
 		mIndex.setText(String.valueOf(i/10));

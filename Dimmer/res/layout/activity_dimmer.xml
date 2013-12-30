@@ -29,13 +29,4 @@
         android:textSize="150dp" />
 
     
-<ImageButton
-        android:id="@+id/settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/ic_settings" />
-
 </RelativeLayout>
