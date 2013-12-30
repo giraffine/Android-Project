@@ -26,7 +26,10 @@ public class Mask {
 		mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 		mWindowParams = new WindowManager.LayoutParams();
 
-		mWindowParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;	// use _OVELAY not _ERROR can cover KK navigationbar
+		mWindowParams.type = 
+				android.os.Build.VERSION.SDK_INT >= 19?
+						WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY	// _OVERLAY can cover KK navigationbar, icon still bright
+						: WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;	// _ERROR can cover whole navigationbar in JB
 		mWindowParams.flags |= 
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE 
 				| WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS 
