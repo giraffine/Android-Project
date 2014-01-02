@@ -48,9 +48,13 @@ public class LightSensor implements ProximitySensor.EventCallback{
 		mEventCallback = eventcallback;
 		updateSensitive();
 	}
-	public boolean hasLightSensor()
+	public static boolean hasLightSensor(Context context)
 	{
-	    if(mSensorManager == null || mSensorLight == null)
+		SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+		Sensor sensorLight = null;
+		if(sensorManager != null)
+			sensorLight = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+	    if(sensorManager == null || sensorLight == null)
 	    	return false;
 	    else
 	    	return true;

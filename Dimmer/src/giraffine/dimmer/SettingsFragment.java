@@ -128,6 +128,16 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	}
 	public void updateSettings()
 	{
+		if(!LightSensor.hasLightSensor(getActivity()))
+		{
+			changeAutoMode(false);
+			mPrefAutoMode.setChecked(false);
+			mPrefAutoMode.setEnabled(false);
+			showAutoModeDetail(false);
+			mPrefAutoMode.setSummaryOff(getActivity().getResources().getString(R.string.pref_auto_summary)
+					+ "\n\n" + getActivity().getResources().getString(R.string.pref_auto_not_support));
+			return;
+		}
 		mPrefThresholdDim.setEnabled(mPrefAutoMode.isChecked());
 		mPrefThresholdDim.setSummary(Prefs.getThresholdDimLowest() ? 
 				getActivity().getResources().getString(R.string.pref_threshold_dim_lowest) :
