@@ -9,6 +9,7 @@
 	<string name="pref_auto_title">自动模式</string>
 	<string name="pref_auto_summary">根据环境光源自动变暗或变亮</string>
 	<string name="pref_auto_lux_state">目前的环境光源:</string>
+	<string name="pref_auto_not_support">此设备不支持环境光线感应器</string>
 	<string name="pref_widget_title">小工具模式</string>
 	<string name="pref_widget_summary">点击图示切换变暗或变亮</string>
 	<string name="pref_widget_hint">您可以点击通知进入应用程序</string>
