@@ -22,6 +22,8 @@ public class Prefs {
 	public static String PREF_SPEED_BRIGHT = "pref_speed_bright";
 	public static String PREF_WIDGETMODE = "pref_widgetmode";
 	public static String PREF_ABOUT = "pref_about";
+	public static String PREF_ALARM_DIM = "pref_alarm_dim";
+	public static String PREF_ALARM_BRIGHT = "pref_alarm_bright";
 
 	private static SharedPreferences mPrefer = null;
 
@@ -103,5 +105,13 @@ public class Prefs {
 	public static void setThresholdBright(int value)
 	{
 		mPrefer.edit().putInt(PREF_THRESHOLD_BRIGHT, value).commit();
+	}
+	public static String getAlarm(String type)
+	{
+		return mPrefer.getString(type, "-00:00");
+	}
+	public static void setAlarm(String type, String value)
+	{
+		mPrefer.edit().putString(type, value).commit();
 	}
 }

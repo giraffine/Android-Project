@@ -21,5 +21,9 @@
 	<string name="pref_threshold_bright_diff">環境光源差異</string>
 	<string name="pref_speed_dim">變暗的反應速度</string>
 	<string name="pref_speed_bright">變亮的反應速度</string>
-	
+	<string name="pref_alarm_title">定時模式</string>
+	<string name="pref_alarm_dim">定時變暗</string>
+	<string name="pref_alarm_bright">定時變亮</string>
+	<string name="pref_alarm_off">關閉</string>
+
 </resources>

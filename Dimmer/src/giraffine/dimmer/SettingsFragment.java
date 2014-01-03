@@ -24,6 +24,8 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	private ListPreference mPrefSpeedBright = null;
 	private Preference mPrefThresholdDim = null;
 	private Preference mPrefThresholdBright = null;
+	private Preference mPrefAlarmDim = null;
+	private Preference mPrefAlarmBright = null;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
 		@Override
@@ -52,7 +54,11 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         mPrefThresholdDim = findPreference(Prefs.PREF_THRESHOLD_DIM);
         mPrefThresholdBright = findPreference(Prefs.PREF_THRESHOLD_BRIGHT);
         
-        updateSettings();
+        mPrefAlarmDim = findPreference(Prefs.PREF_ALARM_DIM);
+        mPrefAlarmBright = findPreference(Prefs.PREF_ALARM_BRIGHT);
+        
+        updateAutoSettings();
+        updateAlarmSettings();
         
         Preference about = findPreference(Prefs.PREF_ABOUT);
         try {
@@ -126,7 +132,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		startServiceIntent.setAction(DimmerService.SENSITIVECHANGE);
 		getActivity().startService(startServiceIntent);
 	}
-	public void updateSettings()
+	public void updateAutoSettings()
 	{
 		if(!LightSensor.hasLightSensor(getActivity()))
 		{
@@ -149,6 +155,18 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		mPrefSpeedBright.setEnabled(mPrefAutoMode.isChecked());
 		mPrefSpeedDim.setSummary(mPrefSpeedDim.getEntry());
 		mPrefSpeedBright.setSummary(mPrefSpeedBright.getEntry());
+	}
+	public void updateAlarmSettings()
+	{
+		if(AlarmUtil.getAlarmOnOff(Prefs.PREF_ALARM_DIM))
+			mPrefAlarmDim.setSummary(AlarmUtil.getAlarmTime(Prefs.PREF_ALARM_DIM, getActivity()));
+		else
+			mPrefAlarmDim.setSummary(getActivity().getResources().getString(R.string.pref_alarm_off));
+		
+		if(AlarmUtil.getAlarmOnOff(Prefs.PREF_ALARM_BRIGHT))
+			mPrefAlarmBright.setSummary(AlarmUtil.getAlarmTime(Prefs.PREF_ALARM_BRIGHT, getActivity()));
+		else
+			mPrefAlarmBright.setSummary(getActivity().getResources().getString(R.string.pref_alarm_off));
 	}
 	public void showAutoModeDetail(boolean show)
 	{

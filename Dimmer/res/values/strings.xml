@@ -21,6 +21,9 @@
 	<string name="pref_threshold_bright_diff">Ambient light difference</string>
 	<string name="pref_speed_dim">Speed of dim response</string>
 	<string name="pref_speed_bright">Speed of bright response</string>
-
+	<string name="pref_alarm_title">Time Mode</string>
+	<string name="pref_alarm_dim">Time to enter dim</string>
+	<string name="pref_alarm_bright">Time to return bright</string>
+	<string name="pref_alarm_off">OFF</string>
 		
 </resources>

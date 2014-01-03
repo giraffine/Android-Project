@@ -44,6 +44,22 @@
         android:defaultValue="3"
         />
 	</PreferenceCategory>
+    <PreferenceCategory
+        android:key="pref_alarmmode_category"
+        android:title="@string/pref_alarm_title">
+	<giraffine.dimmer.SettingAlarm
+        android:key="pref_alarm_dim"
+        android:title="@string/pref_alarm_dim"
+        android:positiveButtonText="@android:string/yes" 
+        android:negativeButtonText="@android:string/no" 
+        />
+	<giraffine.dimmer.SettingAlarm
+        android:key="pref_alarm_bright"
+        android:title="@string/pref_alarm_bright"
+        android:positiveButtonText="@android:string/yes" 
+        android:negativeButtonText="@android:string/no" 
+        />
+    </PreferenceCategory>
     <Preference android:key="pref_about" android:title="Version Info"/>
 
 </PreferenceScreen>

@@ -34,6 +34,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String SWITCHAUTOMODE = "switchAutoMode";
 	public static String SWITCHDIM = "switchDim";
 	public static String SENSITIVECHANGE = "sensitiveChange";
+	public static String ALARMMODE = "alarmMode";
 	public static final int MSG_RESET_LEVEL = 0;
 	public static final int MSG_RESET_LEVEL_RESTORE = 1;
 	public static final int MSG_RESET_ACTING = 3;
@@ -47,6 +48,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	private Mask mMask = null;
 	private boolean mInDimMode = false;
 	private LightSensor mLightSensor = null;
+	private AlarmUtil mAlarmUtil = null;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -109,6 +111,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 
 		mMask = new Mask(this);
 		mLightSensor = new LightSensor(this, this);
+		mAlarmUtil = new AlarmUtil(this);
 		
         ContentResolver resolver = getContentResolver();
         resolver.registerContentObserver(Settings.System.getUriFor(Settings.System.SCREEN_BRIGHTNESS), true, new ContentObserver(null){
@@ -232,6 +235,16 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			else if(intent.getAction().equals(SENSITIVECHANGE))
 			{
 				mLightSensor.updateSensitive();
+			}
+			else if(intent.getAction().equals(ALARMMODE))
+			{
+				if(getDimMode())
+					mHandler.sendEmptyMessage(MSG_RESET_LEVEL_RESTORE);
+				else
+				{
+					mLightSensor.setFreezeLux();
+					mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
+				}
 			}
 		}
 //		Log.e(Dimmer.TAG, "onStartCommand(): " + lastLevel);
