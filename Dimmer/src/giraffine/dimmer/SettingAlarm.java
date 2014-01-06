@@ -45,7 +45,7 @@ public class SettingAlarm extends DialogPreference{
 	{
 		Intent startServiceIntent = new Intent();
 		startServiceIntent.setComponent(DimmerService.COMPONENT);
-		startServiceIntent.setAction(DimmerService.ALARMMODE);
+		startServiceIntent.setAction(DimmerService.ALARMCHANGE);
 		getContext().startService(startServiceIntent);
 	}
 }

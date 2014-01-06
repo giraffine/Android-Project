@@ -1,8 +1,9 @@
 package giraffine.dimmer;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -14,47 +15,124 @@ import android.util.Log;
 public class AlarmUtil {
 
 	private Context mContext;
+	private Comparator<Calendar> mComparator = new Comparator<Calendar>()
+			{
+				@Override
+				public int compare(Calendar a, Calendar b) {
+					return a.compareTo(b); 
+			}
+	};
 	public AlarmUtil(Context context)
 	{
 		mContext = context;
 	}
-	public void update()
+	public void update()	// get the latest alarm and setup alarm
 	{
-		// get latest alarm to trigger
+		Calendar now = Calendar.getInstance();
+		Calendar next = getLatestAlarm(now);
+		boolean isAlarmOn = !(next.compareTo(now) == 0);
+		setupAlarm(isAlarmOn, next);
 	}
-	public boolean nowToDim()
+	public boolean nowToDim()	// check current time is to dim or bright
 	{
-		// check current time is in dim or bright
-		return false;
-	}
-	private Calendar getLatestAlarm()
-	{
+		boolean toDim = true;
+		boolean toBright = false;
 		Calendar dim = null;
 		Calendar bright = null;
-		Calendar now = Calendar.getInstance();
 		if(getAlarmOnOff(Prefs.PREF_ALARM_DIM))
 			dim = getAlarmTime(Prefs.PREF_ALARM_DIM);
 		if(getAlarmOnOff(Prefs.PREF_ALARM_BRIGHT))
 			bright = getAlarmTime(Prefs.PREF_ALARM_BRIGHT);
 		
-		return now;
+		if(dim == null && bright == null)
+			return toBright;
+		else if(dim != null && bright == null)
+			return toDim;
+		else if(dim == null && bright != null)
+			return toBright;
+		else
+		{
+			Calendar now = Calendar.getInstance();
+			int dimCompare = now.compareTo(dim);
+			int brightCompare = now.compareTo(bright);
+			int dimbrightCompare = dim.compareTo(bright); 
+			Log.e(Dimmer.TAG, "nowToDim: now: " + now.getTime().toGMTString());
+			Log.e(Dimmer.TAG, "nowToDim: dim: " + dim.getTime().toGMTString());
+			Log.e(Dimmer.TAG, "nowToDim: bright: " + bright.getTime().toGMTString());
+			Log.e(Dimmer.TAG, "nowToDim: dimCompare=" + dimCompare + ", brightCompare=" + brightCompare + ", dimbrightCompare=" + dimbrightCompare);
+			if(dimCompare >= 0 && brightCompare < 0)
+			{
+				return toDim;
+			}
+			else if(dimCompare < 0 && brightCompare >= 0)
+			{
+				return toBright;
+			}
+			else
+			{
+				if(dimbrightCompare < 0)
+					return toBright;
+				else if(dimbrightCompare > 0)
+					return toDim;
+			}
+		}
+			
+		return toBright;
 	}
-	private void alarmMode(int hour, int minute)
+	private Calendar getLatestAlarm(Calendar now)
 	{
-		TimeZone timezone = TimeZone.getDefault();
-		Calendar rightNow = Calendar.getInstance();
-		rightNow.set(Calendar.HOUR_OF_DAY, hour);
-		rightNow.set(Calendar.MINUTE, minute);
-		rightNow.set(Calendar.SECOND, 0);
-
-		Log.e(Dimmer.TAG, "Next Alarm: " + rightNow.getTime().toGMTString());
+		Calendar dim = null;
+		Calendar bright = null;
+		Calendar result = now;
+		ArrayList<Calendar> list = new ArrayList<Calendar>(); 
+		list.add(now);
+		Log.e(Dimmer.TAG, "getLatestAlarm now: " + now.getTime().toGMTString());
+		if(getAlarmOnOff(Prefs.PREF_ALARM_DIM))
+		{
+			dim = getAlarmTime(Prefs.PREF_ALARM_DIM);
+			if(dim.compareTo(now) <= 0)
+				dim.roll(Calendar.DAY_OF_YEAR, true);
+			list.add(dim);
+			Log.e(Dimmer.TAG, "getLatestAlarm dim: " + dim.getTime().toGMTString());
+		}
+		if(getAlarmOnOff(Prefs.PREF_ALARM_BRIGHT))
+		{
+			bright = getAlarmTime(Prefs.PREF_ALARM_BRIGHT);
+			if(bright.compareTo(now) <= 0)
+				bright.roll(Calendar.DAY_OF_YEAR, true);
+			list.add(bright);
+			Log.e(Dimmer.TAG, "getLatestAlarm bright: " + bright.getTime().toGMTString());
+		}
+		if(list.size() == 1)
+			return result;
+		
+		Collections.sort(list, mComparator);
+//		for(Calendar cal : list)
+//			Log.e(Dimmer.TAG, "SORT#1: " + cal.getTime().toGMTString());
+		
+		for(int i=0; i<list.size(); i++)
+		{
+			Calendar cal = list.get(i);
+			if(cal.compareTo(now) > 0)
+			{
+				result = list.get(i);
+				break;
+			}
+		}
+		
+		return result;
+	}
+	private void setupAlarm(boolean on, Calendar time)
+	{
+		Log.e(Dimmer.TAG, "setupAlarm: " + (on? time.getTime().toGMTString() : "OFF"));
 		
 		Intent intent = new Intent(DimmerService.ALARMMODE);
 		intent.setComponent(DimmerService.COMPONENT);
 		PendingIntent pi = PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 		AlarmManager alarmManager = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.cancel(pi);
-		alarmManager.set(AlarmManager.RTC, rightNow.getTimeInMillis(), pi);
+		if(on)
+			alarmManager.set(AlarmManager.RTC, time.getTimeInMillis(), pi);
 	}
 	public static boolean getAlarmOnOff(String type)
 	{
@@ -86,6 +164,7 @@ public class AlarmUtil {
 		cal.set(Calendar.HOUR_OF_DAY, Integer.valueOf(time.substring(1, 3)));
 		cal.set(Calendar.MINUTE, Integer.valueOf(time.substring(4, 6)));
 		cal.set(Calendar.SECOND, 0);
+		cal.setTimeInMillis(cal.getTimeInMillis()/1000*1000);	// set ms to 0
 		return cal;
 	}
 	public static void setAlarm(String type, boolean isOn, int hour, int minute)

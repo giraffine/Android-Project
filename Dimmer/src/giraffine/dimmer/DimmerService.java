@@ -35,6 +35,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String SWITCHDIM = "switchDim";
 	public static String SENSITIVECHANGE = "sensitiveChange";
 	public static String ALARMMODE = "alarmMode";
+	public static String ALARMCHANGE = "alarmChange";
 	public static final int MSG_RESET_LEVEL = 0;
 	public static final int MSG_RESET_LEVEL_RESTORE = 1;
 	public static final int MSG_RESET_ACTING = 3;
@@ -146,6 +147,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
         
         if(Prefs.isAutoMode())
         mLightSensor.monitor(true);
+        
+        mAlarmUtil.update();
     }
 	@Override
 	public void onDestroy() {
@@ -236,15 +239,20 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			{
 				mLightSensor.updateSensitive();
 			}
+			else if(intent.getAction().equals(ALARMCHANGE))
+			{
+				mAlarmUtil.update();
+			}
 			else if(intent.getAction().equals(ALARMMODE))
 			{
-				if(getDimMode())
+				if(!mAlarmUtil.nowToDim())
 					mHandler.sendEmptyMessage(MSG_RESET_LEVEL_RESTORE);
 				else
 				{
 					mLightSensor.setFreezeLux();
 					mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
 				}
+				mAlarmUtil.update();
 			}
 		}
 //		Log.e(Dimmer.TAG, "onStartCommand(): " + lastLevel);

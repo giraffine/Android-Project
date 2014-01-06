@@ -1,6 +1,7 @@
 package giraffine.dimmer;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -89,7 +90,12 @@ public class LightSensor implements ProximitySensor.EventCallback{
         if(isOn)
         	mSensorManager.registerListener(mSensorEventListener, mSensorLight, SensorManager.SENSOR_DELAY_FASTEST);
         else
+        {
         	mSensorManager.unregisterListener(mSensorEventListener);
+        	Point bound = new Point();
+        	LuxUtil.getBoundaryLevel(bound);
+        	mCurrentLux = bound.x;
+        }
         return true;
 	}
 	public int getCurrentLux()
