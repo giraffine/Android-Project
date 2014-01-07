@@ -37,7 +37,7 @@ public class Prefs {
 		// backward compatible
 		if(!mPrefer.getBoolean(PREF_COMPATIBLE, false))
 		{
-			SharedPreferences prefer = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE);
+			SharedPreferences prefer = mContext.getSharedPreferences(PREFER, Context.MODE_WORLD_READABLE);
 			if(prefer.contains(AUTOMODE))
 				mPrefer.edit().putBoolean(AUTOMODE, prefer.getBoolean(AUTOMODE, false)).commit();
 			if(prefer.contains(FAVORMASKVALUE))

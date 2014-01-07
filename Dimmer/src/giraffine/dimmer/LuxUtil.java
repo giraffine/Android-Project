@@ -3,7 +3,6 @@ package giraffine.dimmer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -32,7 +31,7 @@ public class LuxUtil {
 	{
 		String result = "";
 		if(mLevelSet == null)
-			mLevelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
+			mLevelSet = mContext.getSharedPreferences(PREFER, Context.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
 		if(mLevelSet != null)
 		{
 			ArrayList<String> array = Collections.list(Collections.enumeration(mLevelSet));
@@ -44,7 +43,7 @@ public class LuxUtil {
 	public static boolean isLowestLevel(int level)
 	{
 		if(mLevelSet == null)
-			mLevelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
+			mLevelSet = mContext.getSharedPreferences(PREFER, Context.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
 		if(mLevelSet != null)
 		{
 			if(mLevelSet.size() < 5)	// data is too few to judge lowest
@@ -60,7 +59,7 @@ public class LuxUtil {
 	public static boolean getBoundaryLevel(Point bound)
 	{
 		if(mLevelSet == null)
-			mLevelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
+			mLevelSet = mContext.getSharedPreferences(PREFER, Context.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
 		if(mLevelSet != null)
 		{
 			ArrayList<String> array = Collections.list(Collections.enumeration(mLevelSet));
@@ -85,12 +84,12 @@ public class LuxUtil {
 	private static boolean levelExist(int level)
 	{
 		if(mLevelSet == null)
-			mLevelSet = mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
+			mLevelSet = mContext.getSharedPreferences(PREFER, Context.MODE_WORLD_READABLE).getStringSet(LEVELSET, null);
 		if(mLevelSet == null)
 		{
 			mLevelSet = new TreeSet<String>();
 			mLevelSet.add(String.valueOf(level));
-			mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).edit().putStringSet(LEVELSET, mLevelSet).commit();
+			mContext.getSharedPreferences(PREFER, Context.MODE_WORLD_WRITEABLE).edit().putStringSet(LEVELSET, mLevelSet).commit();
 			return false;
 		}
 		if(mLevelSet.contains(String.valueOf(level)))
@@ -98,7 +97,7 @@ public class LuxUtil {
 		else
 		{
 			mLevelSet.add(String.valueOf(level));
-			mContext.getSharedPreferences(PREFER, mContext.MODE_WORLD_WRITEABLE).edit().putStringSet(LEVELSET, mLevelSet).commit();
+			mContext.getSharedPreferences(PREFER, Context.MODE_WORLD_WRITEABLE).edit().putStringSet(LEVELSET, mLevelSet).commit();
 		}
 		return false;
 	}

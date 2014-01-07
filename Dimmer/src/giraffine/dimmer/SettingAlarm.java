@@ -1,11 +1,8 @@
 package giraffine.dimmer;
 
-import java.util.Calendar;
-
 import android.content.Context;
 import android.content.Intent;
 import android.preference.DialogPreference;
-import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
