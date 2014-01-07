@@ -330,6 +330,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				 mActing = false;
 				 break;
 			case MSG_ENTER_DIMM:
+				mMask.removeMask();
 				BrightnessUtil.collectState();
 				int favorvalue = Prefs.getFavorMaskValue();
 				adjustLevel(favorvalue, true, true);
