@@ -14,6 +14,7 @@ import android.database.ContentObserver;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Process;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -36,6 +37,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String SENSITIVECHANGE = "sensitiveChange";
 	public static String ALARMMODE = "alarmMode";
 	public static String ALARMCHANGE = "alarmChange";
+	public static String BOOT = "boot";
 	public static final int MSG_RESET_LEVEL = 0;
 	public static final int MSG_RESET_LEVEL_RESTORE = 1;
 	public static final int MSG_RESET_ACTING = 3;
@@ -50,6 +52,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	private boolean mInDimMode = false;
 	private LightSensor mLightSensor = null;
 	private AlarmUtil mAlarmUtil = null;
+	private boolean mKeepSticky = false;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -146,20 +149,26 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
         }, new IntentFilter(Intent.ACTION_SCREEN_OFF));
         
         if(Prefs.isAutoMode())
-        mLightSensor.monitor(true);
+        {
+        	mLightSensor.monitor(true);
+        	mKeepSticky = true;
+        }
         
         mAlarmUtil.update();
     }
 	@Override
 	public void onDestroy() {
-		// need restart ASAP: 60 secs
 		Log.e(Dimmer.TAG, "onDestroy()");
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setComponent(COMPONENT);
-		PendingIntent pi = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-		AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-		alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 60000, pi);
+		// need restart ASAP: 60 secs
+		if(mKeepSticky)
+		{
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			intent.setComponent(COMPONENT);
+			PendingIntent pi = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+			AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+			alarmManager.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 60000, pi);
+		}
 	}
 	@Override
 	public void onLightChanged(int lux) {
@@ -220,10 +229,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			else if(intent.getAction().equals(SWITCHAUTOMODE))
 			{
 				boolean on = intent.getBooleanExtra(SWITCHAUTOMODE, false);
-				if(on)
-					mLightSensor.monitor(true);
-				else
-					mLightSensor.monitor(false);
+				mLightSensor.monitor(on);
+				mKeepSticky = on;
 			}
 			else if(intent.getAction().equals(SWITCHDIM))
 			{
@@ -254,10 +261,19 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				}
 				mAlarmUtil.update();
 			}
+			else if(intent.getAction().equals(BOOT))
+			{
+				if(!mKeepSticky)
+				{
+					stopSelf();
+					Process.killProcess(Process.myPid());
+				}
+			}
 		}
 //		Log.e(Dimmer.TAG, "onStartCommand(): " + lastLevel);
 //		return Prefs.isAutoMode() ? START_STICKY : (lastLevel>500 ? START_NOT_STICKY : START_STICKY);
-		return START_STICKY;	//sticky for continuous alive
+		return mKeepSticky ? START_STICKY : (lastLevel>500 ? START_NOT_STICKY : START_STICKY);
+//		return START_STICKY;	//sticky for continuous alive
 	}
 	private void adjustLevel(int i, boolean setBrightness, boolean postNotify)
 	{
@@ -293,8 +309,12 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		removeNotification();
 		setDimMode(false);
 		sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
-//		stopSelf();
-//		Process.killProcess(Process.myPid());
+		
+		if(!mKeepSticky)
+		{
+			stopSelf();
+			Process.killProcess(Process.myPid());
+		}
 	}
 	public void stepLevel(boolean darker)
 	{
