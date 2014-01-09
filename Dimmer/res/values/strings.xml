@@ -25,5 +25,9 @@
 	<string name="pref_alarm_dim">Time to enter dim</string>
 	<string name="pref_alarm_bright">Time to return bright</string>
 	<string name="pref_alarm_off">OFF</string>
+	<string name="pref_notify_title">Notification</string>
+	<string name="pref_notify_step">Step of adjustment</string>
+	<string name="pref_notify_lower">Lower bound</string>
+	<string name="pref_notify_upper">Upper bound</string>
 		
 </resources>

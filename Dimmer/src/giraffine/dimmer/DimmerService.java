@@ -276,7 +276,13 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	{
 		if(i > 500)
 		{
-			removeNotification();
+			if(i > 10*Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER))
+				removeNotification();
+			else
+			{
+				if(postNotify)
+					postNotification(i/10);
+			}
 			setDimMode(false);
 		}
 		else
@@ -289,7 +295,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			triggerActingSession();
 		mMask.adjustLevel(i, setBrightness);
 	}
-	public void resetLevel(boolean restoreBrighnessState)
+	public void resetLevel(boolean restoreBrighnessState, boolean removeNotification)
 	{
 		Log.e(Dimmer.TAG, "resetLevel() lastLevel: " + lastLevel);
 		
@@ -303,25 +309,36 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		lastLevel = (int)(((float)currentBrightness)/255*500 + 500);
 		mMask.removeMask();
 		
-		removeNotification();
+		boolean needSuicide = true;
+		if(lastLevel > 10*Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER) || removeNotification)
+			removeNotification();
+		else
+		{
+			postNotification(lastLevel/10);
+			needSuicide = false;
+		}
 		setDimMode(false);
 		sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
 		
-		if(!mKeepSticky)
+		if(!mKeepSticky && needSuicide)
 			trySuicide();
 	}
 	public void stepLevel(boolean darker)
 	{
 		Log.e(Dimmer.TAG, "stepLevel() lastLevel: " + lastLevel + ", darker=" + darker);
 
-		int step = 50;
+		int step = 10*Prefs.getNotify(Prefs.PREF_NOTIFY_STEP);
+		int lowerbound = 10*Prefs.getNotify(Prefs.PREF_NOTIFY_LOWER);
+		int upperbound = 10*Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER);
 		if(darker)
 			lastLevel -= step;
 		else
 			lastLevel += step;
-		if(lastLevel > 500)	lastLevel = 500;
-		if(lastLevel < 100)	lastLevel = 100;
+		if(lastLevel > upperbound)	lastLevel = upperbound;
+		if(lastLevel < lowerbound)	lastLevel = lowerbound;
 		
+		if(lastLevel >= 500)	// if > 50, need call Mask.maskBrightness to set screenBrightness
+			adjustLevel(lastLevel, false, false);
 		adjustLevel(lastLevel, true, true);
 		
 		if(lastLevel < 500)
@@ -335,10 +352,10 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		public void handleMessage(Message msg) {
 			 switch (msg.what) {
 			 case MSG_RESET_LEVEL:
-				resetLevel(false);
+				resetLevel(false, true);
 				break;
 			 case MSG_RESET_LEVEL_RESTORE:
-				resetLevel(true);
+				resetLevel(true, true);
 				 break;
 			 case MSG_RESET_ACTING:
 				 mActing = false;

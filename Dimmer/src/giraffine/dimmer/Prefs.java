@@ -24,6 +24,9 @@ public class Prefs {
 	public static String PREF_ABOUT = "pref_about";
 	public static String PREF_ALARM_DIM = "pref_alarm_dim";
 	public static String PREF_ALARM_BRIGHT = "pref_alarm_bright";
+	public static String PREF_NOTIFY_STEP = "pref_notify_step";
+	public static String PREF_NOTIFY_LOWER = "pref_notify_lower";
+	public static String PREF_NOTIFY_UPPER = "pref_notify_upper";
 
 	private static SharedPreferences mPrefer = null;
 
@@ -113,5 +116,20 @@ public class Prefs {
 	public static void setAlarm(String type, String value)
 	{
 		mPrefer.edit().putString(type, value).commit();
+	}
+	public static int getNotify(String type)
+	{
+		int value = 0;
+		if(type.equalsIgnoreCase(PREF_NOTIFY_STEP))
+			value = 5;
+		else if(type.equalsIgnoreCase(PREF_NOTIFY_LOWER))
+			value = 10;
+		else if(type.equalsIgnoreCase(PREF_NOTIFY_UPPER))
+			value = 50;
+		return mPrefer.getInt(type, value);
+	}
+	public static void setNotify(String type, int value)
+	{
+		mPrefer.edit().putInt(type, value).commit();
 	}
 }
