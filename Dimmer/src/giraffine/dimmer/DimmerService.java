@@ -264,10 +264,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			else if(intent.getAction().equals(BOOT))
 			{
 				if(!mKeepSticky)
-				{
-					stopSelf();
-					Process.killProcess(Process.myPid());
-				}
+					trySuicide();
 			}
 		}
 //		Log.e(Dimmer.TAG, "onStartCommand(): " + lastLevel);
@@ -311,10 +308,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
 		
 		if(!mKeepSticky)
-		{
-			stopSelf();
-			Process.killProcess(Process.myPid());
-		}
+			trySuicide();
 	}
 	public void stepLevel(boolean darker)
 	{
@@ -374,5 +368,12 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	private boolean getDimMode()
 	{
 		return mInDimMode;
+	}
+	private void trySuicide()
+	{
+		if(SettingsActivity.showSettings || Dimmer.showMainApp)
+			return;
+		stopSelf();
+		Process.killProcess(Process.myPid());
 	}
 }

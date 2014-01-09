@@ -18,6 +18,7 @@ public class Dimmer extends Activity {
 
 	public static String TAG = "Dimmer";
 	public static final String REFRESH_INDEX = "refreshIndex"; 
+	public static boolean showMainApp = false;
 	private TextView mIndex;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
@@ -34,6 +35,8 @@ public class Dimmer extends Activity {
 		Prefs.init(this);
 		boolean showActivity = !Prefs.getWidgetMode()
 				|| getIntent().getAction().equalsIgnoreCase(DimmerService.ACTIONNOTIFICATION);
+		
+		if(showActivity)	showMainApp = true;
 		
 		if(showActivity)
 			setTheme(R.style.AppTheme);
@@ -95,6 +98,7 @@ public class Dimmer extends Activity {
 	{
 		super.onDestroy();
 		unregisterReceiver(mBroadcastReceiver);
+		showMainApp = false;
 	}
 	public void onResume ()
 	{
