@@ -48,6 +48,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         
         mPrefWidgetMode = (CheckBoxPreference)findPreference(Prefs.PREF_WIDGETMODE);
         mPrefWidgetMode.setOnPreferenceClickListener(this);
+        mPrefWidgetMode.setChecked(Prefs.getWidgetMode());
 
         mPrefSpeedDim = (ListPreference)findPreference(Prefs.PREF_SPEED_DIM);
         mPrefSpeedDim.setOnPreferenceChangeListener(this);

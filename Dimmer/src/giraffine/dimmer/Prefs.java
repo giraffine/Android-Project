@@ -67,7 +67,7 @@ public class Prefs {
 	}
 	public static boolean getWidgetMode()
 	{
-		return mPrefer.getBoolean(PREF_WIDGETMODE, false);
+		return mPrefer.getBoolean(PREF_WIDGETMODE, true);
 	}
 	public static int getFavorMaskValue()
 	{
