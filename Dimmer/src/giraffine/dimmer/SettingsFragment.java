@@ -67,9 +67,11 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         updateAlarmSettings();
         updateNotifySettings();
         
-        Preference about = findPreference(Prefs.PREF_ABOUT);
         try {
-			about.setTitle("Version: " + getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+        	String version = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+            Preference about = findPreference(Prefs.PREF_ABOUT);
+			about.setTitle("Version: " + version);
+			Prefs.setAbout(version);
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

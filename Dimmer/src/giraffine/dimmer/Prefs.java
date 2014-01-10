@@ -133,4 +133,13 @@ public class Prefs {
 	{
 		mPrefer.edit().putInt(type, value).commit();
 	}
+	public static String getAbout()
+	{
+		return mPrefer.getString(PREF_ABOUT, "");
+	}
+	public static void setAbout(String value)
+	{
+		mPrefer.edit().putString(PREF_ABOUT, value).commit();
+	}
+
 }

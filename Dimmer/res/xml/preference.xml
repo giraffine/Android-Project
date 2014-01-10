@@ -4,7 +4,7 @@
         android:key="pref_widgetmode"
         android:title="@string/pref_widget_title"
         android:summary="@string/pref_widget_summary"
-        android:defaultValue="false" />
+        android:defaultValue="true" />
     
     <PreferenceCategory
         android:key="pref_automode_category"

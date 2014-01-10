@@ -10,6 +10,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.os.IBinder;
@@ -20,6 +21,7 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class DimmerService extends Service implements LightSensor.EventCallback{
 
@@ -85,7 +87,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		if(mNotification == null)
 		{
 			Intent intent = new Intent(ACTIONNOTIFICATION);
-			intent.setClassName(PACKAGENAME, PACKAGENAME+".Dimmer");
+			intent.setClassName(PACKAGENAME, PACKAGENAME+".SettingsActivity");
 			PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
 			
 			mNotification = new NotificationCompat.Builder(this)
@@ -367,6 +369,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				adjustLevel(favorvalue, true, true);
 				lastLevel = favorvalue;
 				sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
+				showHint();
 				break;
 			 }
 		}
@@ -392,5 +395,15 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			return;
 		stopSelf();
 		Process.killProcess(Process.myPid());
+	}
+	private void showHint()
+	{
+		try {
+			String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			if(version == null || !version.equalsIgnoreCase(Prefs.getAbout()))
+				Toast.makeText(this, R.string.pref_widget_hint, Toast.LENGTH_LONG).show();
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }
