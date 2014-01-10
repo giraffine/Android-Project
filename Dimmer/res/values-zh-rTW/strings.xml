@@ -25,5 +25,8 @@
 	<string name="pref_alarm_dim">定時變暗</string>
 	<string name="pref_alarm_bright">定時變亮</string>
 	<string name="pref_alarm_off">關閉</string>
-
+	<string name="pref_notify_title">通知</string>
+	<string name="pref_notify_step">調整的大小</string>
+	<string name="pref_notify_range">調整的範圍</string>
+	
 </resources>

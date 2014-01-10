@@ -27,8 +27,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	private Preference mPrefAlarmDim = null;
 	private Preference mPrefAlarmBright = null;
 	private Preference mPrefNotifyStep = null;
-	private Preference mPrefNotifyLower = null;
-	private Preference mPrefNotifyUpper = null;
+	private Preference mPrefNotifyRange = null;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
 		@Override
@@ -62,8 +61,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         mPrefAlarmBright = findPreference(Prefs.PREF_ALARM_BRIGHT);
         
         mPrefNotifyStep = findPreference(Prefs.PREF_NOTIFY_STEP);
-        mPrefNotifyLower = findPreference(Prefs.PREF_NOTIFY_LOWER);
-        mPrefNotifyUpper = findPreference(Prefs.PREF_NOTIFY_UPPER);
+        mPrefNotifyRange = findPreference(Prefs.PREF_NOTIFY_RANGE);
         
         updateAutoSettings();
         updateAlarmSettings();
@@ -180,8 +178,8 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	public void updateNotifySettings()
 	{
 		mPrefNotifyStep.setSummary(String.valueOf(Prefs.getNotify(Prefs.PREF_NOTIFY_STEP)));
-		mPrefNotifyLower.setSummary(String.valueOf(Prefs.getNotify(Prefs.PREF_NOTIFY_LOWER)));
-		mPrefNotifyUpper.setSummary(String.valueOf(Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER)));
+		mPrefNotifyRange.setSummary(String.valueOf(Prefs.getNotify(Prefs.PREF_NOTIFY_LOWER))
+				+ " ~ " + String.valueOf(Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER)));
 	}
 	public void showAutoModeDetail(boolean show)
 	{

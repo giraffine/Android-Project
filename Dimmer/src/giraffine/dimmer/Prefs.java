@@ -25,6 +25,7 @@ public class Prefs {
 	public static String PREF_ALARM_DIM = "pref_alarm_dim";
 	public static String PREF_ALARM_BRIGHT = "pref_alarm_bright";
 	public static String PREF_NOTIFY_STEP = "pref_notify_step";
+	public static String PREF_NOTIFY_RANGE = "pref_notify_range";
 	public static String PREF_NOTIFY_LOWER = "pref_notify_lower";
 	public static String PREF_NOTIFY_UPPER = "pref_notify_upper";
 

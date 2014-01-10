@@ -63,21 +63,15 @@
     <PreferenceCategory
         android:key="pref_notify_category"
         android:title="@string/pref_notify_title">
-	<giraffine.dimmer.SettingNotify
+	<giraffine.dimmer.SettingNotifyStep
         android:key="pref_notify_step"
         android:title="@string/pref_notify_step"
         android:positiveButtonText="@android:string/yes" 
         android:negativeButtonText="@android:string/no" 
         />
-	<giraffine.dimmer.SettingNotify
-        android:key="pref_notify_lower"
-        android:title="@string/pref_notify_lower"
-        android:positiveButtonText="@android:string/yes" 
-        android:negativeButtonText="@android:string/no" 
-        />
-	<giraffine.dimmer.SettingNotify
-        android:key="pref_notify_upper"
-        android:title="@string/pref_notify_upper"
+	<giraffine.dimmer.SettingNotifyRange
+        android:key="pref_notify_range"
+        android:title="@string/pref_notify_range"
         android:positiveButtonText="@android:string/yes" 
         android:negativeButtonText="@android:string/no" 
         />
