@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">明るさ調節</string>
+    <string name="action_settings">設定</string>
+	<string name="guide">上下にスワイプして明るさを調節</string>
+    
+	<string name="pref_auto_title">オートモード</string>
+	<string name="pref_auto_summary">周囲の状況に応じて自動的に明るさを調節します。</string>
+	<string name="pref_auto_lux_state">現在の周囲の明るさ:</string>
+	<string name="pref_auto_not_support">この端末には周囲の明るさを感知するセンサーがありません。</string>
+	<string name="pref_widget_title">ウィジェットモード</string>
+	<string name="pref_widget_summary">アプリアイコンをクリックして明暗の切り替えをします。</string>
+	<string name="pref_widget_hint">元に戻すには通知領域のアイコンをクリックして下さい。</string>
+	<string name="pref_threshold_dim">暗さ</string>
+	<string name="pref_threshold_dim_lowest">最も低く感知した周囲の明るさ</string>
+	<string name="pref_threshold_dim_set_lowest">最低のluxに設定</string>
+	<string name="pref_threshold_dim_lux">周囲の明るさ</string>
+	<string name="pref_threshold_bright">戻った時の明るさ</string>
+	<string name="pref_threshold_bright_diff">周囲の明るさとの差</string>
+	<string name="pref_speed_dim">画面が暗くなるまでの反応速度</string>
+	<string name="pref_speed_bright">画面が明るくなるまでの反応速度</string>
+	<string name="pref_alarm_title">タイマーモード</string>
+	<string name="pref_alarm_dim">暗くする時間</string>
+	<string name="pref_alarm_bright">元に戻す時間</string>
+	<string name="pref_alarm_off">オフ</string>
+	<string name="pref_notify_title">通知</string>
+	<string name="pref_notify_step">明るさを増減する間隔</string>
+	<string name="pref_notify_range">変更できる明るさの範囲</string>
+		
+</resources>
