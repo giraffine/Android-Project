@@ -322,6 +322,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		setDimMode(false);
 		sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
 		
+		Dimmer.collectState = false;
 		if(!mKeepSticky && needSuicide)
 			trySuicide();
 	}
@@ -364,6 +365,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				 break;
 			case MSG_ENTER_DIMM:
 				mMask.removeMask();
+				Dimmer.collectState = true;
 				BrightnessUtil.collectState();
 				int favorvalue = Prefs.getFavorMaskValue();
 				adjustLevel(favorvalue, true, true);
