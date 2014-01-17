@@ -19,6 +19,7 @@ public class Dimmer extends Activity {
 	public static String TAG = "Dimmer";
 	public static final String REFRESH_INDEX = "refreshIndex"; 
 	public static boolean showMainApp = false;
+	public static boolean collectState = false;
 	private TextView mIndex;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
@@ -63,6 +64,11 @@ public class Dimmer extends Activity {
 					downx = (int)event.getRawX();
 					downy = (int)event.getRawY();
 					pivot = 0;
+					if(!collectState)	// Only at the first time adjustment, try collect state to keep original setting
+					{
+						BrightnessUtil.collectState();
+						collectState = true;
+					}
 					break;
 				case MotionEvent.ACTION_MOVE:
 //					Log.e(TAG, "MotionEvent.ACTION_MOVE: (" + event.getX() + ", " + event.getY() + "), (" + event.getRawX() + ", " + event.getRawY() + ")");
