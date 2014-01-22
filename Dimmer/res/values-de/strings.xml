@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dimmer</string>
+    <string name="action_settings">Einstellungen</string>
+	<string name="guide">Aufwärts und abwärts berühren um die Helligkeit zu regulieren.</string>
+    
+	<string name="pref_auto_title">Automatischer Modus</string>
+	<string name="pref_auto_summary">Abhängig von der Umgebung automatisch dimmen.</string>
+	<string name="pref_auto_lux_state">Aktuelles Umgebungslicht:</string>
+	<string name="pref_auto_not_support">Gerät unterstützt keinen Umgebungslichtsensor.</string>
+	<string name="pref_widget_title">Widget Modus</string>
+	<string name="pref_widget_summary">One-click-icon um zwischen Dimmen und hell zu schalten.</string>
+	<string name="pref_widget_hint">App ist über das Benachrichtigungsfeld aufrufbar.</string>
+	<string name="pref_threshold_dim">Regulierung eingeben</string>
+	<string name="pref_threshold_dim_lowest">Ermittle geringstes Umgebungslicht</string>
+	<string name="pref_threshold_dim_set_lowest">Setze geringsten Lux-wert</string>
+	<string name="pref_threshold_dim_lux">Umgebungslicht</string>
+	<string name="pref_threshold_bright">Zu hell zurückkehren</string>
+	<string name="pref_threshold_bright_diff">Umgebungslichtdifferenz</string>
+	<string name="pref_speed_dim">Reaktionsgeschwindigkeit des dimmens</string>
+	<string name="pref_speed_bright">Reaktionsgeschwindigkeit des erhellens</string>
+	<string name="pref_alarm_title">Zeitmodus</string>
+	<string name="pref_alarm_dim">Zeiteinstellung um zu dimmen</string>
+	<string name="pref_alarm_bright">Zeiteinstellung um zu erhellen</string>
+	<string name="pref_alarm_off">Aus</string>
+	<string name="pref_notify_title">Benachrichtigung</string>
+	<string name="pref_notify_step">Einstellungsschritte</string>
+	<string name="pref_notify_range">Einstellungsbereich</string>
+		
+</resources>

@@ -3,7 +3,7 @@
 
     <string name="app_name">Dimmer</string>
     <string name="action_settings">Settings</string>
-	<string name="guide">Touch up and down to adjust light.</string>
+	<string name="guide">Touch up and down to adjust brightness.</string>
     
 	<string name="pref_auto_title">Auto Mode</string>
 	<string name="pref_auto_summary">Automatically dim and brighten as environment.</string>
