@@ -269,6 +269,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 					trySuicide();
 			}
 		}
+		// Only tf700t: If killed, next launch will NOT result in Activity/Service OnCreate.  
+		if(android.os.Build.DEVICE.equalsIgnoreCase("tf700t"))	return START_STICKY;
 //		Log.e(Dimmer.TAG, "onStartCommand(): " + lastLevel);
 //		return Prefs.isAutoMode() ? START_STICKY : (lastLevel>500 ? START_NOT_STICKY : START_STICKY);
 		return mKeepSticky ? START_STICKY : (lastLevel>500 ? START_NOT_STICKY : START_STICKY);
@@ -393,6 +395,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	}
 	private void trySuicide()
 	{
+		// Only tf700t: If killed, next launch will NOT result in Activity/Service OnCreate.  
+		if(android.os.Build.DEVICE.equalsIgnoreCase("tf700t"))	return;
 		if(SettingsActivity.showSettings || Dimmer.showMainApp)
 			return;
 		stopSelf();
