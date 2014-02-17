@@ -27,5 +27,6 @@
 	<string name="pref_notify_title">Benachrichtigung</string>
 	<string name="pref_notify_step">Einstellungsschritte</string>
 	<string name="pref_notify_range">Einstellungsbereich</string>
+	<string name="pref_ap_list">Auszuschließen App</string>
 		
 </resources>

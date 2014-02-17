@@ -27,5 +27,6 @@
 	<string name="pref_notify_title">通知</string>
 	<string name="pref_notify_step">明るさを増減する間隔</string>
 	<string name="pref_notify_range">変更できる明るさの範囲</string>
+	<string name="pref_ap_list">アプリケーションを除外する</string>
 		
 </resources>

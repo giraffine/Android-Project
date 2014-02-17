@@ -1,5 +1,9 @@
 package giraffine.dimmer;
 
+import java.util.List;
+
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -158,6 +162,13 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
         
         mAlarmUtil.update();
     }
+	public String getForegroundActivity()
+	{
+		ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningTaskInfo> Info = am.getRunningTasks(1);
+		ComponentName topActivity = Info.get(0).topActivity;
+		return topActivity.getPackageName();
+	}
 	@Override
 	public void onDestroy() {
 		Log.e(Dimmer.TAG, "onDestroy()");
@@ -181,7 +192,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	@Override
 	public void onEnterDarkLight() {
 //		Log.e(Dimmer.TAG, "onDarkLight() mIsAutoMode=" + Prefs.isAutoMode() + ", mInDimmMode=" + mInDimmMode);
-		if(!Prefs.isAutoMode() || getDimMode())	return;
+		if(!Prefs.isAutoMode() || getDimMode()
+				|| (Prefs.getApList() != null && Prefs.getApList().size() != 0 && Prefs.getApList().contains(getForegroundActivity())))	return;
 		mLightSensor.setFreezeLux();
 		mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
 	}

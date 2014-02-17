@@ -27,5 +27,6 @@
 	<string name="pref_notify_title">通知</string>
 	<string name="pref_notify_step">调整的级别</string>
 	<string name="pref_notify_range">调整的范围</string>
+	<string name="pref_ap_list">排除应用程序</string>
 	
 </resources>

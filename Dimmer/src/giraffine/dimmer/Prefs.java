@@ -1,5 +1,7 @@
 package giraffine.dimmer;
 
+import java.util.Set;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -28,6 +30,7 @@ public class Prefs {
 	public static String PREF_NOTIFY_RANGE = "pref_notify_range";
 	public static String PREF_NOTIFY_LOWER = "pref_notify_lower";
 	public static String PREF_NOTIFY_UPPER = "pref_notify_upper";
+	public static String PREF_AP_LIST = "pref_ap_list";
 
 	private static SharedPreferences mPrefer = null;
 
@@ -132,6 +135,14 @@ public class Prefs {
 	public static void setNotify(String type, int value)
 	{
 		mPrefer.edit().putInt(type, value).commit();
+	}
+	public static Set<String> getApList()
+	{
+		return mPrefer.getStringSet(PREF_AP_LIST, null);
+	}
+	public static void setApList(Set<String> list)
+	{
+		mPrefer.edit().putStringSet(PREF_AP_LIST, list).commit();
 	}
 	public static String getAbout()
 	{

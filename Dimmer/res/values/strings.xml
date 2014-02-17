@@ -27,5 +27,6 @@
 	<string name="pref_notify_title">Notification</string>
 	<string name="pref_notify_step">Step of adjustment</string>
 	<string name="pref_notify_range">Range of adjustment</string>
+	<string name="pref_ap_list">Exclude app</string>
 		
 </resources>

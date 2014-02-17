@@ -29,6 +29,12 @@
         android:positiveButtonText="@android:string/ok" 
         android:negativeButtonText="@android:string/cancel" 
         />
+	<giraffine.dimmer.SettingApList
+        android:key="pref_ap_list"
+        android:title="@string/pref_ap_list"
+        android:positiveButtonText="@android:string/yes" 
+        android:negativeButtonText="@android:string/no" 
+        />
 	<ListPreference 
         android:key="pref_speed_dim"
         android:title="@string/pref_speed_dim"

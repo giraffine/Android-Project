@@ -1,5 +1,7 @@
 package giraffine.dimmer;
 
+import java.util.Set;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +26,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	private ListPreference mPrefSpeedBright = null;
 	private Preference mPrefThresholdDim = null;
 	private Preference mPrefThresholdBright = null;
+	private Preference mPrefApList = null;
 	private Preference mPrefAlarmDim = null;
 	private Preference mPrefAlarmBright = null;
 	private Preference mPrefNotifyStep = null;
@@ -56,6 +59,8 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         
         mPrefThresholdDim = findPreference(Prefs.PREF_THRESHOLD_DIM);
         mPrefThresholdBright = findPreference(Prefs.PREF_THRESHOLD_BRIGHT);
+        
+        mPrefApList = findPreference(Prefs.PREF_AP_LIST);
         
         mPrefAlarmDim = findPreference(Prefs.PREF_ALARM_DIM);
         mPrefAlarmBright = findPreference(Prefs.PREF_ALARM_BRIGHT);
@@ -98,6 +103,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 			mPrefThresholdBright.setEnabled(mPrefAutoMode.isChecked());
 			mPrefSpeedDim.setEnabled(mPrefAutoMode.isChecked());
 			mPrefSpeedBright.setEnabled(mPrefAutoMode.isChecked());
+			mPrefApList.setEnabled(mPrefAutoMode.isChecked());
 			return true;
 		}
 		else if(pref.getKey().equalsIgnoreCase(Prefs.PREF_WIDGETMODE))
@@ -164,6 +170,9 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		mPrefSpeedBright.setEnabled(mPrefAutoMode.isChecked());
 		mPrefSpeedDim.setSummary(mPrefSpeedDim.getEntry());
 		mPrefSpeedBright.setSummary(mPrefSpeedBright.getEntry());
+		
+		mPrefApList.setEnabled(mPrefAutoMode.isChecked());
+		mPrefApList.setSummary(SettingApList.getSummary(Prefs.getApList(), getActivity().getPackageManager()));
 	}
 	public void updateAlarmSettings()
 	{
@@ -191,6 +200,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	        ((PreferenceCategory)findPreference("pref_automode_category")).addPreference(mPrefThresholdBright);
 	        ((PreferenceCategory)findPreference("pref_automode_category")).addPreference(mPrefSpeedDim);
 	        ((PreferenceCategory)findPreference("pref_automode_category")).addPreference(mPrefSpeedBright);
+	        ((PreferenceCategory)findPreference("pref_automode_category")).addPreference(mPrefApList);
 		}
 		else
 		{
@@ -198,6 +208,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	        ((PreferenceCategory)findPreference("pref_automode_category")).removePreference(mPrefThresholdBright);
 	        ((PreferenceCategory)findPreference("pref_automode_category")).removePreference(mPrefSpeedDim);
 	        ((PreferenceCategory)findPreference("pref_automode_category")).removePreference(mPrefSpeedBright);
+	        ((PreferenceCategory)findPreference("pref_automode_category")).removePreference(mPrefApList);
 		}
 	}
 }
