@@ -27,6 +27,8 @@
 	<string name="pref_notify_title">通知</string>
 	<string name="pref_notify_step">調整的大小</string>
 	<string name="pref_notify_range">調整的範圍</string>
+	<string name="pref_notify_layout">按鍵設定</string>
+	<string name="pref_notify_layout_hint">長按可以變更按鍵位置</string>
 	<string name="pref_ap_list">排除應用程序</string>
 	
 </resources>

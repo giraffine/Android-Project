@@ -5,6 +5,7 @@ import java.util.Set;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.WindowManager;
 
 public class Prefs {
 
@@ -30,6 +31,7 @@ public class Prefs {
 	public static String PREF_NOTIFY_RANGE = "pref_notify_range";
 	public static String PREF_NOTIFY_LOWER = "pref_notify_lower";
 	public static String PREF_NOTIFY_UPPER = "pref_notify_upper";
+	public static String PREF_NOTIFY_LAYOUT = "pref_notify_layout";
 	public static String PREF_AP_LIST = "pref_ap_list";
 
 	private static SharedPreferences mPrefer = null;
@@ -55,6 +57,8 @@ public class Prefs {
 				mPrefer.edit().putFloat(PROXIMITYMIN, prefer.getFloat(PROXIMITYMIN, ProximitySensor.DEFAULT_DISTANCE)).commit();
 			mPrefer.edit().putBoolean(PREF_COMPATIBLE, true).commit();
 		}
+		if(((WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth() < 540)
+			SettingNotifyLayout.DEFAULT_LAYOUT = "01231101";
 	}
 	
 	public static boolean isAutoMode()
@@ -135,6 +139,16 @@ public class Prefs {
 	public static void setNotify(String type, int value)
 	{
 		mPrefer.edit().putInt(type, value).commit();
+	}
+	public static String getNotifyLayout()
+	{
+		String r = mPrefer.getString(PREF_NOTIFY_LAYOUT, SettingNotifyLayout.DEFAULT_LAYOUT); 
+		return (r.length() != SettingNotifyLayout.DEFAULT_LAYOUT.length() ? SettingNotifyLayout.DEFAULT_LAYOUT : r);
+	}
+	public static void setNotifyLayout(String layout)
+	{
+		if(layout.length() != SettingNotifyLayout.DEFAULT_LAYOUT.length())	layout = SettingNotifyLayout.DEFAULT_LAYOUT;
+		mPrefer.edit().putString(PREF_NOTIFY_LAYOUT, layout).commit();
 	}
 	public static Set<String> getApList()
 	{

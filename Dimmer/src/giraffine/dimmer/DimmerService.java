@@ -24,6 +24,7 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -36,6 +37,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String ADJUSTLEVEL = "adjustLevel";
 	public static String FINISHLEVEL = "finishLevel";
 	public static String RESETLEVEL = "resetLevel";
+	public static String PAUSEFUNCTION = "pauseFunction";
+	public static String LAYOUTCHANGE = "layoutChange";
 	public static String STEPLEVELUP = "stepLevelUp";
 	public static String STEPLEVELDOWN = "stepLevelDown";
 	public static String SWITCHAUTOMODE = "switchAutoMode";
@@ -46,6 +49,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String BOOT = "boot";
 	public static final int MSG_RESET_LEVEL = 0;
 	public static final int MSG_RESET_LEVEL_RESTORE = 1;
+	public static final int MSG_RESET_LEVEL_RESTORE_KEEP_NOTIFY = 2;
 	public static final int MSG_RESET_ACTING = 3;
 	public static final int MSG_ENTER_DIMM = 4;
 	public static final int DEFAULTLEVEL = 1000;
@@ -59,35 +63,37 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	private LightSensor mLightSensor = null;
 	private AlarmUtil mAlarmUtil = null;
 	private boolean mKeepSticky = false;
+	private boolean mIsPaused = false;
+	private boolean mLayoutChanged = true;
+	private boolean mLayoutUpdateOnly = false;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return null;
 	}
-	public void postNotification(int levelHint)
+	public void postNotification(int levelHint, boolean dim)
 	{
-		
 		if(mNotiRemoteView == null)
+			initNotification();
+		
+		if(mLayoutChanged)
 		{
-			Intent stepUpIntent = new Intent(this, DimmerService.class);
-			stepUpIntent.setAction(STEPLEVELUP);
-			PendingIntent piStepUp = PendingIntent.getService(this, 0, stepUpIntent, 0);
-			
-			Intent stepDownIntent = new Intent(this, DimmerService.class);
-			stepDownIntent.setAction(STEPLEVELDOWN);
-			PendingIntent piStepDown = PendingIntent.getService(this, 0, stepDownIntent, 0);
-			
-			Intent resetIntent = new Intent(this, DimmerService.class);
-			resetIntent.setAction(RESETLEVEL);
-			PendingIntent piReset = PendingIntent.getService(this, 0, resetIntent, 0);
-
-			mNotiRemoteView = new RemoteViews(PACKAGENAME, R.layout.notification);
-			mNotiRemoteView.setOnClickPendingIntent(R.id.noti_up, piStepUp);
-			mNotiRemoteView.setOnClickPendingIntent(R.id.noti_down, piStepDown);
-			mNotiRemoteView.setOnClickPendingIntent(R.id.noti_cross, piReset);
+			relayoutNotification();
+			mLayoutChanged = false;
 		}
-		mNotiRemoteView.setTextViewText(R.id.noti_text, levelHint + "");
 
+		if(!mLayoutUpdateOnly)
+		{
+			mNotiRemoteView.setTextViewText(R.id.noti_text, levelHint + "");
+			for(int i=0; i<4; i++)
+			{
+				if(dim)
+					mNotiRemoteView.setImageViewResource(SettingNotifyLayout.getNotifyButtonID(i, 2), R.drawable.ic_pause);
+				else
+					mNotiRemoteView.setImageViewResource(SettingNotifyLayout.getNotifyButtonID(i, 2), R.drawable.ic_start);
+			}
+		}
+		
 		if(mNotification == null)
 		{
 			Intent intent = new Intent(ACTIONNOTIFICATION);
@@ -102,14 +108,69 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		}
 		if(DebugMode)
 			mNotification.tickerText = mLightSensor.getCurrentLux() + "";
-
+		
+		mNotification.number = 1;
 		startForeground(999, mNotification);
 	}
 	public void removeNotification()
 	{
+		mNotification.number = 0;
 		stopForeground(true);
 	}
+	public void initNotification()
+	{
+		Intent stepUpIntent = new Intent(this, DimmerService.class);
+		stepUpIntent.setAction(STEPLEVELUP);
+		PendingIntent piStepUp = PendingIntent.getService(this, 0, stepUpIntent, 0);
+		
+		Intent stepDownIntent = new Intent(this, DimmerService.class);
+		stepDownIntent.setAction(STEPLEVELDOWN);
+		PendingIntent piStepDown = PendingIntent.getService(this, 0, stepDownIntent, 0);
 
+		Intent pauseIntent = new Intent(this, DimmerService.class);
+		pauseIntent.setAction(PAUSEFUNCTION);
+		PendingIntent piPause = PendingIntent.getService(this, 0, pauseIntent, 0);
+
+		Intent resetIntent = new Intent(this, DimmerService.class);
+		resetIntent.setAction(RESETLEVEL);
+		PendingIntent piReset = PendingIntent.getService(this, 0, resetIntent, 0);
+
+		// Customization for notification button:
+		// Design A: Dynamically add Remoteivew.
+		// Design B: Dynamically set visible/invisible Button.
+		// Problem A: Fast click button will trigger notification content intent.
+		// Problem B: Need list all permutations and combinations (4x4).
+		mNotiRemoteView = new RemoteViews(PACKAGENAME, R.layout.notification);
+		
+		for(int i=0; i<4; i++)
+		{
+			for(int j=0; j<4; j++)
+			{
+				PendingIntent pi = null;
+				switch(j)
+				{
+				case 0:	pi = piStepUp; break;
+				case 1:	pi = piStepDown; break;
+				case 2:	pi = piPause; break;
+				case 3:	pi = piReset; break;
+				}
+				mNotiRemoteView.setOnClickPendingIntent(SettingNotifyLayout.getNotifyButtonID(i, j), pi);
+			}
+		}
+	}
+	public void relayoutNotification()
+	{
+		for(int i=0; i<4; i++)
+			for(int j=0; j<4; j++)
+				mNotiRemoteView.setViewVisibility(SettingNotifyLayout.getNotifyButtonID(i, j), View.GONE);
+		String order = Prefs.getNotifyLayout();
+		Log.e(Dimmer.TAG, "relayoutNotification: order=" + order);
+    	for(int i=0; i<4; i++)
+    	{
+    		if(order.charAt(i+4) == '1')
+    			mNotiRemoteView.setViewVisibility(SettingNotifyLayout.getNotifyButtonID(i, Integer.valueOf(String.valueOf(order.charAt(i)))), View.VISIBLE);
+    	}
+	}
 	@Override
     public void onCreate() {
 		BrightnessUtil.init(this);
@@ -185,7 +246,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	}
 	@Override
 	public void onLightChanged(int lux) {
-		if(DebugMode)	postNotification(lastLevel/10);
+		if(DebugMode)	postNotification(lastLevel/10, false);
 		if(SettingsActivity.showSettings)
 			sendBroadcast(new Intent(SettingsFragment.REFRESH_LUX).putExtra("lux", lux));
 	}
@@ -193,7 +254,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public void onEnterDarkLight() {
 //		Log.e(Dimmer.TAG, "onDarkLight() mIsAutoMode=" + Prefs.isAutoMode() + ", mInDimmMode=" + mInDimmMode);
 		if(!Prefs.isAutoMode() || getDimMode()
-				|| (Prefs.getApList() != null && Prefs.getApList().size() != 0 && Prefs.getApList().contains(getForegroundActivity())))	return;
+				|| (Prefs.getApList() != null && Prefs.getApList().size() != 0 && Prefs.getApList().contains(getForegroundActivity()))
+				|| mIsPaused)	return;
 		mLightSensor.setFreezeLux();
 		mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
 	}
@@ -228,9 +290,29 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 
 //				Log.e(Dimmer.TAG, "" + LuxUtil.dumpLuxLevel());
 			}
+			else if(intent.getAction().equals(PAUSEFUNCTION))
+			{
+				if(getDimMode())
+					mHandler.sendEmptyMessage(MSG_RESET_LEVEL_RESTORE_KEEP_NOTIFY);
+				else
+				{
+					mLightSensor.setFreezeLux();
+					mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
+				}
+			}
 			else if(intent.getAction().equals(RESETLEVEL))
 			{
 				mHandler.sendEmptyMessage(MSG_RESET_LEVEL_RESTORE);
+			}
+			else if(intent.getAction().equals(LAYOUTCHANGE))
+			{
+				mLayoutChanged = true;
+				if(mNotification.number == 1)
+				{
+					mLayoutUpdateOnly = true;
+					postNotification(0, false);
+					mLayoutUpdateOnly = false;
+				}
 			}
 			else if(intent.getAction().equals(STEPLEVELUP))
 			{
@@ -290,6 +372,9 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	}
 	private void adjustLevel(int i, boolean setBrightness, boolean postNotify)
 	{
+		if(postNotify)
+			mIsPaused = false;
+		
 		if(i > 500)
 		{
 			if(i > 10*Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER))
@@ -297,14 +382,14 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			else
 			{
 				if(postNotify)
-					postNotification(i/10);
+					postNotification(i/10, false);
 			}
 			setDimMode(false);
 		}
 		else
 		{
 			if(postNotify)
-			postNotification(i/10);
+			postNotification(i/10, true);
 			setDimMode(true);
 		}
 		if(setBrightness)
@@ -314,7 +399,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public void resetLevel(boolean restoreBrighnessState, boolean removeNotification)
 	{
 		Log.e(Dimmer.TAG, "resetLevel() lastLevel: " + lastLevel);
-		
+
+		mIsPaused = !removeNotification;
 		if(restoreBrighnessState)
 		{
 			triggerActingSession();
@@ -326,11 +412,11 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		mMask.removeMask();
 		
 		boolean needSuicide = true;
-		if(lastLevel > 10*Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER) || removeNotification)
+		if(lastLevel >= 10*Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER) && removeNotification)
 			removeNotification();
 		else
 		{
-			postNotification(lastLevel/10);
+			postNotification(lastLevel/10, false);
 			needSuicide = false;
 		}
 		setDimMode(false);
@@ -367,16 +453,19 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	}
 	Handler mHandler = new Handler(){
 		public void handleMessage(Message msg) {
-			 switch (msg.what) {
-			 case MSG_RESET_LEVEL:
+			switch (msg.what) {
+			case MSG_RESET_LEVEL:
 				resetLevel(false, true);
 				break;
-			 case MSG_RESET_LEVEL_RESTORE:
+			case MSG_RESET_LEVEL_RESTORE:
 				resetLevel(true, true);
-				 break;
-			 case MSG_RESET_ACTING:
-				 mActing = false;
-				 break;
+				break;
+			case MSG_RESET_LEVEL_RESTORE_KEEP_NOTIFY:
+				resetLevel(true, false);
+				break;
+			case MSG_RESET_ACTING:
+				mActing = false;
+				break;
 			case MSG_ENTER_DIMM:
 				mMask.removeMask();
 				Dimmer.collectState = true;
@@ -387,7 +476,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				sendBroadcast(new Intent(Dimmer.REFRESH_INDEX));
 				showHint();
 				break;
-			 }
+			}
 		}
 	};
 	public void triggerActingSession()
