@@ -412,7 +412,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		mMask.removeMask();
 		
 		boolean needSuicide = true;
-		if(lastLevel >= 10*Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER) && removeNotification)
+		if(removeNotification)
 			removeNotification();
 		else
 		{
