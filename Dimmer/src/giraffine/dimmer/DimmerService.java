@@ -114,7 +114,8 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	}
 	public void removeNotification()
 	{
-		mNotification.number = 0;
+		if(mNotification != null)
+			mNotification.number = 0;
 		stopForeground(true);
 	}
 	public void initNotification()
