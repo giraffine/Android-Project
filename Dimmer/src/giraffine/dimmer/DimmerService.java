@@ -308,7 +308,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			else if(intent.getAction().equals(LAYOUTCHANGE))
 			{
 				mLayoutChanged = true;
-				if(mNotification.number == 1)
+				if(mNotification != null && mNotification.number == 1)
 				{
 					mLayoutUpdateOnly = true;
 					postNotification(0, false);
