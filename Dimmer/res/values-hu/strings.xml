@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Tompító</string>
+    <string name="action_settings">Beállítások</string>
+	<string name="guide">A fényerő állításához nyomd meg a fel vagy a le gombot.</string>
+    
+	<string name="pref_auto_title">Automata üzemmód</string>
+	<string name="pref_auto_summary">Fényerő automatikus állítása a környezeti fényerőnek megfelelően.</string>
+	<string name="pref_auto_lux_state">Jelenlegi környezeti fényerő:</string>
+	<string name="pref_auto_not_support">Ez a készülék nem támogatja a környezeti fényerő érzékelését.</string>
+	<string name="pref_widget_title">Widget mód</string>
+	<string name="pref_widget_summary">Egyetlen ikon a fény erősségének csökkentésére vagy növelésére.</string>
+	<string name="pref_widget_hint">Az értesítésre való kattintással beléphetsz az alkalmazásba.</string>
+	<string name="pref_threshold_dim">Fényerő csökkentése</string>
+	<string name="pref_threshold_dim_lowest">Legalacsonyabb környezeti fényerő érzékelése.</string>
+	<string name="pref_threshold_dim_set_lowest">Legalacsonyabb fényerő beállítása</string>
+	<string name="pref_threshold_dim_lux">Környezeti fényerő</string>
+	<string name="pref_threshold_bright">Visszaállítás világosra</string>
+	<string name="pref_threshold_bright_diff">Környezeti fényerő különbség</string>
+	<string name="pref_speed_dim">Fényerő csökkentésének sebessége</string>
+	<string name="pref_speed_bright">Fényerő növelésének sebessége</string>
+	<string name="pref_alarm_title">Időzítő mód</string>
+	<string name="pref_alarm_dim">Fényerő csökkentésének kezdő időpontja</string>
+	<string name="pref_alarm_bright">Fényerő visszaállításának időpontja</string>
+	<string name="pref_alarm_off">KI</string>
+	<string name="pref_notify_title">Értesítés</string>
+	<string name="pref_notify_step">Szabályozás lépésköze</string>
+	<string name="pref_notify_range">Szabályozás skálája</string>
+	<string name="pref_notify_layout">Nyomógombok elrendezése</string>
+	<string name="pref_notify_layout_hint">Nyomd hosszan a gombot a pozíció megváltoztatásához.</string>
+	<string name="pref_ap_list">Alkalmazás kivételek</string>
+		
+</resources>

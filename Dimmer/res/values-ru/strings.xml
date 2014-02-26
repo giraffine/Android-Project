@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Диммер</string>
+    <string name="action_settings">Настройки</string>
+	<string name="guide">Листайте вверх и вниз для регулировки яркости</string>
+    
+	<string name="pref_auto_title">Автоматический режим</string>
+	<string name="pref_auto_summary">Подстройка под уровень освещения</string>
+	<string name="pref_auto_lux_state">Текущий уровень освещенности:</string>
+	<string name="pref_auto_not_support">Это устройство не имеет датчика освещенности</string>
+	<string name="pref_widget_title">Режим виджета</string>
+	<string name="pref_widget_summary">Переключение одним кликом по ярлыку</string>
+	<string name="pref_widget_hint">Для доступа к настройкам кликните по уведомлению</string>
+	<string name="pref_threshold_dim">Начинать затемнение</string>
+	<string name="pref_threshold_dim_lowest">Определить минимум автоматически</string>
+	<string name="pref_threshold_dim_set_lowest">Автоматически</string>
+	<string name="pref_threshold_dim_lux">Освещение</string>
+	<string name="pref_threshold_bright">Возвращать яркость</string>
+	<string name="pref_threshold_bright_diff">Разница в освещении</string>
+	<string name="pref_speed_dim">Скорость отклика затемнения</string>
+	<string name="pref_speed_bright">Скорость отклика яркости</string>
+	<string name="pref_alarm_title">Управление по времени</string>
+	<string name="pref_alarm_dim">Время начала затемнения</string>
+	<string name="pref_alarm_bright">Время возврата яркости</string>
+	<string name="pref_alarm_off">ВЫКЛ.</string>
+	<string name="pref_notify_title">Уведомление</string>
+	<string name="pref_notify_step">Шаг регулировки</string>
+	<string name="pref_notify_range">Диапазон регулировки</string>
+	<string name="pref_notify_layout">Расположение кнопок</string>
+	<string name="pref_notify_layout_hint">Нажмите и удерживайте для перемещения</string>
+	<string name="pref_ap_list">Отключить в приложениях</string>
+		
+</resources>
