@@ -3,6 +3,7 @@ package giraffine.dimmer;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.DialogPreference;
+import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
@@ -23,6 +24,7 @@ public class SettingAlarm extends DialogPreference{
 		AlarmUtil.getAlarmTime(getKey(), hourminute);
 		mTimePicker.setCurrentHour(hourminute[0]);
 		mTimePicker.setCurrentMinute(hourminute[1]);
+		mTimePicker.setIs24HourView(DateFormat.is24HourFormat(getContext()));
 	}
 	@Override
 	public void onDialogClosed(boolean positiveResult)
