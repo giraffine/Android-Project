@@ -13,14 +13,16 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SettingNotifyLayout extends DialogPreference{
 
-	public static String DEFAULT_LAYOUT = "01231111";
+	public static String DEFAULT_LAYOUT = "+01231111";
 	private LinearLayout root;
+	private ImageView icon;
 	private ImageButton up;
 	private ImageButton down;
 	private ImageButton pause;
@@ -41,12 +43,14 @@ public class SettingNotifyLayout extends DialogPreference{
 		for(int i=1; i<=3; i++)
 			for(int j=0; j<4; j++)
 				root.removeView(view.findViewById(getNotifyButtonID(i, j)));
-		
+
+		icon = (ImageView)root.findViewById(R.id.noti_icon);
 		up = (ImageButton)view.findViewById(R.id.noti_0_up);
 		down = (ImageButton)view.findViewById(R.id.noti_0_down);
 		pause = (ImageButton)view.findViewById(R.id.noti_0_pause);
 		close = (ImageButton)view.findViewById(R.id.noti_0_close);
-
+		
+		icon.setOnClickListener(mButtonClickListener);
 		up.setOnClickListener(mButtonClickListener);
 		down.setOnClickListener(mButtonClickListener);
 		pause.setOnClickListener(mButtonClickListener);
@@ -61,6 +65,8 @@ public class SettingNotifyLayout extends DialogPreference{
 		mButtonDragListener.init = true;
 		
 		mCurrentOrder = Prefs.getNotifyLayout();
+		setVisible(icon, mCurrentOrder.startsWith("+"));
+		mCurrentOrder = mCurrentOrder.substring(1);
 		reorder(mCurrentOrder, true);
 		
 		Toast.makeText(getContext(), R.string.pref_notify_layout_hint, Toast.LENGTH_LONG).show();
@@ -79,6 +85,10 @@ public class SettingNotifyLayout extends DialogPreference{
 	    		else
 	    			mCurrentOrder += "0";
 	    	}
+	    	if(icon.getTag() == null)
+	    		mCurrentOrder = "+" + mCurrentOrder;
+    		else
+    			mCurrentOrder = "-" + mCurrentOrder;
 	    	Log.e(Dimmer.TAG, "onDialogClosed: mCurrentOrder=" + mCurrentOrder);
 			Prefs.setNotifyLayout(mCurrentOrder);
 			setSummary(getSummary(mCurrentOrder));
@@ -95,6 +105,7 @@ public class SettingNotifyLayout extends DialogPreference{
 	public static String getSummary(String layout)
 	{
 		String result = "";
+		layout = layout.substring(1);
 		for(int i=0; i<4; i++)
 		{
 			if(layout.charAt(i) == '0')
@@ -286,19 +297,21 @@ public class SettingNotifyLayout extends DialogPreference{
     		ImageButton v = getImageButton(order.charAt(i));
     		root.addView(v);
     		if(dealVisible)
-    		{
-	    		if(order.charAt(i+4) == '0')
-	    		{
-	    			v.setAlpha(mAlphaDisable);
-	    			v.setTag(new Object());
-	    		}
-	    		else
-	    		{
-	    			v.setAlpha((float)1.0);
-	    			v.setTag(null);
-	    		}
-    		}
+    			setVisible(v, order.charAt(i+4) == '1');
     	}
+    }
+    private void setVisible(View v, boolean visible)
+    {
+		if(!visible)
+		{
+			v.setAlpha(mAlphaDisable);
+			v.setTag(new Object());
+		}
+		else
+		{
+			v.setAlpha((float)1.0);
+			v.setTag(null);
+		}
     }
     private ImageButton getImageButton(char c)
     {

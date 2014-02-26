@@ -9,16 +9,17 @@
     <ImageView
         android:id="@+id/noti_icon"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:layout_height="match_parent"
+        android:paddingLeft="5dp"
         android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/noti_text"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
         android:textColor="#FFFFFFFF"
         android:textSize="40sp"
         android:text="@string/app_name" />

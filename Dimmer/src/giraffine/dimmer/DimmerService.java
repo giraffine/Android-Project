@@ -166,6 +166,11 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				mNotiRemoteView.setViewVisibility(SettingNotifyLayout.getNotifyButtonID(i, j), View.GONE);
 		String order = Prefs.getNotifyLayout();
 		Log.e(Dimmer.TAG, "relayoutNotification: order=" + order);
+		if(order.startsWith("-"))
+			mNotiRemoteView.setViewVisibility(R.id.noti_icon, View.GONE);
+		else
+			mNotiRemoteView.setViewVisibility(R.id.noti_icon, View.VISIBLE);
+		order = order.substring(1);
     	for(int i=0; i<4; i++)
     	{
     		if(order.charAt(i+4) == '1')

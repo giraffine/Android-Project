@@ -58,7 +58,7 @@ public class Prefs {
 			mPrefer.edit().putBoolean(PREF_COMPATIBLE, true).commit();
 		}
 		if(((WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth() < 540)
-			SettingNotifyLayout.DEFAULT_LAYOUT = "01231101";
+			SettingNotifyLayout.DEFAULT_LAYOUT = "-01231111";
 	}
 	
 	public static boolean isAutoMode()
