@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">조광기</string>
+    <string name="action_settings">설정</string>
+	<string name="guide">밝기를 조절하려면 위 아래로 슬라이드 하세요</string>
+    
+	<string name="pref_auto_title">자동 모드</string>
+	<string name="pref_auto_summary">자동으로 밝아지고 어두워집니다</string>
+	<string name="pref_auto_lux_state">지금 현재 빛의 밝기:</string>
+	<string name="pref_auto_not_support">이 장치는 주변 빛 센서를 지지하지 않습니다</string>
+	<string name="pref_widget_title">위젯 모드</string>
+	<string name="pref_widget_summary">아이콘 클릭으로 밝음과 어두움을 조절합니다</string>
+	<string name="pref_widget_hint">당신은 앱 시작시 통지를 클릭할 수 있습니다</string>
+	<string name="pref_threshold_dim">어둡게 설정</string>
+	<string name="pref_threshold_dim_lowest">최하의 잔잔한 빛 감지</string>
+	<string name="pref_threshold_dim_set_lowest">최하의 럭스로 설정</string>
+	<string name="pref_threshold_dim_lux">잔잔한 빛</string>
+	<string name="pref_threshold_bright">밝기 되돌리기</string>
+	<string name="pref_threshold_bright_diff">잔잔한 빛 차이</string>
+	<string name="pref_speed_dim">어두운 응답 속도</string>
+	<string name="pref_speed_bright">밝은 응답 속도</string>
+	<string name="pref_alarm_title">시간 모드</string>
+	<string name="pref_alarm_dim">어둑해 지는 시간</string>
+	<string name="pref_alarm_bright">다시 밝아지는 시간</string>
+	<string name="pref_alarm_off">꺼짐</string>
+	<string name="pref_notify_title">통지</string>
+	<string name="pref_notify_step">조절 단계</string>
+	<string name="pref_notify_range">조절 범위</string>
+	<string name="pref_notify_layout">버튼 배치</string>
+	<string name="pref_notify_layout_hint">버튼을 길게 누르면 위치가 바뀜</string>
+	<string name="pref_ap_list">제외할 앱</string>
+		
+</resources>
