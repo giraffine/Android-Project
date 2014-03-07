@@ -32,6 +32,7 @@ public class Prefs {
 	public static String PREF_NOTIFY_LOWER = "pref_notify_lower";
 	public static String PREF_NOTIFY_UPPER = "pref_notify_upper";
 	public static String PREF_NOTIFY_LAYOUT = "pref_notify_layout";
+	public static String PREF_NOTIFY_PRIORITY = "pref_notify_priority";
 	public static String PREF_AP_LIST = "pref_ap_list";
 
 	private static SharedPreferences mPrefer = null;
@@ -124,6 +125,10 @@ public class Prefs {
 	public static void setAlarm(String type, String value)
 	{
 		mPrefer.edit().putString(type, value).commit();
+	}
+	public static boolean getNotifyPriority()
+	{
+		return mPrefer.getBoolean(PREF_NOTIFY_PRIORITY, false);
 	}
 	public static int getNotify(String type)
 	{

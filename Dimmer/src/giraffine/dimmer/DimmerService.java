@@ -39,6 +39,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String RESETLEVEL = "resetLevel";
 	public static String PAUSEFUNCTION = "pauseFunction";
 	public static String LAYOUTCHANGE = "layoutChange";
+	public static String STATUSBARCHANGE = "statusbarChange";
 	public static String STEPLEVELUP = "stepLevelUp";
 	public static String STEPLEVELDOWN = "stepLevelDown";
 	public static String SWITCHAUTOMODE = "switchAutoMode";
@@ -65,7 +66,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	private boolean mKeepSticky = false;
 	private boolean mIsPaused = false;
 	private boolean mLayoutChanged = true;
-	private boolean mLayoutUpdateOnly = false;
+	private boolean mUpdateNotifyInfo = true;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -82,7 +83,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			mLayoutChanged = false;
 		}
 
-		if(!mLayoutUpdateOnly)
+		if(mUpdateNotifyInfo)
 		{
 			mNotiRemoteView.setTextViewText(R.id.noti_text, levelHint + "");
 			for(int i=0; i<4; i++)
@@ -104,7 +105,9 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				.setContent(mNotiRemoteView)
 				.setSmallIcon(R.drawable.ic_launcher)
 				.setContentIntent(pi)
+				.setPriority(Prefs.getNotifyPriority() ? -2 : 0)	// adjust priority to control show icon in status bar
 				.build();
+			stopForeground(true);	// remove notification first to ensure update
 		}
 		if(DebugMode)
 			mNotification.tickerText = mLightSensor.getCurrentLux() + "";
@@ -315,9 +318,23 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				mLayoutChanged = true;
 				if(mNotification != null && mNotification.number == 1)
 				{
-					mLayoutUpdateOnly = true;
+					mUpdateNotifyInfo = false;
 					postNotification(0, false);
-					mLayoutUpdateOnly = false;
+					mUpdateNotifyInfo = true;
+				}
+			}
+			else if(intent.getAction().equals(STATUSBARCHANGE))
+			{
+				if(mNotification != null)
+				{
+					boolean needPost = mNotification.number == 1;
+					mNotification = null;
+					if(needPost)
+					{
+						mUpdateNotifyInfo = false;
+						postNotification(0, false);
+						mUpdateNotifyInfo = true;
+					}
 				}
 			}
 			else if(intent.getAction().equals(STEPLEVELUP))

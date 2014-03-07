@@ -25,6 +25,7 @@
 	<string name="pref_alarm_bright">Zeiteinstellung um zu erhellen</string>
 	<string name="pref_alarm_off">Aus</string>
 	<string name="pref_notify_title">Benachrichtigung</string>
+	<string name="pref_notify_priority">Symbol verbergen</string>
 	<string name="pref_notify_step">Einstellungsschritte</string>
 	<string name="pref_notify_range">Einstellungsbereich</string>
 	<string name="pref_notify_layout">Tastenanordnung</string>

@@ -25,6 +25,7 @@
 	<string name="pref_alarm_bright">Час повернення яскравості</string>
 	<string name="pref_alarm_off">ВИМК.</string>
 	<string name="pref_notify_title">Сповіщення</string>
+	<string name="pref_notify_priority">заховати значок</string>
 	<string name="pref_notify_step">Крок регулювання</string>
 	<string name="pref_notify_range">Діапазон регулювання</string>
 	<string name="pref_notify_layout">Розміщення кнопок</string>

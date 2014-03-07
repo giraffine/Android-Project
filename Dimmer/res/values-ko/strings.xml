@@ -25,6 +25,7 @@
 	<string name="pref_alarm_bright">다시 밝아지는 시간</string>
 	<string name="pref_alarm_off">꺼짐</string>
 	<string name="pref_notify_title">통지</string>
+	<string name="pref_notify_priority">상태 표시 줄에 아이콘 숨기기</string>
 	<string name="pref_notify_step">조절 단계</string>
 	<string name="pref_notify_range">조절 범위</string>
 	<string name="pref_notify_layout">버튼 배치</string>

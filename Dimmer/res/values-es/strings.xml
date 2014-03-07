@@ -25,6 +25,7 @@
 	<string name="pref_alarm_bright">Hora para volver a brillo</string>
 	<string name="pref_alarm_off">Apagado</string>
 	<string name="pref_notify_title">Notificación</string>
+	<string name="pref_notify_priority">Ocultar icono en la barra de estado</string>
 	<string name="pref_notify_step">Pasos de ajuste</string>
 	<string name="pref_notify_range">Rango de ajuste</string>
 	<string name="pref_notify_layout">Disposición de botones</string>

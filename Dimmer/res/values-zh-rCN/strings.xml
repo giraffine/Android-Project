@@ -25,6 +25,7 @@
 	<string name="pref_alarm_bright">定时变亮</string>
 	<string name="pref_alarm_off">关闭</string>
 	<string name="pref_notify_title">通知</string>
+	<string name="pref_notify_priority">隐藏状态栏的图示</string>
 	<string name="pref_notify_step">调整的级别</string>
 	<string name="pref_notify_range">调整的范围</string>
 	<string name="pref_notify_layout">按键布局</string>

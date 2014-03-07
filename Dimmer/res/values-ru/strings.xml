@@ -25,6 +25,7 @@
 	<string name="pref_alarm_bright">Время возврата яркости</string>
 	<string name="pref_alarm_off">ВЫКЛ.</string>
 	<string name="pref_notify_title">Уведомление</string>
+	<string name="pref_notify_priority">спрятать значок в строке состояния</string>
 	<string name="pref_notify_step">Шаг регулировки</string>
 	<string name="pref_notify_range">Диапазон регулировки</string>
 	<string name="pref_notify_layout">Расположение кнопок</string>

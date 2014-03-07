@@ -25,6 +25,7 @@
 	<string name="pref_alarm_bright">Fényerő visszaállításának időpontja</string>
 	<string name="pref_alarm_off">KI</string>
 	<string name="pref_notify_title">Értesítés</string>
+	<string name="pref_notify_priority">Elrejtése ikonra status bar</string>
 	<string name="pref_notify_step">Szabályozás lépésköze</string>
 	<string name="pref_notify_range">Szabályozás skálája</string>
 	<string name="pref_notify_layout">Nyomógombok elrendezése</string>

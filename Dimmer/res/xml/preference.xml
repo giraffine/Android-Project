@@ -69,6 +69,10 @@
     <PreferenceCategory
         android:key="pref_notify_category"
         android:title="@string/pref_notify_title">
+    <CheckBoxPreference
+        android:key="pref_notify_priority"
+        android:title="@string/pref_notify_priority"
+        android:defaultValue="false" />
 	<giraffine.dimmer.SettingNotifyLayout
         android:key="pref_notify_layout"
         android:title="@string/pref_notify_layout"
@@ -87,7 +91,7 @@
         android:positiveButtonText="@android:string/yes" 
         android:negativeButtonText="@android:string/no" 
         />
-	</PreferenceCategory>
+			</PreferenceCategory>
     <Preference android:key="pref_about" android:title="Version Info"/>
 
 </PreferenceScreen>

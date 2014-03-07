@@ -32,6 +32,7 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	private Preference mPrefNotifyStep = null;
 	private Preference mPrefNotifyRange = null;
 	private Preference mPrefNotifyLayout = null;
+	private CheckBoxPreference mPrefNotifyPriority = null;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
 		@Override
@@ -69,6 +70,8 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         mPrefNotifyStep = findPreference(Prefs.PREF_NOTIFY_STEP);
         mPrefNotifyRange = findPreference(Prefs.PREF_NOTIFY_RANGE);
         mPrefNotifyLayout = findPreference(Prefs.PREF_NOTIFY_LAYOUT);
+        mPrefNotifyPriority = (CheckBoxPreference)findPreference(Prefs.PREF_NOTIFY_PRIORITY);
+        mPrefNotifyPriority.setOnPreferenceClickListener(this);
         
         updateAutoSettings();
         updateAlarmSettings();
@@ -113,6 +116,11 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 			if(mPrefWidgetMode.isChecked())
 				Toast.makeText(getActivity(), R.string.pref_widget_hint, Toast.LENGTH_LONG).show();
 		}
+		else if(pref.getKey().equalsIgnoreCase(Prefs.PREF_NOTIFY_PRIORITY))
+		{
+			pref.getEditor().commit();
+			changeStatusBarIcon();
+		}
 		return false;
 	}
 	@Override
@@ -147,6 +155,13 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		Intent startServiceIntent = new Intent();
 		startServiceIntent.setComponent(DimmerService.COMPONENT);
 		startServiceIntent.setAction(DimmerService.SENSITIVECHANGE);
+		getActivity().startService(startServiceIntent);
+	}
+	public void changeStatusBarIcon()
+	{
+		Intent startServiceIntent = new Intent();
+		startServiceIntent.setComponent(DimmerService.COMPONENT);
+		startServiceIntent.setAction(DimmerService.STATUSBARCHANGE);
 		getActivity().startService(startServiceIntent);
 	}
 	public void updateAutoSettings()
