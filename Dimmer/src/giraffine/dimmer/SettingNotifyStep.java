@@ -1,12 +1,10 @@
 package giraffine.dimmer;
 
-import giraffine.dimmer.RangeSeekBar.OnRangeSeekBarChangeListener;
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 

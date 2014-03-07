@@ -1,6 +1,5 @@
 package giraffine.dimmer;
 
-import java.util.Set;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

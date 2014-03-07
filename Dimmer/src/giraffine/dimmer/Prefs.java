@@ -66,10 +66,6 @@ public class Prefs {
 	{
 		return mPrefer.getBoolean(PREF_AUTOMODE, false);
 	}
-	public static void setAutoMode(boolean isON)
-	{
-		mPrefer.edit().putBoolean(PREF_AUTOMODE, isON).commit();
-	}
 	public static int getSpeed(String key)
 	{
 		return Integer.valueOf(mPrefer.getString(key, "3"));
