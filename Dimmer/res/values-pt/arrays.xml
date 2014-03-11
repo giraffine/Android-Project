@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="speed">  
+        <item>Alta</item>  
+        <item>Média</item>  
+        <item>Regular</item>
+        <item>Baixa</item>
+        <item>Fraca</item>  
+    </string-array>
+    <string-array name="speed_values">  
+        <item>1</item>  
+        <item>2</item>  
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>  
+    </string-array> 
+</resources>

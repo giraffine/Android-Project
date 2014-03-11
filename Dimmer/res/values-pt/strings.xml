@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dimmer - Escurecer Tela</string>
+    <string name="action_settings">Configurações</string>
+	<string name="guide">Deslize para cima ou para baixo para ajustar o brilho.</string>
+    
+	<string name="pref_auto_title">Modo Automático</string>
+	<string name="pref_auto_summary">Escurecer ou clarear conforme o ambiente.</string>
+	<string name="pref_auto_lux_state">Luz atual do ambiente: </string>
+	<string name="pref_auto_not_support">Este dispositivo não é compatível com o sensor de luz ambiente.</string>
+	<string name="pref_widget_title">Modo Rápido</string>
+	<string name="pref_widget_summary">Escurece a tela com um click no ícone da aplicação.</string>
+	<string name="pref_widget_hint">Clique na notificação para entrar no aplicativo.</string>
+	<string name="pref_threshold_dim">Começar a escurecer</string>
+	<string name="pref_threshold_dim_lowest">Detectar menor luz ambiente.</string>
+	<string name="pref_threshold_dim_set_lowest">Definir menor luz</string>
+	<string name="pref_threshold_dim_lux">Luz do ambiente</string>
+	<string name="pref_threshold_bright">Retornar o brilho</string>
+	<string name="pref_threshold_bright_diff">Diferença da luz ambiente</string>
+	<string name="pref_speed_dim">Velocidade para escurecer</string>
+	<string name="pref_speed_bright">Velocidade para clarear</string>
+	<string name="pref_alarm_title">Acionamento por Horário</string>
+	<string name="pref_alarm_dim">Escurecer tela ás</string>
+	<string name="pref_alarm_bright">Clarear tela ás</string>
+	<string name="pref_alarm_off">Desativado</string>
+	<string name="pref_notify_title">Notificações</string>
+	<string name="pref_notify_priority">Oculta ícone da barra de notificações</string>	
+	<string name="pref_notify_step">Etapa de ajustamento</string>
+	<string name="pref_notify_range">Alcance de ajustamento</string>
+	<string name="pref_notify_layout">Ordem dos Botões</string>
+	<string name="pref_notify_layout_hint">Pressione o botão por muito tempo para mudar de posição.</string>
+	<string name="pref_ap_list">Excluir aplicação</string>
+		
+</resources>
