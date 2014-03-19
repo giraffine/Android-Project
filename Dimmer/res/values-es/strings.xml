@@ -31,5 +31,7 @@
 	<string name="pref_notify_layout">Disposición de botones</string>
 	<string name="pref_notify_layout_hint">Pulse y mantenga para cambiar la posición.</string>
 	<string name="pref_ap_list">Excluir aplicación</string>
-		
+	<string name="pref_other">Otro</string>
+	<string name="pref_button_backlight">Desactivar el botón de luz de fondo</string>
+			
 </resources>

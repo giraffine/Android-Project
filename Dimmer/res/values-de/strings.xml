@@ -31,5 +31,7 @@
 	<string name="pref_notify_layout">Tastenanordnung</string>
 	<string name="pref_notify_layout_hint">Lange drücken sie die taste, um position zu ändern</string>
 	<string name="pref_ap_list">Auszuschließen App</string>
-		
+	<string name="pref_other">Andere</string>
+	<string name="pref_button_backlight">Deaktivieren tastenbeleuchtung</string>
+			
 </resources>

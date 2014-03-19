@@ -7,7 +7,7 @@
     
 	<string name="pref_auto_title">Modo Automático</string>
 	<string name="pref_auto_summary">Escurecer ou clarear conforme o ambiente.</string>
-	<string name="pref_auto_lux_state">Luz atual do ambiente: </string>
+	<string name="pref_auto_lux_state">Luz atual do ambiente:</string>
 	<string name="pref_auto_not_support">Este dispositivo não é compatível com o sensor de luz ambiente.</string>
 	<string name="pref_widget_title">Modo Rápido</string>
 	<string name="pref_widget_summary">Escurece a tela com um click no ícone da aplicação.</string>
@@ -31,5 +31,7 @@
 	<string name="pref_notify_layout">Ordem dos Botões</string>
 	<string name="pref_notify_layout_hint">Pressione o botão por muito tempo para mudar de posição.</string>
 	<string name="pref_ap_list">Excluir aplicação</string>
-		
+	<string name="pref_other">Outro</string>
+	<string name="pref_button_backlight">Desativar botão backlight</string>
+			
 </resources>

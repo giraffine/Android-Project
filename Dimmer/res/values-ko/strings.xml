@@ -31,5 +31,7 @@
 	<string name="pref_notify_layout">버튼 배치</string>
 	<string name="pref_notify_layout_hint">버튼을 길게 누르면 위치가 바뀜</string>
 	<string name="pref_ap_list">제외할 앱</string>
-		
+	<string name="pref_other">다른</string>
+	<string name="pref_button_backlight">버튼 백라이트를 사용하지 않도록 설정</string>
+			
 </resources>

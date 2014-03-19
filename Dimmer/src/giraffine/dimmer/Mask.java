@@ -80,6 +80,7 @@ public class Mask {
 		mWindowParams.width = 1;	// reduce memory usage
 		mWindowParams.height = 1;	// reduce memory usage
 		mWindowParams.screenBrightness = -1;	// use the system preferred screen brightness
+		mWindowParams.buttonBrightness = -1;	// use the system preferred button backlight
 		mWindowParams.alpha = 0;
 		mWindowManager.updateViewLayout(mMaskView, mWindowParams);
 	}
@@ -90,6 +91,7 @@ public class Mask {
 		mWindowParams.width = 1;	// reduce memory usage
 		mWindowParams.height = 1;	// reduce memory usage
 		mWindowParams.screenBrightness = value;
+		mWindowParams.buttonBrightness = -1;	// use the system preferred button backlight
 		mWindowParams.alpha = 0;
 		mWindowManager.updateViewLayout(mMaskView, mWindowParams);
 	}
@@ -101,6 +103,7 @@ public class Mask {
 //		mMaskView.setAlpha(alpha);	// control parent window is much safe
 		mWindowParams.width = maskLength;
 		mWindowParams.height = maskLength;
+		mWindowParams.buttonBrightness = Prefs.getDisableButtonBacklight() ? 0 : -1;
 		mWindowParams.alpha = alpha; 
 		// this will cause fully dark screen
 //		if(mWindowParams.screenBrightness != 0)	mWindowParams.screenBrightness = (float)0;

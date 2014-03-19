@@ -34,6 +34,7 @@ public class Prefs {
 	public static String PREF_NOTIFY_LAYOUT = "pref_notify_layout";
 	public static String PREF_NOTIFY_PRIORITY = "pref_notify_priority";
 	public static String PREF_AP_LIST = "pref_ap_list";
+	public static String PREF_BUTTON_BACKLIGHT = "pref_button_backlight";
 
 	private static SharedPreferences mPrefer = null;
 
@@ -158,6 +159,10 @@ public class Prefs {
 	public static void setApList(Set<String> list)
 	{
 		mPrefer.edit().putStringSet(PREF_AP_LIST, list).commit();
+	}
+	public static boolean getDisableButtonBacklight()
+	{
+		return mPrefer.getBoolean(PREF_BUTTON_BACKLIGHT, true);
 	}
 	public static String getAbout()
 	{

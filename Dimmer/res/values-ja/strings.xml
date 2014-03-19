@@ -31,5 +31,7 @@
 	<string name="pref_notify_layout">ボタン配置</string>
 	<string name="pref_notify_layout_hint">位置を変更するための長押しボタン</string>
 	<string name="pref_ap_list">アプリケーションを除外する</string>
-		
+	<string name="pref_other">その他</string>
+	<string name="pref_button_backlight">ボタンのバックライトを閉じる</string>
+			
 </resources>
