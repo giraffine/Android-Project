@@ -12,6 +12,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -50,8 +52,6 @@ public class SettingApList extends DialogPreference{
 	@Override
 	public void onBindDialogView (View view)
 	{
-		if(mListAll == null)
-			mListAll = mContext.getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES);
 		if(mListApItem == null)
 			mListApItem = new ArrayList<ApItem>();
 		else
@@ -59,19 +59,6 @@ public class SettingApList extends DialogPreference{
 		if(mApAdapter == null)
 			mApAdapter = new ApAdapter(mContext);
 
-		for(PackageInfo ap : mListAll)
-		{
-			if(ap.activities != null && ap.applicationInfo.enabled)
-			{
-				Set<String> settinglist = Prefs.getApList();
-				if(settinglist!=null && settinglist.contains(ap.packageName))
-					mListApItem.add(new ApItem(mContext, ap.applicationInfo, true));
-				else
-					mListApItem.add(new ApItem(mContext, ap.applicationInfo, false));
-			}
-		}
-		Collections.sort(mListApItem, mComparator);
-		
 		ListView listview = (ListView)view.findViewById(R.id.apListView);
 		listview.setAdapter(mApAdapter);
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -90,6 +77,28 @@ public class SettingApList extends DialogPreference{
 				}
 			}
 		});
+		new Thread(new Runnable()
+		{
+			@Override
+			public void run() {
+				if(mListAll == null)
+					mListAll = mContext.getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES);
+
+				for(PackageInfo ap : mListAll)
+				{
+					if(ap.activities != null && ap.applicationInfo.enabled)
+					{
+						Set<String> settinglist = Prefs.getApList();
+						if(settinglist!=null && settinglist.contains(ap.packageName))
+							mListApItem.add(new ApItem(mContext, ap.applicationInfo, true));
+						else
+							mListApItem.add(new ApItem(mContext, ap.applicationInfo, false));
+					}
+				}
+				Collections.sort(mListApItem, mComparator);
+				mHandler.sendEmptyMessage(MSG_REFRESH_LIST);
+			}
+		}).start();
 	}
 	@Override
 	public void onDialogClosed(boolean positiveResult)
@@ -186,4 +195,14 @@ public class SettingApList extends DialogPreference{
 	        return convertView;
 		}
 	}
+	private static final int MSG_REFRESH_LIST = 0;
+	Handler mHandler = new Handler(){
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_REFRESH_LIST:
+				mApAdapter.notifyDataSetChanged();
+				break;
+			}
+		}
+	};
 }
