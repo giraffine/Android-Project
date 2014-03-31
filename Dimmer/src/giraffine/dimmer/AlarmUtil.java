@@ -33,7 +33,7 @@ public class AlarmUtil {
 		boolean isAlarmOn = !(next.compareTo(now) == 0);
 		setupAlarm(isAlarmOn, next);
 	}
-	public boolean nowToDim()	// check current time is to dim or bright
+	public boolean nowToDim()	// check current time is to dim or bright. called when alarm fired.
 	{
 		boolean toDim = true;
 		boolean toBright = false;
@@ -61,22 +61,61 @@ public class AlarmUtil {
 			Log.e(Dimmer.TAG, "nowToDim: bright: " + bright.getTime().toGMTString());
 			Log.e(Dimmer.TAG, "nowToDim: dimCompare=" + dimCompare + ", brightCompare=" + brightCompare + ", dimbrightCompare=" + dimbrightCompare);
 			if(dimCompare >= 0 && brightCompare < 0)
-			{
+			{	// dim ... now ... bright
 				return toDim;
 			}
 			else if(dimCompare < 0 && brightCompare >= 0)
-			{
+			{	// bright ... now ... dim
 				return toBright;
 			}
 			else
 			{
-				if(dimbrightCompare < 0)
+				if(dimbrightCompare < 0)	// [dim ... bright ... now] or [now ... dim ... bright]
 					return toBright;
-				else if(dimbrightCompare > 0)
+				else if(dimbrightCompare > 0)	// [bright ... dim ... now] or [now ... bright ... dim] 
 					return toDim;
 			}
 		}
 			
+		return toBright;
+	}
+	public boolean bootToDim()	// check if [dim ... now ... bright]. called when boot.
+	{
+		boolean toDim = true;
+		boolean toBright = false;
+		Calendar dim = null;
+		Calendar bright = null;
+		if(getAlarmOnOff(Prefs.PREF_ALARM_DIM))
+			dim = getAlarmTime(Prefs.PREF_ALARM_DIM);
+		if(getAlarmOnOff(Prefs.PREF_ALARM_BRIGHT))
+			bright = getAlarmTime(Prefs.PREF_ALARM_BRIGHT);
+		
+		if(dim == null || bright == null)
+			return toBright;
+		
+		Calendar now = Calendar.getInstance();
+		int dimCompare = now.compareTo(dim);
+		int brightCompare = now.compareTo(bright);
+		int dimbrightCompare = dim.compareTo(bright); 
+		Log.e(Dimmer.TAG, "bootToDim: now: " + now.getTime().toGMTString());
+		Log.e(Dimmer.TAG, "bootToDim: dim: " + dim.getTime().toGMTString());
+		Log.e(Dimmer.TAG, "bootToDim: bright: " + bright.getTime().toGMTString());
+		Log.e(Dimmer.TAG, "bootToDim: dimCompare=" + dimCompare + ", brightCompare=" + brightCompare + ", dimbrightCompare=" + dimbrightCompare);
+		if(dimCompare >= 0 && brightCompare < 0)
+		{	// dim ... now ... bright
+			return toDim;
+		}
+		else if(dimCompare < 0 && brightCompare >= 0)
+		{	// bright ... now ... dim
+			return toBright;
+		}
+		else
+		{
+			if(dimbrightCompare < 0)	// [dim ... bright ... now] or [now ... dim ... bright]
+				return toBright;
+			else if(dimbrightCompare > 0)	// [bright ... dim ... now] or [now ... bright ... dim]
+				return toDim;
+		}
 		return toBright;
 	}
 	private Calendar getLatestAlarm(Calendar now)

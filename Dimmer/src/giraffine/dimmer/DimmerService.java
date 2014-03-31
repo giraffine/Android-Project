@@ -382,7 +382,12 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 			}
 			else if(intent.getAction().equals(BOOT))
 			{
-				if(!mKeepSticky)
+				if(mAlarmUtil.bootToDim())
+				{
+					mLightSensor.setFreezeLux();
+					mHandler.sendEmptyMessage(MSG_ENTER_DIMM);
+				}
+				else if(!mKeepSticky)
 					trySuicide();
 			}
 		}
