@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dimmer</string>
+    <string name="action_settings">Pengaturan</string>
+	<string name="guide">Sentuh atas dan bawah untuk mengatur kecerahan.</string>
+    
+	<string name="pref_auto_title">Modus otomatis.</string>
+	<string name="pref_auto_summary">Redup dan terang secara otomatis sesuai lingkungan.</string>
+	<string name="pref_auto_lux_state">Cahaya sekitar saat ini:</string>
+	<string name="pref_auto_not_support">Perangkat ini tidak mendukung sensor cahaya sekitar.</string>
+	<string name="pref_widget_title">Modus widget</string>
+	<string name="pref_widget_summary">Sentuh ikon sekali untuk beralih terang dan redup.</string>
+	<string name="pref_widget_hint">Anda dapat menyentuh notifikasi untuk memasuki aplikasi.</string>
+	<string name="pref_threshold_dim">Memasuki redup</string>
+	<string name="pref_threshold_dim_lowest">Deteksi cahaya sekitar terendah.</string>
+	<string name="pref_threshold_dim_set_lowest">Atur lux terendah</string>
+	<string name="pref_threshold_dim_lux">Cahaya sekitar</string>
+	<string name="pref_threshold_bright">Kembalikan kecerahan</string>
+	<string name="pref_threshold_bright_diff">Perbedaan cahaya sekitar</string>
+	<string name="pref_speed_dim">Kecepatan respon meredup</string>
+	<string name="pref_speed_bright">Kecepatan respon mencerah</string>
+	<string name="pref_alarm_title">Modus waktu</string>
+	<string name="pref_alarm_dim">Waktu memasuki redup</string>
+	<string name="pref_alarm_bright">Waktu kembali mencerah</string>
+	<string name="pref_alarm_off">Padam</string>
+	<string name="pref_notify_title">Notifikasi</string>
+	<string name="pref_notify_priority">Sembunyikan ikon di bilah pemberitahuan</string>	
+	<string name="pref_notify_step">Langkah pengaturan</string>
+	<string name="pref_notify_range">Jangkauan pengaturan</string>
+	<string name="pref_notify_layout">Pengaturan tombol</string>
+	<string name="pref_notify_layout_hint">Sentuh dengan lama untuk mengubah posisi.</string>
+	<string name="pref_ap_list">Kecualikan aplikasi</string>
+	<string name="pref_other">Lain-lain</string>
+	<string name="pref_button_backlight">Nonaktifkan tombol lampu latar﻿</string>
+		
+</resources>
