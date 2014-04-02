@@ -35,7 +35,7 @@ public class Dimmer extends Activity {
 		
 		Prefs.init(this);
 		boolean showActivity = !Prefs.getWidgetMode()
-				|| getIntent().getAction().equalsIgnoreCase(DimmerService.ACTIONNOTIFICATION);
+				|| DimmerService.ACTIONNOTIFICATION.equalsIgnoreCase(getIntent().getAction());
 		
 		if(showActivity)	showMainApp = true;
 		
