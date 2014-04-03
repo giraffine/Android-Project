@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Przygaszacz</string>
+    <string name="action_settings">Ustawienia</string>
+	<string name="guide">Dotknij w górę i w dół aby zmienić jasność.</string>
+    
+	<string name="pref_auto_title">Tryb automatyczny</string>
+	<string name="pref_auto_summary">Automatyczne zmienianie jasności.</string>
+	<string name="pref_auto_lux_state">Aktualna jasność otoczenia:</string>
+	<string name="pref_auto_not_support">To urządzenie nie obsługuje sensoru jasności otoczenia.</string>
+	<string name="pref_widget_title">Tryb widżetu</string>
+	<string name="pref_widget_summary">Dotknij ikonę aby zmienić jasność.</string>
+	<string name="pref_widget_hint">Możesz dotknąć powiadomienia aby przejść do aplikacji.</string>
+	<string name="pref_threshold_dim">Wpisz przyciemnienie</string>
+	<string name="pref_threshold_dim_lowest">Wykryj najniższą jasność otoczenia.</string>
+	<string name="pref_threshold_dim_set_lowest">Ustaw najniższe lux</string>
+	<string name="pref_threshold_dim_lux">Światło otoczenia</string>
+	<string name="pref_threshold_bright">Przywróć jasność</string>
+	<string name="pref_threshold_bright_diff">Różnica światła otoczenia</string>
+	<string name="pref_speed_dim">Prędkość reakcji ściemniania</string>
+	<string name="pref_speed_bright">Prędkość reakcji jasności</string>
+	<string name="pref_alarm_title">Tryb czasu</string>
+	<string name="pref_alarm_dim">Czas do zmiany jasności</string>
+	<string name="pref_alarm_bright">Czas do przywrócenia jasności</string>
+	<string name="pref_alarm_off">Wyłącz</string>
+	<string name="pref_notify_title">Powiadomienia</string>
+	<string name="pref_notify_priority">Ukryj ikonę na pasku statusu</string>	
+	<string name="pref_notify_step">Krok regulacji</string>
+	<string name="pref_notify_range">Zakres regulacji</string>
+	<string name="pref_notify_layout">Układ przycisków</string>
+	<string name="pref_notify_layout_hint">Naciśnij długo przycisk aby zmienić pozycję.</string>
+	<string name="pref_ap_list">Wyłącz aplikację</string>
+	<string name="pref_other">Inne</string>
+	<string name="pref_button_backlight">Wyłącz podświetlanie klawiszy</string>
+		
+</resources>
