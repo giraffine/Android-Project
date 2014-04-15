@@ -47,6 +47,16 @@
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
         </receiver>
-    </application>
+    <receiver
+            android:name="giraffine.dimmer.TaskerReceiver">
+            <intent-filter>
+				<action android:name="giraffine.dimmer.TOGGLE_ON_OFF" />
+				<action android:name="giraffine.dimmer.TOGGLE_PAUSE_RESUME" />
+				<action android:name="giraffine.dimmer.STOP" />
+				<action android:name="giraffine.dimmer.STEP_UP" />
+				<action android:name="giraffine.dimmer.STEP_DOWN" />
+			</intent-filter>
+        </receiver>
+	</application>
 
 </manifest>
