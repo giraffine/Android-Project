@@ -30,6 +30,8 @@
 	<string name="pref_notify_range">Диапазон регулировки</string>
 	<string name="pref_notify_layout">Расположение кнопок</string>
 	<string name="pref_notify_layout_hint">Нажмите и удерживайте для перемещения</string>
+	<string name="pref_color_filter">цветной фильтр</string>
+	<string name="pref_color_picker">выбора цвета</string>
 	<string name="pref_ap_list">Отключить в приложениях</string>
 	<string name="pref_other">другой</string>
 	<string name="pref_button_backlight">близко подсветка кнопки</string>

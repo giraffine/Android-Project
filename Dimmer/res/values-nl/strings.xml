@@ -30,6 +30,8 @@
 	<string name="pref_notify_range">Dimverschil</string>
 	<string name="pref_notify_layout">Knop volgorde</string>
 	<string name="pref_notify_layout_hint">Vasthouden om aan te passen.</string>
+	<string name="pref_color_filter">Lichtfilter</string>
+	<string name="pref_color_picker">Kleurenkiezer</string>
 	<string name="pref_ap_list">App uitsluiten</string>
 	<string name="pref_other">Overige</string>
 	<string name="pref_button_backlight">Backlight knop uitschakelen</string>

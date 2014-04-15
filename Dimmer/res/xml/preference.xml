@@ -93,6 +93,18 @@
         />
 	</PreferenceCategory>
     <PreferenceCategory
+        android:key="pref_color_category"
+        android:title="@string/pref_color_filter">
+    <CheckBoxPreference
+        android:key="pref_colormode"
+        android:title="@string/pref_color_filter"
+        android:defaultValue="false" />
+	<giraffine.dimmer.ColorPickerPreference 
+		android:key="pref_color_value"
+		android:title="@string/pref_color_picker" 
+		/>
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="pref_other_category"
         android:title="@string/pref_other">
     <CheckBoxPreference

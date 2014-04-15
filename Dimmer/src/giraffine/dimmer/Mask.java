@@ -14,8 +14,11 @@ public class Mask {
 	private Context mContext;
 	private WindowManager mWindowManager;
 	private WindowManager.LayoutParams mWindowParams;
+	private WindowManager.LayoutParams mColorWindowParams;
 	private int maskLength = 0;
 	private View mMaskView;
+	private View mColorView;
+	private boolean mHasColor = false;
 
 	public Mask(Context context){
 		mContext = context;
@@ -54,6 +57,34 @@ public class Mask {
 //		mMaskView.setAlpha((float)1);	// == android:alpha
 		
 		mWindowManager.addView(mMaskView, mWindowParams);
+		initColor();
+	}
+	private void initColor()
+	{
+		mColorWindowParams = new WindowManager.LayoutParams();
+		mColorWindowParams.copyFrom(mWindowParams);
+		mColorWindowParams.alpha = 1;
+		mColorWindowParams.width = maskLength;
+		mColorWindowParams.height = maskLength;
+	}
+	public void adjustColor(boolean enable, int color)
+	{
+		if(!enable)
+		{
+			if(mHasColor && mColorView != null)
+				mWindowManager.removeView(mColorView);
+			mHasColor = false;
+			return;
+		}
+		if(mColorView == null)
+		{
+			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			mColorView = inflater.inflate(R.layout.mask_window, null);
+		}
+		mColorView.setBackgroundColor(color);
+		if(!mHasColor)
+			mWindowManager.addView(mColorView, mColorWindowParams);
+		mHasColor = true;
 	}
 	public void adjustLevel(int i, boolean setBrightness)
 	{

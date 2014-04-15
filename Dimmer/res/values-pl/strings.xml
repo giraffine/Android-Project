@@ -30,6 +30,8 @@
 	<string name="pref_notify_range">Zakres regulacji</string>
 	<string name="pref_notify_layout">Układ przycisków</string>
 	<string name="pref_notify_layout_hint">Naciśnij długo przycisk aby zmienić pozycję.</string>
+	<string name="pref_color_filter">Filtr kolorów</string>
+	<string name="pref_color_picker">Wyboru koloru</string>
 	<string name="pref_ap_list">Wyłącz aplikację</string>
 	<string name="pref_other">Inne</string>
 	<string name="pref_button_backlight">Wyłącz podświetlanie klawiszy</string>

@@ -32,6 +32,8 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 	private Preference mPrefNotifyRange = null;
 	private Preference mPrefNotifyLayout = null;
 	private CheckBoxPreference mPrefNotifyPriority = null;
+	private CheckBoxPreference mPrefColorMode = null;
+	private Preference mPrefColorPicker = null;
 	
 	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver(){
 		@Override
@@ -73,9 +75,14 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
         mPrefNotifyPriority = (CheckBoxPreference)findPreference(Prefs.PREF_NOTIFY_PRIORITY);
         mPrefNotifyPriority.setOnPreferenceClickListener(this);
         
+        mPrefColorMode = (CheckBoxPreference)findPreference(Prefs.PREF_COLORMODE);
+        mPrefColorMode.setOnPreferenceClickListener(this);
+        mPrefColorPicker = findPreference(Prefs.PREF_COLOR_VALUE);
+        
         updateAutoSettings();
         updateAlarmSettings();
         updateNotifySettings();
+        updateColorSettings();
         
         try {
         	String version = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
@@ -121,6 +128,12 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 			pref.getEditor().commit();
 			changeStatusBarIcon();
 		}
+		else if(pref.getKey().equalsIgnoreCase(Prefs.PREF_COLORMODE))
+		{
+			pref.getEditor().commit();
+			updateColorSettings();
+			changeColorMode(mPrefColorMode.isChecked());
+		}
 		return false;
 	}
 	@Override
@@ -162,6 +175,14 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		Intent startServiceIntent = new Intent();
 		startServiceIntent.setComponent(DimmerService.COMPONENT);
 		startServiceIntent.setAction(DimmerService.STATUSBARCHANGE);
+		getActivity().startService(startServiceIntent);
+	}
+	public void changeColorMode(boolean enable)
+	{
+		Intent startServiceIntent = new Intent();
+		startServiceIntent.setComponent(DimmerService.COMPONENT);
+		startServiceIntent.setAction(DimmerService.COLORCHANGE);
+		startServiceIntent.putExtra(DimmerService.COLORCHANGE+"ON", enable);
 		getActivity().startService(startServiceIntent);
 	}
 	public void updateAutoSettings()
@@ -209,6 +230,10 @@ public class SettingsFragment extends PreferenceFragment implements OnPreference
 		mPrefNotifyRange.setSummary(String.valueOf(Prefs.getNotify(Prefs.PREF_NOTIFY_LOWER))
 				+ " ~ " + String.valueOf(Prefs.getNotify(Prefs.PREF_NOTIFY_UPPER)));
 		mPrefNotifyLayout.setSummary(SettingNotifyLayout.getSummary(Prefs.getNotifyLayout()));
+	}
+	public void updateColorSettings()
+	{
+		mPrefColorPicker.setEnabled(mPrefColorMode.isChecked());
 	}
 	public void showAutoModeDetail(boolean show)
 	{

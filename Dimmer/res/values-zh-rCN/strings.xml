@@ -30,6 +30,8 @@
 	<string name="pref_notify_range">调整的范围</string>
 	<string name="pref_notify_layout">按键布局</string>
 	<string name="pref_notify_layout_hint">长按可以变更按键布局</string>
+	<string name="pref_color_filter">彩色滤光片</string>
+	<string name="pref_color_picker">颜色选择</string>
 	<string name="pref_ap_list">排除应用程序</string>
 	<string name="pref_other">其他</string>
 	<string name="pref_button_backlight">关闭实体按钮背光</string>

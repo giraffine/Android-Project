@@ -30,6 +30,8 @@
 	<string name="pref_notify_range">Szabályozás skálája</string>
 	<string name="pref_notify_layout">Nyomógombok elrendezése</string>
 	<string name="pref_notify_layout_hint">Nyomd hosszan a gombot a pozíció megváltoztatásához.</string>
+	<string name="pref_color_filter">Színszűrő</string>
+	<string name="pref_color_picker">Színválasztó</string>
 	<string name="pref_ap_list">Alkalmazás kivételek</string>
 	<string name="pref_other">Más</string>
 	<string name="pref_button_backlight">Letiltása gomb háttérvilágítása</string>

@@ -35,6 +35,8 @@ public class Prefs {
 	public static String PREF_NOTIFY_PRIORITY = "pref_notify_priority";
 	public static String PREF_AP_LIST = "pref_ap_list";
 	public static String PREF_BUTTON_BACKLIGHT = "pref_button_backlight";
+	public static String PREF_COLORMODE = "pref_colormode";
+	public static String PREF_COLOR_VALUE = "pref_color_value";
 
 	private static SharedPreferences mPrefer = null;
 
@@ -159,6 +161,18 @@ public class Prefs {
 	public static void setApList(Set<String> list)
 	{
 		mPrefer.edit().putStringSet(PREF_AP_LIST, list).commit();
+	}
+	public static boolean getColorMode()
+	{
+		return mPrefer.getBoolean(PREF_COLORMODE, false);
+	}
+	public static int getColor()
+	{
+		return mPrefer.getInt(PREF_COLOR_VALUE, ColorPickerPreference.DEFAULT_COLOR);
+	}
+	public static void setColor(int color)
+	{
+		mPrefer.edit().putInt(PREF_COLOR_VALUE, color).commit();
 	}
 	public static boolean getDisableButtonBacklight()
 	{

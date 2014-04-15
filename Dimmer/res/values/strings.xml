@@ -30,6 +30,8 @@
 	<string name="pref_notify_range">Range of adjustment</string>
 	<string name="pref_notify_layout">Button arrangement</string>
 	<string name="pref_notify_layout_hint">Long press button to change position.</string>
+	<string name="pref_color_filter">Color filter</string>
+	<string name="pref_color_picker">Color picker</string>
 	<string name="pref_ap_list">Exclude app</string>
 	<string name="pref_other">Other</string>
 	<string name="pref_button_backlight">Disable button backlight</string>

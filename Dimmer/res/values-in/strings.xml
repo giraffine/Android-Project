@@ -30,6 +30,8 @@
 	<string name="pref_notify_range">Jangkauan pengaturan</string>
 	<string name="pref_notify_layout">Pengaturan tombol</string>
 	<string name="pref_notify_layout_hint">Sentuh dengan lama untuk mengubah posisi.</string>
+	<string name="pref_color_filter">Saringan warna</string>
+	<string name="pref_color_picker">Pemilih warna</string>
 	<string name="pref_ap_list">Kecualikan aplikasi</string>
 	<string name="pref_other">Lain-lain</string>
 	<string name="pref_button_backlight">Nonaktifkan tombol lampu latar﻿</string>

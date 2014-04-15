@@ -47,6 +47,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	public static String SENSITIVECHANGE = "sensitiveChange";
 	public static String ALARMMODE = "alarmMode";
 	public static String ALARMCHANGE = "alarmChange";
+	public static String COLORCHANGE = "colorChange";
 	public static String BOOT = "boot";
 	public static final int MSG_RESET_LEVEL = 0;
 	public static final int MSG_RESET_LEVEL_RESTORE = 1;
@@ -380,6 +381,16 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 				}
 				mAlarmUtil.update();
 			}
+			else if(intent.getAction().equals(COLORCHANGE))
+			{
+				if(getDimMode())
+				{
+					if(intent.hasExtra(COLORCHANGE+"ON"))
+						mMask.adjustColor(intent.getBooleanExtra(COLORCHANGE+"ON", false), Prefs.getColor());
+					else if(Prefs.getColorMode())
+						mMask.adjustColor(true, intent.getIntExtra(COLORCHANGE, 0xFF000000));
+				}
+			}
 			else if(intent.getAction().equals(BOOT))
 			{
 				if(mAlarmUtil.bootToDim())
@@ -423,6 +434,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		if(setBrightness)
 			triggerActingSession();
 		mMask.adjustLevel(i, setBrightness);
+		mMask.adjustColor((Prefs.getColorMode() && getDimMode()), Prefs.getColor());
 	}
 	public void resetLevel(boolean restoreBrighnessState, boolean removeNotification)
 	{
@@ -438,6 +450,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 		int currentBrightness = BrightnessUtil.getBrightness();
 		lastLevel = (int)(((float)currentBrightness)/255*500 + 500);
 		mMask.removeMask();
+		mMask.adjustColor(false, 0);
 		
 		boolean needSuicide = true;
 		if(removeNotification)

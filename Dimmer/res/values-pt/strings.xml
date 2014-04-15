@@ -30,6 +30,8 @@
 	<string name="pref_notify_range">Alcance de ajustamento</string>
 	<string name="pref_notify_layout">Ordem dos Botões</string>
 	<string name="pref_notify_layout_hint">Pressione o botão por muito tempo para mudar de posição.</string>
+	<string name="pref_color_filter">Filtro colorido</string>
+	<string name="pref_color_picker">Seleção de cor</string>
 	<string name="pref_ap_list">Excluir aplicação</string>
 	<string name="pref_other">Outro</string>
 	<string name="pref_button_backlight">Desativar botão backlight</string>
