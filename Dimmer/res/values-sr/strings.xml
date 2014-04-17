@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dimmer</string>
+    <string name="action_settings">Podešavanja</string>
+	<string name="guide">Dodirni strelice kako bi podesio osvetljenje.</string>
+    
+	<string name="pref_auto_title">Automatski režim rada</string>
+	<string name="pref_auto_summary">Automatsko podešavanje osvetljenja u skladu sa okruženjem.</string>
+	<string name="pref_auto_lux_state">Trenutna jačina svetlosti u okruženju:</string>
+	<string name="pref_auto_not_support">Ovaj uređaj nema senzor za određivanje jačine svetlosti.</string>
+	<string name="pref_widget_title">Vidžet režim rada</string>
+	<string name="pref_widget_summary">Dodirni ikonicu za promenu stanja osvetljenja.</string>
+	<string name="pref_widget_hint">Dodirni ikonicu iz trake za obaveštenja za ulazak u aplikaciju.</string>
+	<string name="pref_threshold_dim">Pokreni smanjivanje osvetljenja</string>
+	<string name="pref_threshold_dim_lowest">Detektuj najmanju jačinu svetlosti.</string>
+	<string name="pref_threshold_dim_set_lowest">Podesi na najmanje</string>
+	<string name="pref_threshold_dim_lux">Svetlo u okruženju</string>
+	<string name="pref_threshold_bright">Prekini smanjivanje osvetljenja</string>
+	<string name="pref_threshold_bright_diff">Razlika osvetljenja okruženja</string>
+	<string name="pref_speed_dim">Brizina smanjenja osvetljenja</string>
+	<string name="pref_speed_bright">Brzina povećanja osvetljenja</string>
+	<string name="pref_alarm_title">Podešavanje po vremenu</string>
+	<string name="pref_alarm_dim">Vreme smanjenja osvetljenja</string>
+	<string name="pref_alarm_bright">Vreme povećanja osvetljenja</string>
+	<string name="pref_alarm_off">Isključeno</string>
+	<string name="pref_notify_title">Traka za obaveštenja</string>
+	<string name="pref_notify_priority">Sakrij ikonicu sa trake za obaveštenja</string>	
+	<string name="pref_notify_step">Veličina praga podešavanja</string>
+	<string name="pref_notify_range">Opseg podešavanja</string>
+	<string name="pref_notify_layout">Raspored dugmadi</string>
+	<string name="pref_notify_layout_hint">Drži dugme pritisnutim kako bi mu promenio poziciju.</string>
+	<string name="pref_color_filter">Филтер Боја</string>
+	<string name="pref_color_picker">Цолор Пицкер</string>
+	<string name="pref_ap_list">Izuzmi aplikacije</string>
+	<string name="pref_other">Drugo</string>
+	<string name="pref_button_backlight">Onemogući podešavanje osvetljenja dugmadi za navigaciju﻿</string>
+		
+</resources>
