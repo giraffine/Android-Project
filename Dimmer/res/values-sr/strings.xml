@@ -30,8 +30,8 @@
 	<string name="pref_notify_range">Opseg podešavanja</string>
 	<string name="pref_notify_layout">Raspored dugmadi</string>
 	<string name="pref_notify_layout_hint">Drži dugme pritisnutim kako bi mu promenio poziciju.</string>
-	<string name="pref_color_filter">Филтер Боја</string>
-	<string name="pref_color_picker">Цолор Пицкер</string>
+	<string name="pref_color_filter">Filter boja</string>
+	<string name="pref_color_picker">Izbor boja</string>
 	<string name="pref_ap_list">Izuzmi aplikacije</string>
 	<string name="pref_other">Drugo</string>
 	<string name="pref_button_backlight">Onemogući podešavanje osvetljenja dugmadi za navigaciju﻿</string>
