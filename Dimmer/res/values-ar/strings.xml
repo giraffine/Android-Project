@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">خفض الإضاءة</string>
+    <string name="action_settings">إعدادات</string>
+	<string name="guide">المس صعودا وهبوطا لضبط السطوع.</string>
+    
+	<string name="pref_auto_title">الوضع التلقائي</string>
+	<string name="pref_auto_summary">الخافت تلقائيا وسطع مثل البيئة.</string>
+	<string name="pref_auto_lux_state">الحالي الإضاءة المحيطة:</string>
+	<string name="pref_auto_not_support">هذا الجهاز لا يدعم استشعار الإضاءة المحيطة.</string>
+	<string name="pref_widget_title">وضع ويدجت</string>
+	<string name="pref_widget_summary">بنقرة واحدة رمز للتبديل الخافت والمشرق.</string>
+	<string name="pref_widget_hint">يمكنك النقر فوق إشعار للدخول التطبيق.</string>
+	<string name="pref_threshold_dim">إدخال الخافت</string>
+	<string name="pref_threshold_dim_lowest">كشف أدنى الإضاءة المحيطة.</string>
+	<string name="pref_threshold_dim_set_lowest">تعيين أدنى ضوء</string>
+	<string name="pref_threshold_dim_lux">ضوء المحيط</string>
+	<string name="pref_threshold_bright">عودة المشرقة</string>
+	<string name="pref_threshold_bright_diff">فرق الضوء المحيط</string>
+	<string name="pref_speed_dim">سرعة الاستجابة الخافت</string>
+	<string name="pref_speed_bright">سرعة الاستجابة المشرقة</string>
+	<string name="pref_alarm_title">وضع الوقت</string>
+	<string name="pref_alarm_dim">وقت الدخول الخافت</string>
+	<string name="pref_alarm_bright">وقت العودة المشرقة</string>
+	<string name="pref_alarm_off">إيقاف</string>
+	<string name="pref_notify_title">إشعارات</string>
+	<string name="pref_notify_priority">إخفاء أيقونة على شريط الحالة</string>	
+	<string name="pref_notify_step">خطوة للتكيف</string>
+	<string name="pref_notify_range">مجموعة من التكيف</string>
+	<string name="pref_notify_layout">زر الترتيب</string>
+	<string name="pref_notify_layout_hint">اضغط على زر طويل من أجل تغيير الموقع.</string>
+	<string name="pref_color_filter">فلتر اللون</string>
+	<string name="pref_color_picker">إنتقاء اللون</string>
+	<string name="pref_ap_list">استبعاد التطبيق</string>
+	<string name="pref_other">اخرى</string>
+	<string name="pref_button_backlight">زر تعطيل الخلفية</string>
+		
+</resources>
