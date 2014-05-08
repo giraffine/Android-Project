@@ -530,6 +530,7 @@ public class DimmerService extends Service implements LightSensor.EventCallback{
 	{
 		mInDimMode = dim;
 		mLightSensor.setDimState(dim);
+		DimmerWidget.updateDim(this, dim);
 	}
 	private boolean getDimMode()
 	{
