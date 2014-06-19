@@ -83,7 +83,10 @@ public class Mask {
 		}
 		mColorView.setBackgroundColor(color);
 		if(!mHasColor)
+		{
+			mColorWindowParams.buttonBrightness = Prefs.getDisableButtonBacklight() ? 0 : -1;
 			mWindowManager.addView(mColorView, mColorWindowParams);
+		}
 		mHasColor = true;
 	}
 	public void adjustLevel(int i, boolean setBrightness)
