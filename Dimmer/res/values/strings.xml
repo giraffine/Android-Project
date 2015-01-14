@@ -3,15 +3,15 @@
 
     <string name="app_name">Dimmer</string>
     <string name="action_settings">Settings</string>
-	<string name="guide">Touch up and down to adjust brightness.</string>
+	<string name="guide">Tap up and down to adjust brightness.</string>
     
 	<string name="pref_auto_title">Auto Mode</string>
-	<string name="pref_auto_summary">Automatically dim and brighten as environment.</string>
+	<string name="pref_auto_summary">Automatically dim and brighten with environment.</string>
 	<string name="pref_auto_lux_state">Current ambient light:</string>
-	<string name="pref_auto_not_support">This device is not support ambient light sensor.</string>
+	<string name="pref_auto_not_support">This device doesn\'t have an ambient light sensor.</string>
 	<string name="pref_widget_title">Widget Mode</string>
-	<string name="pref_widget_summary">One click icon to switch dim and bright.</string>
-	<string name="pref_widget_hint">You can click notification to enter app.</string>
+	<string name="pref_widget_summary">Tap the icon to switch between dim and bright.</string>
+	<string name="pref_widget_hint">Brightness can now be adjusted in the notification area.</string>
 	<string name="pref_threshold_dim">Enter dim</string>
 	<string name="pref_threshold_dim_lowest">Detect lowest ambient light.</string>
 	<string name="pref_threshold_dim_set_lowest">Set lowest lux</string>
@@ -21,11 +21,11 @@
 	<string name="pref_speed_dim">Speed of dim response</string>
 	<string name="pref_speed_bright">Speed of bright response</string>
 	<string name="pref_alarm_title">Time Mode</string>
-	<string name="pref_alarm_dim">Time to enter dim</string>
-	<string name="pref_alarm_bright">Time to return bright</string>
+	<string name="pref_alarm_dim">Dim screen at</string>
+	<string name="pref_alarm_bright">Go back to bright at</string>
 	<string name="pref_alarm_off">OFF</string>
 	<string name="pref_notify_title">Notification</string>
-	<string name="pref_notify_priority">Hide icon on status bar</string>	
+	<string name="pref_notify_priority">Hide status bar icon</string>	
 	<string name="pref_notify_step">Step of adjustment</string>
 	<string name="pref_notify_range">Range of adjustment</string>
 	<string name="pref_notify_layout">Button arrangement</string>
