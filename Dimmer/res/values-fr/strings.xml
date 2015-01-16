@@ -3,7 +3,7 @@
 
     <string name="app_name">Variateur</string>
     <string name="action_settings">Réglages</string>
-	<string name="guide">Touchez haut et bas pour régler la luminosité</string>
+	<string name="guide">Presser haut et bas pour régler la luminosité</string>
     
 	<string name="pref_auto_title">Mode automatique</string>
 	<string name="pref_auto_summary">Variation de luminosité automatique suivant l\'environnement</string>
@@ -11,21 +11,21 @@
 	<string name="pref_auto_not_support">Cet appareil ne prend pas en charge le capteur de lumière ambiante</string>
 	<string name="pref_widget_title">Mode widget</string>
 	<string name="pref_widget_summary">Passer de luminosité faible à intense en un clic</string>
-	<string name="pref_widget_hint">Accéder à l\'application par le volet de notification</string>
+	<string name="pref_widget_hint">Accéder à l\'application par la zone de notification</string>
 	<string name="pref_threshold_dim">Entrer dans la luminosité faible</string>
 	<string name="pref_threshold_dim_lowest">Détection de la lumière ambiante la plus basse</string>
 	<string name="pref_threshold_dim_set_lowest">Réglage du lux le plus bas</string>
 	<string name="pref_threshold_dim_lux">Lumière ambiante</string>
-	<string name="pref_threshold_bright">Revenir à la luminosité</string>
+	<string name="pref_threshold_bright">Revenir à la luminosité élevée</string>
 	<string name="pref_threshold_bright_diff">Différence de lumière ambiante</string>
-	<string name="pref_speed_dim">Progrès de réaction faible luminosité</string>
-	<string name="pref_speed_bright">Progrès de réaction haute luminosité</string>
+	<string name="pref_speed_dim">Vitesse de réaction faible luminosité</string>
+	<string name="pref_speed_bright">Vitesse de réaction haute luminosité</string>
 	<string name="pref_alarm_title">Mode heure</string>
-	<string name="pref_alarm_dim">Heure pour entrer en faible luminosité</string>
-	<string name="pref_alarm_bright">Heure de retour à la luminosité</string>
+	<string name="pref_alarm_dim">Heure de faible luminosité</string>
+	<string name="pref_alarm_bright">Heure de retour en luminosité élevée</string>
 	<string name="pref_alarm_off">Arrêt</string>
 	<string name="pref_notify_title">Notification</string>
-	<string name="pref_notify_priority">Cacher l\'icône dans la barre de statut</string>
+	<string name="pref_notify_priority">Cacher l\'icône de la barre de statut</string>
 	<string name="pref_notify_step">Niveau d\'ajustement</string>
 	<string name="pref_notify_range">Gamme d\'ajustement</string>
 	<string name="pref_notify_layout">Arrangement des boutons</string>
