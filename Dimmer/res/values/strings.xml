@@ -11,7 +11,7 @@
 	<string name="pref_auto_not_support">This device doesn\'t have an ambient light sensor.</string>
 	<string name="pref_widget_title">Widget Mode</string>
 	<string name="pref_widget_summary">Tap the icon to switch between dim and bright.</string>
-	<string name="pref_widget_hint">Brightness can now be adjusted in the notification area.</string>
+	<string name="pref_widget_hint">Click notification to enter app.</string>
 	<string name="pref_threshold_dim">Enter dim</string>
 	<string name="pref_threshold_dim_lowest">Detect lowest ambient light.</string>
 	<string name="pref_threshold_dim_set_lowest">Set lowest lux</string>
