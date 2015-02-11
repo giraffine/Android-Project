@@ -112,6 +112,9 @@
         android:title="@string/pref_button_backlight"
         android:defaultValue="true" />
 
-    <Preference android:key="pref_about" android:title="Version Info"/>
+    <giraffine.dimmer.SettingAbout
+        android:key="pref_about"
+        android:title="Dimmer Open Source Project"
+        android:negativeButtonText="@null"/>
 	</PreferenceCategory>
 </PreferenceScreen>
