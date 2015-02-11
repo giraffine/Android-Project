@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dimmer</string>
+    <string name="action_settings">Impostazioni</string>
+	<string name="guide">Tocca su e giù per regolare la luminosità.</string>
+
+	<string name="pref_auto_title">Modalità Automatica</string>
+	<string name="pref_auto_summary">Regolare automaticamente la luminosità con l\'ambiente.</string>
+	<string name="pref_auto_lux_state">Luminosità ambientale attuale:</string>
+	<string name="pref_auto_not_support">Questo dispositivo non ha il sensore di luminosità.</string>
+	<string name="pref_widget_title">Modalità Widget</string>
+	<string name="pref_widget_summary">Tocca l\'icona per attivare e disattivare l\'attenuazione.</string>
+	<string name="pref_widget_hint">Ora è possibile regolare la luminosità nell\'area di notifica</string>
+	<string name="pref_threshold_dim">Attiva attenuazione</string>
+	<string name="pref_threshold_dim_lowest">Rileva la luminosità ambientale minima</string>
+	<string name="pref_threshold_dim_set_lowest">Imposta lux minimo</string>
+	<string name="pref_threshold_dim_lux">Luce ambientale</string>
+	<string name="pref_threshold_bright">Ritorna luminoso</string>
+	<string name="pref_threshold_bright_diff">Differenza con luce ambientale</string>
+	<string name="pref_speed_dim">Velocità di risposta attenuazione</string>
+	<string name="pref_speed_bright">Velocità di riposta luminosità</string>
+	<string name="pref_alarm_title">Modalità Oraria</string>
+	<string name="pref_alarm_dim">Attiva attenuazione alle ore</string>
+	<string name="pref_alarm_bright">Ritorna luminoso alle ore</string>
+	<string name="pref_alarm_off">OFF</string>
+	<string name="pref_notify_title">Notifiche</string>
+	<string name="pref_notify_priority">Nascondi l\'icona nella barra di stato</string>
+	<string name="pref_notify_step">Scatto di regolazione</string>
+	<string name="pref_notify_range">Intervallo di regolazione</string>
+	<string name="pref_notify_layout">Disposizione pulsanti</string>
+	<string name="pref_notify_layout_hint">Pressione prolungata del pulsante per cambiare posizione</string>
+	<string name="pref_color_filter">Filtro colorato</string>
+	<string name="pref_color_picker">Selettore colori</string>
+	<string name="pref_ap_list">Escludi applicazione</string>
+	<string name="pref_other">Altro</string>
+	<string name="pref_button_backlight">Disabilita retroilluminazione tasti</string>
+
+</resources>
