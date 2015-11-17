@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Dimmer</string>
-    <string name="action_settings">Instellingen</string>
-	<string name="guide">Veeg omhoog en omlaag om de helderheid in te stellen.</string>
-    
-	<string name="pref_auto_title">Automatiche Modus</string>
-	<string name="pref_auto_summary">Automatisch aanpassen aan de omgeving.</string>
-	<string name="pref_auto_lux_state">Huidig omgevingslicht:</string>
-	<string name="pref_auto_not_support">Met dit apparaat kan je de helderheid niet beheren.</string>
-	<string name="pref_widget_title">Widget Modus</string>
-	<string name="pref_widget_summary">Een keer klikken tussen gedimd en helder licht.</string>
-	<string name="pref_widget_hint">Klik op de notificatie om de app te openen.</string>
-	<string name="pref_threshold_dim">Begin dimmer</string>
-	<string name="pref_threshold_dim_lowest">Detecteer donkerst.</string>
-	<string name="pref_threshold_dim_set_lowest">Zet laagste lux</string>
-	<string name="pref_threshold_dim_lux">Omgevingslicht</string>
-	<string name="pref_threshold_bright">Terug naar helder</string>
-	<string name="pref_threshold_bright_diff">Omgevingslicht verschil</string>
-	<string name="pref_speed_dim">Reactietijd van dimmer naar donker</string>
-	<string name="pref_speed_bright">Reactietijd van dimmer naar licht</string>
-	<string name="pref_alarm_title">Tijd module</string>
-	<string name="pref_alarm_dim">Tijd naar donker</string>
-	<string name="pref_alarm_bright">Tijd naar normale helderheid</string>
-	<string name="pref_alarm_off">UIT</string>
-	<string name="pref_notify_title">Notificatie</string>
-	<string name="pref_notify_priority">Verberg van de status bar</string>	
-	<string name="pref_notify_step">Stap van aanpassing</string>
-	<string name="pref_notify_range">Dimverschil</string>
-	<string name="pref_notify_layout">Knop volgorde</string>
-	<string name="pref_notify_layout_hint">Vasthouden om aan te passen.</string>
-	<string name="pref_color_filter">Lichtfilter</string>
-	<string name="pref_color_picker">Kleurenkiezer</string>
-	<string name="pref_ap_list">App uitsluiten</string>
-	<string name="pref_other">Overige</string>
-	<string name="pref_button_backlight">Backlight knop uitschakelen</string>
-		
+  <string name="app_name">Dimmer</string>
+  <string name="action_settings">Instellingen</string>
+  <string name="guide">Klik omhoog en omlaag om de helderheid aan te passen.</string>
+  <string name="pref_auto_title">Automatische modus</string>
+  <string name="pref_auto_summary">Automatisch aanpassen aan de omgeving.</string>
+  <string name="pref_auto_lux_state">Huidig omgevingslicht:</string>
+  <string name="pref_auto_not_support">Dit apparaat kan het omgevingslicht niet detecteren.</string>
+  <string name="pref_widget_title">Widget-modus</string>
+  <string name="pref_widget_summary">Een keer klikken om te schakelen tussen gedimd en helder licht.</string>
+  <string name="pref_widget_hint">Klik op de melding om de app te openen.</string>
+  <string name="pref_threshold_dim">Dimmer inschakelen</string>
+  <string name="pref_threshold_dim_lowest">Donkerste omgevingslicht detecteren</string>
+  <string name="pref_threshold_dim_set_lowest">Laagste lux instellen</string>
+  <string name="pref_threshold_dim_lux">Omgevingslicht</string>
+  <string name="pref_threshold_bright">Terug naar helder</string>
+  <string name="pref_threshold_bright_diff">Verschil met omgevingslicht</string>
+  <string name="pref_speed_dim">Reactietijd van licht naar donker</string>
+  <string name="pref_speed_bright">Reactietijd van donker naar licht</string>
+  <string name="pref_alarm_title">Tijd-modus</string>
+  <string name="pref_alarm_dim">Scherm dimmen om</string>
+  <string name="pref_alarm_bright">Terug naar helder om</string>
+  <string name="pref_alarm_off">Uitgeschakeld</string>
+  <string name="pref_notify_title">Melding</string>
+  <string name="pref_notify_priority">Afbeelding in statusbalk verbergen</string>
+  <string name="pref_notify_step">Stapgrootte</string>
+  <string name="pref_notify_range">Aanpassingsbereik</string>
+  <string name="pref_notify_layout">Volgorde van knoppen</string>
+  <string name="pref_notify_layout_hint">Lang vasthouden om posities te wijzigen.</string>
+  <string name="pref_color_filter">Kleurenfilter</string>
+  <string name="pref_color_picker">Kleurenkiezer</string>
+  <string name="pref_ap_list">Apps uitsluiten</string>
+  <string name="pref_other">Overig</string>
+  <string name="pref_button_backlight">Knopverlichting uitschakelen</string>
 </resources>
