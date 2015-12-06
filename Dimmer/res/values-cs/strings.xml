@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dimmer</string>
+    <string name="action_settings">Nastavení</string>
+	<string name="guide">Měnit jas posuvem nahoru a dolů.</string>
+    
+	<string name="pref_auto_title">Automatický mód</string>
+	<string name="pref_auto_summary">Automaticky měnit jas podle prostředí.</string>
+	<string name="pref_auto_lux_state">Aktuální okolní světlo:</string>
+	<string name="pref_auto_not_support">Tento přístoj nemá senzor okolního osvětlení.</string>
+	<string name="pref_widget_title">Widget mód</string>
+	<string name="pref_widget_summary">Dotykem na ikonu přepínat jas.</string>
+	<string name="pref_widget_hint">Kliknutím na upozornění spustit aplikaci.</string>
+	<string name="pref_threshold_dim">Zadat jas</string>
+	<string name="pref_threshold_dim_lowest">Detekovat nejnižší okolní osvětlení.</string>
+	<string name="pref_threshold_dim_set_lowest">Nastavit nejnižší osvětlení</string>
+	<string name="pref_threshold_dim_lux">Okolní osvětlení</string>
+	<string name="pref_threshold_bright">Vrátit jas</string>
+	<string name="pref_threshold_bright_diff">Rozdíl okolního osvětlení</string>
+	<string name="pref_speed_dim">Rychlost změny ztmavení</string>
+	<string name="pref_speed_bright">Rychlost změny rozjasnění</string>
+	<string name="pref_alarm_title">Časový mód</string>
+	<string name="pref_alarm_dim">Ztmavit obrazovku při</string>
+	<string name="pref_alarm_bright">Přejít zpět na jas při</string>
+	<string name="pref_alarm_off">Vypnout</string>
+	<string name="pref_notify_title">Upozornění</string>
+	<string name="pref_notify_priority">Skrýt stavovou ikonu</string>	
+	<string name="pref_notify_step">Krok změny</string>
+	<string name="pref_notify_range">Rozsah změny</string>
+	<string name="pref_notify_layout">Zarovnání tlačítek</string>
+	<string name="pref_notify_layout_hint">Dlouze stlačit tlačítko pro změnu pozice.</string>
+	<string name="pref_color_filter">Barevný filtr</string>
+	<string name="pref_color_picker">Výběr barev</string>
+	<string name="pref_ap_list">Vyjmout aplikaci</string>
+	<string name="pref_other">Další</string>
+	<string name="pref_button_backlight">Vypnout podsvětlení tlačítek</string>
+		
+</resources>
